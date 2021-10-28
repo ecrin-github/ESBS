@@ -1,0 +1,740 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://ecrin.org/json_schemas/mdrdataobject/v6.json",
+  "title": "XDC Data Object definition",
+  "description": "ECRIN Metadata Repository for clinical research objects, Data Object JSON definition, version 6 August 2021",
+  "type": "object",
+  "required": [
+    "id",
+    "data_object_title",
+    "object_class",
+    "object_type",
+    "publication_year",
+    "access_type"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "file_type": {
+      "type": "string",
+      "description": "always 'data_object'"
+    },
+    "id": {
+      "type": "integer",
+      "description": "Internal accession number of the data object within the MDR database"
+    },
+    "doi": {
+      "type": "string",
+      "description": "The doi (without prefixes, beginning with '10...') of the object, if it has one"
+    },
+    "display_title": {
+      "type": "string",
+      "description": "The title of the object - if a unique title is not part of the source title it may be a composite of the study title and the object type"
+    },
+    "version": {
+      "type": "string",
+      "description": "Indication of version if there is one, in the format of the source data"
+    },
+    "object_class": {
+      "type": "object",
+      "description": "The broad type of object, e.g. 'Dataset', or 'Text'",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "An integer referencing the relevant record in the object_classes enumeration / lookup table"
+        },
+        "name": {
+          "type": "string",
+          "description": "One of the allowed types in the object_classes enumeration"
+        }
+      }
+    },
+    "object_type": {
+      "type": "object",
+      "description": "A more detailed classification of the object type, e.g. 'Study Protocol', or 'IPD dataset’",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "An integer referencing the relevant record in the object_types enumeration / lookup table"
+        },
+        "name": {
+          "type": "string",
+          "description": "One of the allowed types in the object_types enumeration"
+        }
+      }
+    },
+    "publication_year": {
+      "type": "integer",
+      "description": "A four digit number indicating the year the object was published, i.e. became available"
+    },
+    "lang_code": {
+      "type": "string",
+      "description": "A two letter ISO 369-1 code indicating the language of the data object. Occasionaly - especially with journal articles - two or more such codes, separated by a comma"
+    },
+    "managing_organisation": {
+      "type": "object",
+      "description": "The organisation managing the object, in particular that determines access to it",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "The id of the organisation within the ECRIN context database, if that id exists"
+        },
+        "name": {
+          "type": "string",
+          "description": "The default name of the organisation within the ECRIN context database, if it exists, or the name of the organisation as supplied by the source data"
+        },
+        "ror_id": {
+          "type": "string",
+          "description": "The id of the organisation, if knowm, within the ROR (Research Organisation Registry) system. This is a URL linking to the ROR resource."
+        }
+      }
+    },
+    "access_type": {
+      "type": "object",
+      "description": "The type of  access to the object, e.g. 'Public download (self-attestation required)', or 'Case by case download'",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "An integer referencing the relevant record in the object_access_types enumeration / lookup table"
+        },
+        "name": {
+          "type": "string",
+          "description": "One of the allowed types from the object_access_types enumeration"
+        }
+      }
+    },
+    "access_details": {
+      "type": "object",
+      "description": "Further details of the access (especially if non public)",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "A textual description of the access being offered, for example identifying the groups to which access is granted, the criteria on which a case-by-case decision would be based, any further restrictions on on-screen access, etc."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "A url of a web page that provides details of the accesss available, possibly including the practical details required or a form to use to apply for access"
+        },
+        "url_last_checked": {
+          "type": "string",
+          "format": "date",
+          "description": "If a check has been carried out, the date the url last responded with a 200 (success) message, as a string (yyyy MMM dd)"
+        }
+      }
+    },
+    "eosc_category": {
+      "type": "integer",
+      "description": "An integer between 0 and 3 inclusive, representing the type of data object / access management required, using a recommended eosc categorisation"
+    },
+    "dataset_record_keys": {
+      "type": "object",
+      "description": "For dataset objects only, provides an indication of the types of keys used in the dataset, in particular if they are claimed to be anonymous or pseudonymous",
+      "properties": {
+        "keys_type_id": {
+          "type": "integer",
+          "description": "An integer referencing the relevant record in the dataset_recordkey_types enumeration / lookup table"
+        },
+        "keys_type": {
+          "type": "string",
+          "description": "One of the allowed types, from the dataset_recordkey_types enumeration"
+        },
+        "keys_details": {
+          "type": "string",
+          "description": "Provides further details of the record key types, perhaps referring to dataset preparation, if available"
+        }
+      }
+    },
+    "dataset_deident_level": {
+      "type": "object",
+      "description": "For dataset objects only, provides an indication of the level of deidentification of the dataset",
+      "properties": {
+        "deident_type_id": {
+          "type": "integer",
+          "description": "An integer referencing the relevant record in the dataset_identifier_types enumeration / lookup table"
+        },
+        "deident_type": {
+          "type": "string",
+          "description": "One of the allowed types, from the dataset_de-identification_levels enumeration, e.g. 'De-identification applied'"
+        },
+        "deident_direct": {
+          "type": "boolean",
+          "description": "If direct Identifiers were removed from the data set"
+        },
+        "deident_hipaa": {
+          "type": "boolean",
+          "description": "If the US HIPAA de-identification rules have been applied"
+        },
+        "deident_dates": {
+          "type": "boolean",
+          "description": "If dates have been rebased and / or replaced by integers"
+        },
+        "deident_nonarr": {
+          "type": "boolean",
+          "description": "If narrative text fields have been removed"
+        },
+        "deident_kanon": {
+          "type": "boolean",
+          "description": "if k-anonymisation (k>=2) has been achieved"
+        },
+        "deident_details": {
+          "type": "string",
+          "description": "Provides further details of the de-identification of the dataset, perhaps referring to other documents and / or a URL."
+        }
+      }
+    },
+    "dataset_consent": {
+      "type": "object",
+      "description": "For dataset objects only, provides an indication of the level of explicit consent for secondary use of the data",
+      "properties": {
+        "consent_type_id": {
+          "type": "integer",
+          "description": "An integer referencing the relevant record in the dataset_consent_types enumeration / lookup table"
+        },
+        "consent_type": {
+          "type": "string",
+          "description": "One of the allowed types, from the dataset_consent_types enumeration, e.g. 'No explicit consent', or 'General research use'"
+        },
+        "consent_noncommercial": {
+          "type": "boolean",
+          "description": "If further use restricted to non-commercial users"
+        },
+        "consent_geog_restrict": {
+          "type": "boolean",
+          "description": "If any geographical restrictions apply to further use"
+        },
+        "consent_research_type": {
+          "type": "boolean",
+          "description": "If further use is restricted to specific type(s) of research"
+        },
+        "consent_genetic_only": {
+          "type": "boolean",
+          "description": "If further use is restricted to specific type(s) of research"
+        },
+        "consent_no_methods": {
+          "type": "boolean",
+          "description": "If the data cannot be used for work that is purely for methodological / algorithmic development"
+        },
+        "consents_details": {
+          "type": "string",
+          "description": "Provides further details of the consent for secondary use associated with the dataset, if available, and in particular any details associated with the specific restrictions listed above."
+        }
+      }
+    },
+    "object_instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates the nature of a specific instance of a data object, e.g. a file or a web page",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Object instance record primary key, generated automatically in database"
+          },
+          "repository_org": {
+            "type": "object",
+            "description": "The organisation hosting the instance",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The id of the organisation within the ECRIN context database, if that id exists"
+              },
+              "name": {
+                "type": "string",
+                "description": "The default name of the organisation within the ECRIN context database, if it exists, or the name of the organisation as supplied by the source data"
+              }
+            }
+          },
+          "access_details": {
+            "type": "object",
+            "description": "Basic details of the access available to the instance",
+            "properties": {
+              "direct_access": {
+                "type": "boolean",
+                "description": "Whether or not the access is public and freely available, or restricted in some way"
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "The url where the object can be publicly accessed, if one exists"
+              },
+              "url_last_checked": {
+                "type": "string",
+                "format": "date",
+                "description": "If a check has been carried out, the date the url last responded with a 200 (success) message, as a string (yyyy MMM dd)"
+              }
+            }
+          },
+          "resource_details": {
+            "type": "object",
+            "description": "Details of the instance, considered as a physical resource",
+            "properties": {
+              "type_id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the file_types enumeration / lookup table"
+              },
+              "type_name": {
+                "type": "string",
+                "description": "One of the allowed types, from the file_types enumeration, e.g. 'PDF', or 'Excel Spreadsheet(s)'"
+              },
+              "size": {
+                "type": "number",
+                "description": "A number (may be a real or an integer number) indicating the size of the resource"
+              },
+              "size_unit": {
+                "type": "string",
+                "description": "One of the allowed types, from the size_units enumeration / look up table, e.g. 'Mb', or 'Pages', but note expressed only as a string"
+              },
+              "comments": {
+                "type": "string",
+                "description": "Holds further details of the resource, in particular to support machine processing. These could include the schema used for XML files, and / or the character coding used for text files (e.g. UTF-8 versus UTF-16) or the presence and types of any byte order marks."
+              }
+            }
+          }
+        }
+      }
+    },
+    "object_titles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates the type and value of the 'other title'",
+        "required": [
+          "id",
+          "title_type",
+          "title_text"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Other title record primary key, generated automatically in database"
+          },
+          "title_type": {
+            "type": "object",
+            "description": "Type of the title, e.g. 'Translated Title'",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the title_types enumeration / lookup table"
+              },
+              "name": {
+                "type": "string",
+                "description": "One of the types listed in the title_types enumeration"
+              }
+            }
+          },
+          "title_text": {
+            "type": "string",
+            "description": "The text of the title, verbatim"
+          },
+          "lang_code": {
+            "type": "string",
+            "description": "A two letter ISO 369-1 code indicating the language of the title"
+          },
+          "comments": {
+            "type": "string",
+            "description": "Any additional comments regarding the source or derivation of the title"
+          }
+        }
+      }
+    },
+    "object_dates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates the date and its type",
+        "required": [
+          "id",
+          "date_type",
+          "is_date_range",
+          "start"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Object date record primary key, generated automatically in database"
+          },
+          "date_type": {
+            "type": "object",
+            "description": "The type of the date, e.g. 'Available', or 'Updated'",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the date_types enumeration / lookup table"
+              },
+              "name": {
+                "type": "string",
+                "description": "One of the allowed types in the date_types enumeration"
+              }
+            }
+          },
+          "date_is_range": {
+            "type": "boolean",
+            "default": false,
+            "description": "If true both start and end dates should be considered, otherwise just the start date"
+          },
+          "date_as_string": {
+            "type": "string",
+            "description": "String representation of the date, used for all dates including partial dates and date ranges "
+          },
+          "start_date": {
+            "type": "object",
+            "description": "The date, or the start date of a range",
+            "properties": {
+              "start_year": {
+                "type": "integer",
+                "description": "A 4 digit integer indicating the year"
+              },
+              "start_month": {
+                "type": "integer",
+                "description": "An integer indicating the month"
+              },
+              "start_day": {
+                "type": "integer",
+                "description": "An integer indicating the day"
+              }
+            }
+          },
+          "end_date": {
+            "type": "object",
+            "description": "The end date of a date range",
+            "properties": {
+              "end_year": {
+                "type": "integer",
+                "description": "A 4 digit integer indicating the year"
+              },
+              "end_month": {
+                "type": "integer",
+                "description": "An integer indicating the month"
+              },
+              "end_day": {
+                "type": "integer",
+                "description": "An integer indicating the day"
+              }
+            }
+          },
+          "comments": {
+            "type": "string",
+            "description": "Additional comments or information about the date"
+          }
+        }
+      }
+    },
+    "object_contributors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates the people and / or organisations that contributed to the data object, directly or indirectly",
+        "required": [
+          "id",
+          "contribution_type"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Object contributor record primary key, generated automatically in database"
+          },
+          "contribution_type": {
+            "type": "object",
+            "description": "The type of contribution made, by an individual or organisation, e.g. 'Creator', or 'Trial Sponsor'",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the contribution_types enumeration / lookup table"
+              },
+              "name": {
+                "type": "string",
+                "description": "One of the allowed types in the contribution_types enumeration"
+              }
+            }
+          },
+          "is_individual": {
+            "type": "boolean",
+            "description": "Indicates whether the contributor is an individual, e.g. study lead or paper author, or an organisation, e.g. pharma company or research network. If an organisation the person objhect will be null. If a person, the organisation object will be null."
+          },
+          "organisation": {
+            "type": "object",
+            "description": "The organisation providing the contribution - not required if the contributor is an individual.",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The id of the organisation, within the ECRIN context database, if that id exists"
+              },
+              "name": {
+                "type": "string",
+                "description": "The default name of the organisation, within the ECRIN context database, if it exists, or the name of the organisation as supplied by the source data"
+              },
+              "ror_id": {
+                "type": "string",
+                "description": "The id of the organisation, if knowm, within the ROR (Research Organisation Registry) system. This is a URL linking to the ROR resource."
+              }
+            }
+          },
+          "person": {
+            "type": "object",
+            "description": "A composite object that should include as a minimum a full_name. Not required if there is an organisation entry",
+            "properties": {
+              "family_name": {
+                "type": "string",
+                "description": "The person's family name, the 'key' name under which they are listed - usually the last name in Western cultures"
+              },
+              "given_name": {
+                "type": "string",
+                "description": "The person's given name, or the first name by which they are nornally known. May be replaced by initials"
+              },
+              "full_name": {
+                "type": "string",
+                "description": "The person's full name, in the order of given_name family_name"
+              },
+              "orcid": {
+                "type": "string",
+                "description": "The person's ORCID identifier, if known"
+              },
+              "affiliation_string": {
+                "type": "string",
+                "description": "The person's organisational affiliation as it appears in the source data"
+              },
+              "affiliation_org_id": {
+                "type": "integer",
+                "description": "The id of the organisation within the MDR, if it can be identified from the affiliation string."
+              },
+              "affiliation_org_name": {
+                "type": "string",
+                "description": "The name of the organisation to which the person is affiliated, as deduced from the affiliation string."
+              },
+              "affiliation_org_ror_id": {
+                "type": "string",
+                "description": "The id of the organisation to which the person is affiliated, if knowm, within the ROR (Research Organisation Registry) system. This is a URL linking to the ROR resource."
+              }
+            }
+          }
+        }
+      }
+    },
+    "object_topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates the topic name or keyword, and - where available - the MESH coding for that term",
+        "required": [
+          "id",
+          "value"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Study topic record primary key, generated automatically in database"
+          },
+          "topic_type": {
+            "type": "object",
+            "description": "How the topic was categorised in the source data, e.g. 'Condition', or 'Organism'",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the topic_source_types enumeration / lookup table"
+              },
+              "name": {
+                "type": "string",
+                "description": "One of the allowed types listed in the topic_source_types enumeration"
+              }
+            }
+          },
+          "mesh_coded": {
+            "type": "boolean",
+            "description": "Whether or not the topic has been MESH coded"
+          },
+          "mesh_code": {
+            "type": "string",
+            "description": "The MESH code for the topic if one exists"
+          },
+          "mesh_value": {
+            "type": "string",
+            "description": "The topic or keyword value or name, as a MESH code if coded, otherwise as provided in the source data"
+          },
+          "original_value": {
+            "type": "string",
+            "description": "The original value of the term, whether coded or not"
+          }
+        }
+      }
+    },
+    "object_identifiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates the value and type of the identifier, and optionally its date and organisation of origin",
+        "required": [
+          "id",
+          "value",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Data object identifier record primary key, generated automatically in database"
+          },
+          "identifier_value": {
+            "type": "string",
+            "description": "The identifier value, in a standardised format (for each identifier type)"
+          },
+          "identifier_type": {
+            "type": "object",
+            "description": "The type of identifier, e.g. ‘Publisher ID’",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the identifier_types enumeration / lookup table"
+              },
+              "name": {
+                "type": "string",
+                "description": "One of the allowed types in the identifier_types enumeration"
+              }
+            }
+          },
+          "identifier_org": {
+            "type": "object",
+            "description": "The organisation providing the identifier",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The id of the organisation within the ECRIN context database, if that id exists"
+              },
+              "name": {
+                "type": "string",
+                "description": "The default name of the organisation within the ECRIN context database, if it exists, or the name of the organisation as supplied by the source data"
+              },
+              "ror_id": {
+                "type": "string",
+                "description": "The id of the organisation, if knowm, within the ROR (Research Organisation Registry) system. This is a URL linking to the ROR resource."
+              }
+            }
+          },
+          "identifier_date": {
+            "type": "string",
+            "description": "The date the identifier was allocated, if known, in a string 'yyyy  MMM dd' format, e.g. '2015 Dec 12'"
+          }
+        }
+      }
+    },
+    "object_descriptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates the description and its type",
+        "required": [
+          "id",
+          "description_type",
+          "description_text"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Object description record primary key, generated automatically in database"
+          },
+          "description_type": {
+            "type": "object",
+            "description": "The type of description (or description section), e.g. 'Table of Contents', or 'Abstract Section'",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the description_types enumeration / lookup table"
+              },
+              "name": {
+                "type": "string",
+                "description": "One of the allowed types in the description_types enumeration"
+              }
+            }
+          },
+          "description_label": {
+            "type": "string",
+            "description": "A short label describing the nature of the description text, designed to be used as a possible sub-header in a display"
+          },
+          "description_text": {
+            "type": "string",
+            "description": "The description text, as it appears in the source data"
+          },
+          "lang_code": {
+            "type": "string",
+            "description": "A two letter ISO 369-1 code indicating the language of the description."
+          }
+        }
+      }
+    },
+    "object_rights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates any usage and copyright rights associated with the data object",
+        "required": [
+          "id",
+          "details"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Object rights record primary key, generated automatically in database"
+          },
+          "rights_name": {
+            "type": "string",
+            "description": "The name of the rights applied"
+          },
+          "rights_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The url where details of the rights applied can be found, e.g. defintition of a creative commons variant"
+          },
+          "comments": {
+            "type": "string",
+            "description": "Any additional comments, or a more detailed description of the rights regime"
+          }
+        }
+      }
+    },
+    "object_relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A composite object that indicates any related data object and the nature of the relationship",
+        "required": [
+          "id",
+          "relationship_type",
+          "target_object_id"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Object relationships record primary key, generated automatically in database"
+          },
+          "relationship_type": {
+            "type": "object",
+            "description": "The nature of the relationship, e.g. e.g. 'Is metadata for', or 'Is supplement to'",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "An integer referencing the relevant record in the object_relationship_types enumeration / lookup table"
+              },
+              "name": {
+                "type": "string",
+                "description": "One of the allowed types from the object_relationship_types enumeration"
+              }
+            }
+          },
+          "target_object_id": {
+            "type": "integer",
+            "description": "The id, i.e. internal accession number, of the related object"
+          }
+        }
+      }
+    },
+    "linked_studies": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "description": "The id, i.e. internal accession number, of a linked study"
+      }
+    },
+    "provenance_string": {
+      "type": "string",
+      "description": "A listing of the source or sources from which the data for the data object has been drawn, and the date-time(s) when the data was last downloaded"
+    }
+  }
+}

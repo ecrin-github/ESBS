@@ -1,0 +1,615 @@
+{
+  "settings":{
+    "index.mapping.ignore_malformed":true,
+    "index.number_of_shards":1,
+    "index.auto_expand_replicas":"0-all",
+    "analysis":{
+      "analyzer":{
+        "default": {
+          "tokenizer": "default_tokenizer",
+          "char_filter": [
+            "ecrin_remove_dot",
+            "ecrin_rplc_apostrophes"
+          ],
+          "filter": [
+            "lowercase",
+            "default_stop"
+          ]
+        }
+      },
+      "filter" : {
+        "default_stop": {
+          "type": "stop",
+          "stopwords":  "_english_"
+        }
+      },
+      "char_filter": {
+        "ecrin_remove_dot": {
+          "type": "pattern_replace",
+          "pattern": "([.])",
+          "replacement": ""
+        },
+        "ecrin_rplc_apostrophes": {
+          "type": "pattern_replace",
+          "pattern": "(')",
+          "replacement": "’"
+        }
+      },
+      "tokenizer":{
+        "default_tokenizer":{
+          "type":"standard"
+        }
+      }
+    }
+  },
+  "mappings":{
+    "dynamic":"strict",
+    "_source":{
+      "enabled":true
+    },
+    "properties":{
+      "id":{
+        "type":"integer"
+      },
+      "file_type":{
+        "type":"text"
+      },
+      "doi":{
+        "type":"keyword",
+        "eager_global_ordinals": true
+      },
+      "display_title":{
+        "type":"text",
+        "fielddata": true
+      },
+      "version":{
+        "type":"text",
+        "fielddata": true
+      },
+      "object_class":{
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "name":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "object_type":{
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "name":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "publication_year":{
+        "type":"date",
+        "format":"YYYY"
+      },
+      "lang_code":{
+        "type":"keyword",
+        "eager_global_ordinals": true
+      },
+      "managing_organisation":{
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "name":{
+            "type":"text",
+            "fielddata": true
+          },
+          "ror_id":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "access_type":{
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "name":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "access_details":{
+        "type":"object",
+        "properties": {
+          "description": {
+            "type": "text",
+            "fielddata": true
+          },
+          "url": {
+            "type": "keyword",
+            "eager_global_ordinals": true
+          },
+          "url_last_checked": {
+            "type":"date",
+            "format":"yyyy MM dd"
+          }
+        }
+      },
+      "eosc_category": {
+        "type": "integer"
+      },
+      "dataset_record_keys": {
+        "type":"object",
+        "properties": {
+          "keys_type_id":{
+            "type":"integer"
+          },
+          "keys_type":{
+            "type":"text",
+            "fielddata": true
+          },
+          "keys_details":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "dataset_deident_level": {
+        "type":"object",
+        "properties": {
+          "deident_type_id": {
+            "type":"integer"
+          },
+          "deident_type": {
+            "type":"text",
+            "fielddata": true
+          },
+          "deident_direct": {
+            "type": "boolean"
+          },
+          "deident_hipaa": {
+            "type": "boolean"
+          },
+          "deident_dates": {
+            "type": "boolean"
+          },
+          "deident_nonarr": {
+            "type": "boolean"
+          },
+          "deident_kanon": {
+            "type": "boolean"
+          },
+          "deident_details":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "dataset_consent":{
+        "type":"object",
+        "properties":{
+          "consent_type_id": {
+            "type":"integer"
+          },
+          "consent_type": {
+            "type":"text",
+            "fielddata": true
+          },
+          "consent_noncommercial": {
+            "type": "boolean"
+          },
+          "consent_geog_restrict": {
+            "type": "boolean"
+          },
+          "consent_research_type": {
+            "type": "boolean"
+          },
+          "consent_genetic_only": {
+            "type": "boolean"
+          },
+          "consent_no_methods": {
+            "type": "boolean"
+          },
+          "consents_details": {
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "object_instances":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "repository_org":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          },
+          "access_details": {
+            "type": "object",
+            "properties": {
+              "direct_access": {
+                "type": "boolean"
+              },
+              "url": {
+                "type": "keyword",
+                "eager_global_ordinals": true
+              },
+              "url_last_checked":{
+                "type":"date",
+                "format":"yyyy MMM dd"
+              }
+            }
+          },
+          "resource_details": {
+            "type": "object",
+            "properties": {
+              "type_id": {
+                "type": "integer"
+              },
+              "type_name": {
+                "type": "text",
+                "fielddata": true
+              },
+              "size": {
+                "type": "float"
+              },
+              "size_unit": {
+                "type": "text",
+                "fielddata": true
+              },
+              "comments": {
+                "type": "text",
+                "fielddata": true
+              }
+            }
+          }
+        }
+      },
+      "object_titles":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "title_type":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          },
+          "title_text":{
+            "type":"text",
+            "fielddata": true
+          },
+          "lang_code":{
+            "type":"keyword",
+            "eager_global_ordinals": true
+          },
+          "comments":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "object_dates":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "date_type":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          },
+          "date_is_range":{
+            "type":"boolean"
+          },
+          "date_as_string":{
+            "type":"text",
+            "fielddata": true
+          },
+          "start_date":{
+            "type":"object",
+            "properties":{
+              "start_year":{
+                "type":"integer"
+              },
+              "start_month":{
+                "type":"integer"
+              },
+              "start_day":{
+                "type":"integer"
+              }
+            }
+          },
+          "end_date":{
+            "type":"object",
+            "properties":{
+              "end_year":{
+                "type":"integer"
+              },
+              "end_month":{
+                "type":"integer"
+              },
+              "end_day":{
+                "type":"integer"
+              }
+            }
+          },
+          "comments":{
+            "type":"text",
+            "fielddata": true
+          }
+        }
+      },
+      "object_contributors":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "contribution_type":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          },
+          "is_individual":{
+            "type":"boolean"
+          },
+          "organisation":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              },
+              "ror_id":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          },
+          "person":{
+            "type":"object",
+            "properties":{
+              "family_name":{
+                "type":"text",
+                "fielddata": true
+              },
+              "given_name":{
+                "type":"text",
+                "fielddata": true
+              },
+              "full_name":{
+                "type":"text",
+                "fielddata": true
+              },
+              "orcid": {
+                "type": "text",
+                "fielddata": true
+              },
+              "affiliation_string": {
+                "type": "text",
+                "fielddata": true
+              },
+              "affiliation_org_id": {
+                "type": "integer"
+              },
+              "affiliation_org_name": {
+                "type": "text",
+                "fielddata": true
+              },
+              "affiliation_org_ror_id": {
+                "type": "text",
+                "fielddata": true
+              }
+            }
+          }
+        }
+      },
+      "object_topics":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "topic_type": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "text",
+                "fielddata": true
+              }
+            }
+          },
+          "mesh_coded": {
+            "type": "boolean"
+          },
+          "mesh_code": {
+            "type": "text",
+            "fielddata": true
+          },
+          "mesh_value":{
+            "type":"text",
+            "fielddata": true
+          },
+          "original_value": {
+            "type": "text",
+            "fielddata": true
+          }
+        }
+      },
+      "object_identifiers":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "identifier_value":{
+            "type":"text",
+            "fielddata": true
+          },
+          "identifier_type":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          },
+          "identifier_date":{
+            "type":"date",
+            "format":"yyyy MMM dd"
+          },
+          "identifier_org":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              },
+              "ror_id":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          }
+        }
+      },
+      "object_descriptions":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "description_type":{
+            "type":"object",
+            "properties":{
+              "id":{
+                "type":"integer"
+              },
+              "name":{
+                "type":"text",
+                "fielddata": true
+              }
+            }
+          },
+          "description_label":{
+            "type":"text",
+            "fielddata": true
+          },
+          "description_text":{
+            "type":"text",
+            "fielddata": true
+          },
+          "lang_code":{
+            "type":"keyword",
+            "eager_global_ordinals": true
+          }
+        }
+      },
+      "object_rights":{
+        "type":"nested",
+        "properties":{
+          "id":{
+            "type":"integer"
+          },
+          "rights_name":{
+            "type":"text",
+            "fielddata": true
+          },
+          "rights_url":{
+            "type":"keyword",
+            "eager_global_ordinals": true
+          },
+          "comments": {
+            "type": "text",
+            "fielddata": true
+          }
+        }
+      },
+      "object_relationships": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "relationship_type": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "text",
+                "fielddata": true
+              }
+            }
+          },
+          "target_object_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "linked_studies":{
+        "type":"integer"
+      },
+      "provenance_string": {
+        "type": "text",
+        "fielddata": true
+      }
+    }
+  }
+}

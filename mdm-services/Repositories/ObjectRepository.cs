@@ -1,0 +1,898 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using LinqToDB;
+using mdm_services.DTO.Object;
+using mdm_services.Interfaces;
+using mdm_services.Models.DbConnection;
+using mdm_services.Models.Object;
+
+namespace mdm_services.Repositories
+{
+    public class ObjectRepository : IObjectRepository
+    {
+        private readonly MdmDbConnection _dbConnection;
+        private readonly IDataMapper _dataMapper;
+
+        public ObjectRepository(MdmDbConnection dbConnection, IDataMapper dataMapper)
+        {
+            _dbConnection = dbConnection;
+            _dataMapper = dataMapper;
+        }
+        
+        public IQueryable<ObjectContributor> GetQueryableObjectContributors()
+        {
+            return _dbConnection.ObjectContributors;
+        }
+
+        public async Task<ICollection<ObjectContributorDto>> GetObjectContributors(string sdOid)
+        {
+            var data = _dbConnection.ObjectContributors.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectContributorDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectContributorDto> GetObjectContributor(int id)
+        {
+            var objectContributor = await _dbConnection.ObjectContributors.FirstOrDefaultAsync(p => p.Id == id);
+            return objectContributor != null ? _dataMapper.ObjectContributorDtoMapper(objectContributor) : null;
+        }
+
+        public async Task<ObjectContributorDto> CreateObjectContributor(string sdOid, ObjectContributorDto objectContributorDto)
+        {
+            var objectContributor = new ObjectContributor
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                ContribTypeId = objectContributorDto.ContribTypeId,
+                IsIndividual = objectContributorDto.IsIndividual,
+                OrganisationId = objectContributorDto.OrganisationId,
+                OrganisationName = objectContributorDto.OrganisationName,
+                PersonId = objectContributorDto.PersonId,
+                PersonFamilyName = objectContributorDto.PersonFamilyName,
+                PersonGivenName = objectContributorDto.PersonGivenName,
+                PersonFullName = objectContributorDto.PersonFullName,
+                PersonAffiliation = objectContributorDto.PersonAffiliation,
+                OrcidId = objectContributorDto.OrcidId
+            };
+
+            await _dbConnection.InsertAsync(objectContributor);
+            return _dataMapper.ObjectContributorDtoMapper(objectContributor);
+        }
+
+        public async Task<ObjectContributorDto> UpdateObjectContributor(ObjectContributorDto objectContributorDto)
+        {
+            var dbObjectContributor =
+                await _dbConnection.ObjectContributors.FirstOrDefaultAsync(p => p.Id == objectContributorDto.Id);
+            if (dbObjectContributor == null) return null;
+            
+            dbObjectContributor.ContribTypeId = objectContributorDto.ContribTypeId;
+            dbObjectContributor.IsIndividual = objectContributorDto.IsIndividual;
+            dbObjectContributor.OrganisationId = objectContributorDto.OrganisationId;
+            dbObjectContributor.OrganisationName = objectContributorDto.OrganisationName;
+            dbObjectContributor.PersonId = objectContributorDto.PersonId;
+            dbObjectContributor.PersonFamilyName = objectContributorDto.PersonFamilyName;
+            dbObjectContributor.PersonGivenName = objectContributorDto.PersonGivenName;
+            dbObjectContributor.PersonFullName = objectContributorDto.PersonFullName;
+            dbObjectContributor.PersonAffiliation = objectContributorDto.PersonAffiliation;
+            dbObjectContributor.OrcidId = objectContributorDto.OrcidId;
+                
+            await _dbConnection.UpdateAsync(dbObjectContributor);
+            return _dataMapper.ObjectContributorDtoMapper(dbObjectContributor);
+        }
+
+        public async Task<int> DeleteObjectContributor(int id)
+        {
+            return await _dbConnection.ObjectContributors.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectContributors(string sdOid)
+        {
+            return await _dbConnection.ObjectContributors.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectDataset> GetQueryableObjectDatasets()
+        {
+            return _dbConnection.ObjectDatasets;
+        }
+
+        public async Task<ICollection<ObjectDatasetDto>> GetObjectDatasets(string sdOid)
+        {
+            var data = _dbConnection.ObjectDatasets.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectDatasetDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectDatasetDto> GetObjectDataset(int id)
+        {
+            var objectDataset = await _dbConnection.ObjectDatasets.FirstOrDefaultAsync(p => p.Id == id);
+            return objectDataset != null ? _dataMapper.ObjectDatasetDtoMapper(objectDataset) : null;
+        }
+
+        public async Task<ObjectDatasetDto> CreateObjectDataset(string sdOid, ObjectDatasetDto objectDatasetDto)
+        {
+            var objectDataset = new ObjectDataset
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                RecordKeysTypeId = objectDatasetDto.RecordKeysTypeId,
+                RecordKeysDetails = objectDatasetDto.RecordKeysDetails,
+                DeidentTypeId = objectDatasetDto.DeidentTypeId,
+                DeidentHipaa = objectDatasetDto.DeidentHipaa,
+                DeidentDirect = objectDatasetDto.DeidentDirect,
+                DeidentDates = objectDatasetDto.DeidentDates,
+                DeidentNonarr = objectDatasetDto.DeidentNonarr,
+                DeidentKanon = objectDatasetDto.DeidentKanon,
+                DeidentDetails = objectDatasetDto.DeidentDetails,
+                ConsentTypeId = objectDatasetDto.ConsentTypeId,
+                ConsentNoncommercial = objectDatasetDto.ConsentNoncommercial,
+                ConsentGeogRestrict = objectDatasetDto.ConsentGeogRestrict,
+                ConsentGeneticOnly = objectDatasetDto.ConsentGeneticOnly,
+                ConsentResearchType = objectDatasetDto.ConsentResearchType,
+                ConsentNoMethods = objectDatasetDto.ConsentNoMethods,
+                ConsentDetails = objectDatasetDto.ConsentDetails
+            };
+
+            await _dbConnection.InsertAsync(objectDataset);
+            return _dataMapper.ObjectDatasetDtoMapper(objectDataset);
+        }
+
+        public async Task<ObjectDatasetDto> UpdateObjectDataset(ObjectDatasetDto objectDatasetDto)
+        {
+            var dbObjectDataset =
+                await _dbConnection.ObjectDatasets.FirstOrDefaultAsync(p => p.Id == objectDatasetDto.Id);
+            if (dbObjectDataset == null) return null;
+            
+            dbObjectDataset.RecordKeysTypeId = objectDatasetDto.RecordKeysTypeId;
+            dbObjectDataset.RecordKeysDetails = objectDatasetDto.RecordKeysDetails;
+            
+            dbObjectDataset.DeidentTypeId = objectDatasetDto.DeidentTypeId;
+            dbObjectDataset.DeidentHipaa = objectDatasetDto.DeidentHipaa;
+            dbObjectDataset.DeidentDirect = objectDatasetDto.DeidentDirect;
+            dbObjectDataset.DeidentDates = objectDatasetDto.DeidentDates;
+            dbObjectDataset.DeidentNonarr = objectDatasetDto.DeidentNonarr;
+            dbObjectDataset.DeidentKanon = objectDatasetDto.DeidentKanon;
+            dbObjectDataset.DeidentDetails = objectDatasetDto.DeidentDetails;
+            
+            dbObjectDataset.ConsentTypeId = objectDatasetDto.ConsentTypeId;
+            dbObjectDataset.ConsentNoncommercial = objectDatasetDto.ConsentNoncommercial;
+            dbObjectDataset.ConsentGeogRestrict = objectDatasetDto.ConsentGeogRestrict;
+            dbObjectDataset.ConsentGeneticOnly = objectDatasetDto.ConsentGeneticOnly;
+            dbObjectDataset.ConsentResearchType = objectDatasetDto.ConsentResearchType;
+            dbObjectDataset.ConsentNoMethods = objectDatasetDto.ConsentNoMethods;
+            dbObjectDataset.ConsentDetails = objectDatasetDto.ConsentDetails;
+
+            await _dbConnection.UpdateAsync(dbObjectDataset);
+            return _dataMapper.ObjectDatasetDtoMapper(dbObjectDataset);
+        }
+
+        public async Task<int> DeleteObjectDataset(int id)
+        {
+            return await _dbConnection.ObjectDatasets.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectDatasets(string sdOid)
+        {
+            return await _dbConnection.ObjectDatasets.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectDate> GetQueryableObjectDates()
+        {
+            return _dbConnection.ObjectDates;
+        }
+
+        public async Task<ICollection<ObjectDateDto>> GetObjectDates(string sdOid)
+        {
+            var data = _dbConnection.ObjectDates.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectDateDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectDateDto> GetObjectDate(int id)
+        {
+            var objectDate = await _dbConnection.ObjectDates.FirstOrDefaultAsync(p => p.Id == id);
+            return objectDate != null ? _dataMapper.ObjectDateDtoMapper(objectDate) : null;
+        }
+
+        public async Task<ObjectDateDto> CreateObjectDate(string sdOid, ObjectDateDto objectDateDto)
+        {
+            var objectDate = new ObjectDate
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                DateTypeId = objectDateDto.DateTypeId,
+                IsDateRange = objectDateDto.IsDateRange,
+                DateAsString = objectDateDto.DateAsString,
+                StartYear = objectDateDto.StartYear,
+                StartMonth = objectDateDto.StartMonth,
+                StartDay = objectDateDto.StartDay,
+                EndYear = objectDateDto.EndYear,
+                EndMonth = objectDateDto.EndMonth,
+                EndDay = objectDateDto.EndDay,
+                Details = objectDateDto.Details
+            };
+
+            await _dbConnection.InsertAsync(objectDate);
+            return _dataMapper.ObjectDateDtoMapper(objectDate);
+        }
+
+        public async Task<ObjectDateDto> UpdateObjectDate(ObjectDateDto objectDateDto)
+        {
+            var dbObjectDate = await _dbConnection.ObjectDates.FirstOrDefaultAsync(p => p.Id == objectDateDto.Id);
+            if (dbObjectDate == null) return null;
+            
+            dbObjectDate.DateTypeId = objectDateDto.DateTypeId;
+            dbObjectDate.IsDateRange = objectDateDto.IsDateRange;
+            dbObjectDate.DateAsString = objectDateDto.DateAsString;
+            dbObjectDate.StartYear = objectDateDto.StartYear;
+            dbObjectDate.StartMonth = objectDateDto.StartMonth;
+            dbObjectDate.StartDay = objectDateDto.StartDay;
+            dbObjectDate.EndYear = objectDateDto.EndYear;
+            dbObjectDate.EndMonth = objectDateDto.EndMonth;
+            dbObjectDate.EndDay = objectDateDto.EndDay;
+            dbObjectDate.Details = objectDateDto.Details;
+
+            await _dbConnection.UpdateAsync(dbObjectDate);
+            return _dataMapper.ObjectDateDtoMapper(dbObjectDate);
+        }
+
+        public async Task<int> DeleteObjectDate(int id)
+        {
+            return await _dbConnection.ObjectDates.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectDates(string sdOid)
+        {
+            return await _dbConnection.ObjectDates.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectDescription> GetQueryableObjectDescriptions()
+        {
+            return _dbConnection.ObjectDescriptions;
+        }
+
+        public async Task<ICollection<ObjectDescriptionDto>> GetObjectDescriptions(string sdOid)
+        {
+            var data = _dbConnection.ObjectDescriptions.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectDescriptionDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectDescriptionDto> GetObjectDescription(int id)
+        {
+            var objectDescription = await _dbConnection.ObjectDescriptions.FirstOrDefaultAsync(p => p.Id == id);
+            return objectDescription != null ? _dataMapper.ObjectDescriptionDtoMapper(objectDescription) : null;
+        }
+
+        public async Task<ObjectDescriptionDto> CreateObjectDescription(string sdOid, ObjectDescriptionDto objectDescriptionDto)
+        {
+            var objectDescription = new ObjectDescription
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                DescriptionTypeId = objectDescriptionDto.DescriptionTypeId,
+                DescriptionText = objectDescriptionDto.DescriptionText,
+                LangCode = objectDescriptionDto.LangCode,
+                Label = objectDescriptionDto.Label
+            };
+
+            await _dbConnection.InsertAsync(objectDescription);
+            return _dataMapper.ObjectDescriptionDtoMapper(objectDescription);
+        }
+
+        public async Task<ObjectDescriptionDto> UpdateObjectDescription(ObjectDescriptionDto objectDescriptionDto)
+        {
+            var dbObjectDescription =
+                _dbConnection.ObjectDescriptions.FirstOrDefault(p => p.Id == objectDescriptionDto.Id);
+            if (dbObjectDescription == null) return null;
+            
+            dbObjectDescription.DescriptionTypeId = objectDescriptionDto.DescriptionTypeId;
+            dbObjectDescription.DescriptionText = objectDescriptionDto.DescriptionText;
+            dbObjectDescription.LangCode = objectDescriptionDto.LangCode;
+            dbObjectDescription.Label = objectDescriptionDto.Label;
+                
+            await _dbConnection.UpdateAsync(dbObjectDescription);
+            return _dataMapper.ObjectDescriptionDtoMapper(dbObjectDescription);
+        }
+
+        public async Task<int> DeleteObjectDescription(int id)
+        {
+            return await _dbConnection.ObjectDescriptions.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectDescriptions(string sdOid)
+        {
+            return await _dbConnection.ObjectDescriptions.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectIdentifier> GetQueryableObjectIdentifiers()
+        {
+            return _dbConnection.ObjectIdentifiers;
+        }
+
+        public async Task<ICollection<ObjectIdentifierDto>> GetObjectIdentifiers(string sdOid)
+        {
+            var data = _dbConnection.ObjectIdentifiers.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectIdentifierDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectIdentifierDto> GetObjectIdentifier(int id)
+        {
+            var objectIdentifier = await _dbConnection.ObjectIdentifiers.FirstOrDefaultAsync(p => p.Id == id);
+            return objectIdentifier != null ? _dataMapper.ObjectIdentifierDtoMapper(objectIdentifier) : null;
+        }
+
+        public async Task<ObjectIdentifierDto> CreateObjectIdentifier(string sdOid, ObjectIdentifierDto objectIdentifierDto)
+        {
+            var objectIdentifier = new ObjectIdentifier
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                IdentifierValue = objectIdentifierDto.IdentifierValue,
+                IdentifierTypeId = objectIdentifierDto.IdentifierTypeId,
+                IdentifierOrg = objectIdentifierDto.IdentifierOrg,
+                IdentifierOrgId = objectIdentifierDto.IdentifierOrgId,
+                IdentifierDate = objectIdentifierDto.IdentifierDate,
+                IdentifierOrgRorId = objectIdentifierDto.IdentifierOrgRorId
+            };
+
+            await _dbConnection.InsertAsync(objectIdentifier);
+            return _dataMapper.ObjectIdentifierDtoMapper(objectIdentifier);
+        }
+
+        public async Task<ObjectIdentifierDto> UpdateObjectIdentifier(ObjectIdentifierDto objectIdentifierDto)
+        {
+            var dbObjectIdentifier =
+                _dbConnection.ObjectIdentifiers.FirstOrDefault(p => p.Id == objectIdentifierDto.Id);
+            if (dbObjectIdentifier == null) return null;
+            
+            dbObjectIdentifier.IdentifierValue = objectIdentifierDto.IdentifierValue;
+            dbObjectIdentifier.IdentifierTypeId = objectIdentifierDto.IdentifierTypeId;
+            dbObjectIdentifier.IdentifierOrg = objectIdentifierDto.IdentifierOrg;
+            dbObjectIdentifier.IdentifierOrgId = objectIdentifierDto.IdentifierOrgId;
+            dbObjectIdentifier.IdentifierDate = objectIdentifierDto.IdentifierDate;
+            dbObjectIdentifier.IdentifierOrgRorId = objectIdentifierDto.IdentifierOrgRorId;
+
+            await _dbConnection.UpdateAsync(dbObjectIdentifier);
+            return _dataMapper.ObjectIdentifierDtoMapper(dbObjectIdentifier);
+        }
+
+        public async Task<int> DeleteObjectIdentifier(int id)
+        {
+            return await _dbConnection.ObjectIdentifiers.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectIdentifiers(string sdOid)
+        {
+            return await _dbConnection.ObjectIdentifiers.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectInstance> GetQueryableObjectInstances()
+        {
+            return _dbConnection.ObjectInstances;
+        }
+
+        public async Task<ICollection<ObjectInstanceDto>> GetObjectInstances(string sdOid)
+        {
+            var data = _dbConnection.ObjectInstances.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectInstanceDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectInstanceDto> GetObjectInstance(int id)
+        {
+            var objectInstance = await _dbConnection.ObjectInstances.FirstOrDefaultAsync(p => p.Id == id);
+            return objectInstance != null ? _dataMapper.ObjectInstanceDtoMapper(objectInstance) : null;
+        }
+
+        public async Task<ObjectInstanceDto> CreateObjectInstance(string sdOid, ObjectInstanceDto objectInstanceDto)
+        {
+            var objectInstance = new ObjectInstance
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                InstanceTypeId = objectInstanceDto.InstanceTypeId,
+                RepositoryOrgId = objectInstanceDto.RepositoryOrgId,
+                RepositoryOrg = objectInstanceDto.RepositoryOrg,
+                Url = objectInstanceDto.Url,
+                UrlAccessible = objectInstanceDto.UrlAccessible,
+                UrlLastChecked = objectInstanceDto.UrlLastChecked,
+                ResourceTypeId = objectInstanceDto.ResourceTypeId,
+                ResourceSize = objectInstanceDto.ResourceSize,
+                ResourceSizeUnits = objectInstanceDto.ResourceSizeUnits,
+                ResourceComments = objectInstanceDto.ResourceComments
+            };
+
+            await _dbConnection.InsertAsync(objectInstance);
+            return _dataMapper.ObjectInstanceDtoMapper(objectInstance);
+        }
+
+        public async Task<ObjectInstanceDto> UpdateObjectInstance(ObjectInstanceDto objectInstanceDto)
+        {
+            var dbObjectInstance =
+                await _dbConnection.ObjectInstances.FirstOrDefaultAsync(p => p.Id == objectInstanceDto.Id);
+            if (dbObjectInstance == null) return null;
+            
+            dbObjectInstance.InstanceTypeId = objectInstanceDto.InstanceTypeId;
+            dbObjectInstance.RepositoryOrgId = objectInstanceDto.RepositoryOrgId;
+            dbObjectInstance.RepositoryOrg = objectInstanceDto.RepositoryOrg;
+            dbObjectInstance.Url = objectInstanceDto.Url;
+            dbObjectInstance.UrlAccessible = objectInstanceDto.UrlAccessible;
+            dbObjectInstance.UrlLastChecked = objectInstanceDto.UrlLastChecked;
+            dbObjectInstance.ResourceTypeId = objectInstanceDto.ResourceTypeId;
+            dbObjectInstance.ResourceSize = objectInstanceDto.ResourceSize;
+            dbObjectInstance.ResourceSizeUnits = objectInstanceDto.ResourceSizeUnits;
+            dbObjectInstance.ResourceComments = objectInstanceDto.ResourceComments;
+            
+            await _dbConnection.UpdateAsync(dbObjectInstance);
+            return _dataMapper.ObjectInstanceDtoMapper(dbObjectInstance);
+        }
+
+        public async Task<int> DeleteObjectInstance(int id)
+        {
+            return await _dbConnection.ObjectInstances.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectInstances(string sdOid)
+        {
+            return await _dbConnection.ObjectInstances.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectRelationship> GetQueryableObjectRelationships()
+        {
+            return _dbConnection.ObjectRelationships;
+        }
+
+        public async Task<ICollection<ObjectRelationshipDto>> GetObjectRelationships(string sdOid)
+        {
+            var data = _dbConnection.ObjectRelationships.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectRelationshipDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectRelationshipDto> GetObjectRelationship(int id)
+        {
+            var objectRelation = await _dbConnection.ObjectRelationships.FirstOrDefaultAsync(p => p.Id == id);
+            return objectRelation != null ? _dataMapper.ObjectRelationshipDtoMapper(objectRelation) : null;
+        }
+
+        public async Task<ObjectRelationshipDto> CreateObjectRelationship(string sdOid, ObjectRelationshipDto objectRelationshipDto)
+        {
+            var objectRelationship = new ObjectRelationship
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                RelationshipTypeId = objectRelationshipDto.RelationshipTypeId,
+                TargetSdOid = objectRelationshipDto.TargetSdOid
+            };
+
+            await _dbConnection.InsertAsync(objectRelationship);
+            return _dataMapper.ObjectRelationshipDtoMapper(objectRelationship);
+        }
+
+        public async Task<ObjectRelationshipDto> UpdateObjectRelationship(ObjectRelationshipDto objectRelationshipDto)
+        {
+            var dbObjectRelation =
+                _dbConnection.ObjectRelationships.FirstOrDefault(p => p.Id == objectRelationshipDto.Id);
+            if (dbObjectRelation == null) return null;
+            
+            dbObjectRelation.RelationshipTypeId = objectRelationshipDto.RelationshipTypeId;
+            dbObjectRelation.TargetSdOid = objectRelationshipDto.TargetSdOid;
+
+            await _dbConnection.UpdateAsync(dbObjectRelation);
+            return _dataMapper.ObjectRelationshipDtoMapper(dbObjectRelation);
+        }
+
+        public async Task<int> DeleteObjectRelationship(int id)
+        {
+            return await _dbConnection.ObjectRelationships.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectRelationships(string sdOid)
+        {
+            return await _dbConnection.ObjectRelationships.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectRight> GetQueryableObjectRights()
+        {
+            return _dbConnection.ObjectRights;
+        }
+
+        public async Task<ICollection<ObjectRightDto>> GetObjectRights(string sdOid)
+        {
+            var data = _dbConnection.ObjectRights.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectRightDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectRightDto> GetObjectRight(int id)
+        {
+            var objectRight = await _dbConnection.ObjectRights.FirstOrDefaultAsync(p => p.Id == id);
+            return objectRight != null ? _dataMapper.ObjectRightDtoMapper(objectRight) : null;
+        }
+
+        public async Task<ObjectRightDto> CreateObjectRight(string sdOid, ObjectRightDto objectRightDto)
+        {
+            var objectRight = new ObjectRight
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                RightsName = objectRightDto.RightsName,
+                RightsUri = objectRightDto.RightsUri,
+                Comments = objectRightDto.Comments
+            };
+
+            await _dbConnection.InsertAsync(objectRight);
+            return _dataMapper.ObjectRightDtoMapper(objectRight);
+        }
+
+        public async Task<ObjectRightDto> UpdateObjectRight(ObjectRightDto objectRightDto)
+        {
+            var dbObjectRight = _dbConnection.ObjectRights.FirstOrDefault(p => p.Id == objectRightDto.Id);
+            if (dbObjectRight == null) return null;
+            
+            dbObjectRight.RightsName = objectRightDto.RightsName;
+            dbObjectRight.RightsUri = objectRightDto.RightsUri;
+            dbObjectRight.Comments = objectRightDto.Comments;
+
+            await _dbConnection.UpdateAsync(dbObjectRight);
+            return _dataMapper.ObjectRightDtoMapper(dbObjectRight);
+        }
+
+        public async Task<int> DeleteObjectRight(int id)
+        {
+            return await _dbConnection.ObjectRights.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectRights(string sdOid)
+        {
+            return await _dbConnection.ObjectRights.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectTitle> GetQueryableObjectTitles()
+        {
+            return _dbConnection.ObjectTitles;
+        }
+
+        public async Task<ICollection<ObjectTitleDto>> GetObjectTitles(string sdOid)
+        {
+            var data = _dbConnection.ObjectTitles.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectTitleDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectTitleDto> GetObjectTitle(int id)
+        {
+            var objectTitle = await _dbConnection.ObjectTitles.FirstOrDefaultAsync(p => p.Id == id);
+            return objectTitle != null ? _dataMapper.ObjectTitleDtoMapper(objectTitle) : null;
+        }
+
+        public async Task<ObjectTitleDto> CreateObjectTitle(string sdOid, ObjectTitleDto objectTitleDto)
+        {
+            var objectTitle = new ObjectTitle
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                TitleTypeId = objectTitleDto.TitleTypeId,
+                IsDefault = objectTitleDto.IsDefault,
+                TitleText = objectTitleDto.TitleText,
+                LangCode = objectTitleDto.LangCode,
+                LangUsageId = objectTitleDto.LangUsageId,
+                Comments = objectTitleDto.Comments
+            };
+
+            await _dbConnection.InsertAsync(objectTitle);
+            return _dataMapper.ObjectTitleDtoMapper(objectTitle);
+        }
+
+        public async Task<ObjectTitleDto> UpdateObjectTitle(ObjectTitleDto objectTitleDto)
+        {
+            var dbObjectTitle = _dbConnection.ObjectTitles.FirstOrDefault(p => p.Id == objectTitleDto.Id);
+            if (dbObjectTitle == null) return null;
+            
+            dbObjectTitle.TitleTypeId = objectTitleDto.TitleTypeId;
+            dbObjectTitle.IsDefault = objectTitleDto.IsDefault;
+            dbObjectTitle.TitleText = objectTitleDto.TitleText;
+            dbObjectTitle.LangCode = objectTitleDto.LangCode;
+            dbObjectTitle.LangUsageId = objectTitleDto.LangUsageId;
+            dbObjectTitle.Comments = objectTitleDto.Comments;
+                
+            await _dbConnection.UpdateAsync(dbObjectTitle);
+            return _dataMapper.ObjectTitleDtoMapper(dbObjectTitle);
+        }
+
+        public async Task<int> DeleteObjectTitle(int id)
+        {
+            return await _dbConnection.ObjectTitles.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectTitles(string sdOid)
+        {
+            return await _dbConnection.ObjectTitles.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public IQueryable<ObjectTopic> GetQueryableObjectTopic()
+        {
+            return _dbConnection.ObjectTopics;
+        }
+
+        public async Task<ICollection<ObjectTopicDto>> GetObjectTopics(string sdOid)
+        {
+            var data = _dbConnection.ObjectTopics.Where(p => p.SdOid == sdOid);
+            return data.Any() ? _dataMapper.ObjectTopicDtoBuilder(await data.ToArrayAsync()) : null;
+        }
+
+        public async Task<ObjectTopicDto> GetObjectTopic(int id)
+        {
+            var objectTopic = await _dbConnection.ObjectTopics.FirstOrDefaultAsync(p => p.Id == id);
+            return objectTopic != null ? _dataMapper.ObjectTopicDtoMapper(objectTopic) : null;
+        }
+
+        public async Task<ObjectTopicDto> CreateObjectTopic(string sdOid, ObjectTopicDto objectTopicDto)
+        {
+            var objectTopic = new ObjectTopic
+            {
+                SdOid = sdOid,
+                CreatedOn = DateTime.Now,
+                TopicTypeId = objectTopicDto.TopicTypeId,
+                MeshCoded = objectTopicDto.MeshCoded,
+                MeshCode = objectTopicDto.MeshCode,
+                MeshValue = objectTopicDto.MeshValue,
+                MeshQualcode = objectTopicDto.MeshQualcode,
+                MeshQualvalue = objectTopicDto.MeshQualvalue,
+                OriginalCtId = objectTopicDto.OriginalCtId,
+                OriginalCtCode = objectTopicDto.OriginalCtCode,
+                OriginalValue = objectTopicDto.OriginalValue,
+                Comments = objectTopicDto.Comments
+            };
+
+            await _dbConnection.InsertAsync(objectTopic);
+            return _dataMapper.ObjectTopicDtoMapper(objectTopic);
+        }
+
+        public async Task<ObjectTopicDto> UpdateObjectTopic(ObjectTopicDto objectTopicDto)
+        {
+            var dbObjectTopic = _dbConnection.ObjectTopics.FirstOrDefault(p => p.Id == objectTopicDto.Id);
+            if (dbObjectTopic == null) return null;
+            
+            dbObjectTopic.TopicTypeId = objectTopicDto.TopicTypeId;
+            dbObjectTopic.MeshCoded = objectTopicDto.MeshCoded;
+            dbObjectTopic.MeshCode = objectTopicDto.MeshCode;
+            dbObjectTopic.MeshValue = objectTopicDto.MeshValue;
+            dbObjectTopic.MeshQualcode = objectTopicDto.MeshQualcode;
+            dbObjectTopic.MeshQualvalue = objectTopicDto.MeshQualvalue;
+            dbObjectTopic.OriginalCtId = objectTopicDto.OriginalCtId;
+            dbObjectTopic.OriginalCtCode = objectTopicDto.OriginalCtCode;
+            dbObjectTopic.OriginalValue = objectTopicDto.OriginalValue;
+            dbObjectTopic.Comments = objectTopicDto.Comments;
+
+            await _dbConnection.UpdateAsync(dbObjectTopic);
+            return _dataMapper.ObjectTopicDtoMapper(dbObjectTopic);
+        }
+
+        public async Task<int> DeleteObjectTopic(int id)
+        {
+            return await _dbConnection.ObjectTopics.Where(p => p.Id == id).DeleteAsync();
+        }
+
+        public async Task<int> DeleteAllObjectTopics(string sdOid)
+        {
+            return await _dbConnection.ObjectTopics.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+
+        // DATA OBJECT
+        public IQueryable<DataObject> GetQueryableDataObjects()
+        {
+            return _dbConnection.DataObjects;
+        }
+
+        public async Task<ICollection<DataObjectDto>> GetAllDataObjects()
+        {
+            var objectResponses = new List<DataObjectDto>();
+            if (!_dbConnection.DataObjects.Any()) return null;
+            var dataObjects = await _dbConnection.DataObjects.ToArrayAsync();
+            foreach (var dataObject in dataObjects)
+            {
+                objectResponses.Add(await DataObjectBuilder(dataObject));
+            }
+
+            return objectResponses;
+        }
+
+        public async Task<DataObjectDto> GetObjectById(string sdOid)
+        {
+            var dataObject = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.SdOid == sdOid);
+            if (dataObject == null) return null;
+            return await DataObjectBuilder(dataObject);
+        }
+
+        public async Task<DataObjectDto> CreateDataObject(DataObjectDto dataObjectDto)
+        {
+            var objId = 300001;
+            var lastRecord = _dbConnection.DataObjects.OrderByDescending(p => p.Id).FirstOrDefault();
+            if (lastRecord != null)
+            {
+                objId = lastRecord.Id + 1;
+            }
+
+            var dataObject = new DataObject
+            {
+                SdOid = objId.ToString(),
+                CreatedOn = DateTime.Now,
+                SdSid = dataObjectDto.SdSid,
+                DisplayTitle = dataObjectDto.DisplayTitle,
+                Doi = dataObjectDto.Doi,
+                Version = dataObjectDto.Version,
+                DoiStatusId = dataObjectDto.DoiStatusId,
+                PublicationYear = dataObjectDto.PublicationYear,
+                ObjectClassId = dataObjectDto.ObjectClassId,
+                ObjectTypeId = dataObjectDto.ObjectTypeId,
+                ManagingOrgId = dataObjectDto.ManagingOrgId,
+                ManagingOrg = dataObjectDto.ManagingOrg,
+                ManagingOrgRorId = dataObjectDto.ManagingOrgRorId,
+                LangCode = dataObjectDto.LangCode,
+                AccessTypeId = dataObjectDto.AccessTypeId,
+                AccessDetails = dataObjectDto.AccessDetails,
+                AccessDetailsUrl = dataObjectDto.AccessDetailsUrl,
+                UrlLastChecked = dataObjectDto.UrlLastChecked,
+                EoscCategory = dataObjectDto.EoscCategory,
+                AddStudyContribs = dataObjectDto.AddStudyContribs
+            };
+
+            await _dbConnection.InsertAsync(dataObject);
+            return await DataObjectBuilder(dataObject);
+        }
+
+        public async Task<DataObjectDto> UpdateDataObject(DataObjectDto dataObjectDto)
+        {
+            var dbDataObject = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.Id == dataObjectDto.Id);
+            if (dbDataObject == null) return null;
+            
+            dbDataObject.DisplayTitle = dataObjectDto.DisplayTitle;
+            dbDataObject.Doi = dataObjectDto.Doi;
+            dbDataObject.Version = dataObjectDto.Version;
+            dbDataObject.DoiStatusId = dataObjectDto.DoiStatusId;
+            dbDataObject.PublicationYear = dataObjectDto.PublicationYear;
+            dbDataObject.ObjectClassId = dataObjectDto.ObjectClassId;
+            dbDataObject.ObjectTypeId = dataObjectDto.ObjectTypeId;
+            dbDataObject.ManagingOrgId = dataObjectDto.ManagingOrgId;
+            dbDataObject.ManagingOrg = dataObjectDto.ManagingOrg;
+            dbDataObject.ManagingOrgRorId = dataObjectDto.ManagingOrgRorId;
+            dbDataObject.LangCode = dataObjectDto.LangCode;
+            dbDataObject.AccessTypeId = dataObjectDto.AccessTypeId;
+            dbDataObject.AccessDetails = dataObjectDto.AccessDetails;
+            dbDataObject.AccessDetailsUrl = dataObjectDto.AccessDetailsUrl;
+            dbDataObject.UrlLastChecked = dataObjectDto.UrlLastChecked;
+            dbDataObject.EoscCategory = dataObjectDto.EoscCategory;
+            dbDataObject.AddStudyContribs = dataObjectDto.AddStudyContribs;
+                
+            await _dbConnection.UpdateAsync(dbDataObject);
+            return await DataObjectBuilder(dbDataObject);
+        }
+
+        public async Task<int> DeleteDataObject(string sdOid)
+        {
+            return await _dbConnection.DataObjects.Where(p => p.SdOid == sdOid).DeleteAsync();
+        }
+
+        public async Task<ICollection<DataObjectDataDto>> GetDataObjectsData()
+        {
+            if (!_dbConnection.DataObjects.Any()) return null;
+            var dataObjects = await _dbConnection.DataObjects.ToArrayAsync();
+
+            return dataObjects.Select(dataObject => _dataMapper.DataObjectDataDtoMapper(dataObject)).ToList();
+        }
+
+        public async Task<DataObjectDataDto> GetDataObjectData(string sdOid)
+        {
+            var data = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.SdSid == sdOid);
+            return data == null ? null : _dataMapper.DataObjectDataDtoMapper(data);
+        }
+
+        public async Task<ICollection<DataObjectDataDto>> GetRecentObjectData(int limit)
+        {
+            if (!_dbConnection.DataObjects.Any()) return null;
+
+            var recentObjects = await _dbConnection.DataObjects.OrderByDescending(p => p.Id).Take(limit).ToArrayAsync();
+            return _dataMapper.DataObjectDataDtoBuilder(recentObjects);
+        }
+
+        public async Task<DataObjectDataDto> CreateDataObjectData(DataObjectDataDto dataObjectData)
+        {
+            var objId = 300001;
+            var lastRecord = _dbConnection.DataObjects.OrderByDescending(p => p.Id).FirstOrDefault();
+            if (lastRecord != null)
+            {
+                objId = lastRecord.Id + 1;
+            }
+
+            var dataObject = new DataObject
+            {
+                SdOid = objId.ToString(),
+                CreatedOn = DateTime.Now,
+                SdSid = dataObjectData.SdSid,
+                DisplayTitle = dataObjectData.DisplayTitle,
+                Doi = dataObjectData.Doi,
+                Version = dataObjectData.Version,
+                DoiStatusId = dataObjectData.DoiStatusId,
+                PublicationYear = dataObjectData.PublicationYear,
+                ObjectClassId = dataObjectData.ObjectClassId,
+                ObjectTypeId = dataObjectData.ObjectTypeId,
+                ManagingOrgId = dataObjectData.ManagingOrgId,
+                ManagingOrg = dataObjectData.ManagingOrg,
+                ManagingOrgRorId = dataObjectData.ManagingOrgRorId,
+                LangCode = dataObjectData.LangCode,
+                AccessTypeId = dataObjectData.AccessTypeId,
+                AccessDetails = dataObjectData.AccessDetails,
+                AccessDetailsUrl = dataObjectData.AccessDetailsUrl,
+                UrlLastChecked = dataObjectData.UrlLastChecked,
+                EoscCategory = dataObjectData.EoscCategory,
+                AddStudyContribs = dataObjectData.AddStudyContribs
+            };
+
+            await _dbConnection.InsertAsync(dataObject);
+            return _dataMapper.DataObjectDataDtoMapper(dataObject);
+        }
+        
+        public async Task<DataObjectDataDto> UpdateDataObjectData(DataObjectDataDto dataObjectData)
+        {
+            var dbDataObject = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.Id == dataObjectData.Id);
+            if (dbDataObject == null) return null;
+            
+            dbDataObject.DisplayTitle = dataObjectData.DisplayTitle;
+            dbDataObject.Doi = dataObjectData.Doi;
+            dbDataObject.Version = dataObjectData.Version;
+            dbDataObject.DoiStatusId = dataObjectData.DoiStatusId;
+            dbDataObject.PublicationYear = dataObjectData.PublicationYear;
+            dbDataObject.ObjectClassId = dataObjectData.ObjectClassId;
+            dbDataObject.ObjectTypeId = dataObjectData.ObjectTypeId;
+            dbDataObject.ManagingOrgId = dataObjectData.ManagingOrgId;
+            dbDataObject.ManagingOrg = dataObjectData.ManagingOrg;
+            dbDataObject.ManagingOrgRorId = dataObjectData.ManagingOrgRorId;
+            dbDataObject.LangCode = dataObjectData.LangCode;
+            dbDataObject.AccessTypeId = dataObjectData.AccessTypeId;
+            dbDataObject.AccessDetails = dataObjectData.AccessDetails;
+            dbDataObject.AccessDetailsUrl = dataObjectData.AccessDetailsUrl;
+            dbDataObject.UrlLastChecked = dataObjectData.UrlLastChecked;
+            dbDataObject.EoscCategory = dataObjectData.EoscCategory;
+            dbDataObject.AddStudyContribs = dataObjectData.AddStudyContribs;
+                
+            await _dbConnection.UpdateAsync(dbDataObject);
+            return _dataMapper.DataObjectDataDtoMapper(dbDataObject);
+        }
+
+
+        private async Task<DataObjectDto> DataObjectBuilder(DataObject dataObject)
+        {
+            return new DataObjectDto()
+            {
+                Id = dataObject.Id,
+                SdOid = dataObject.SdOid,
+                SdSid = dataObject.SdSid,
+                DisplayTitle = dataObject.DisplayTitle,
+                Version = dataObject.Version,
+                Doi = dataObject.Doi,
+                DoiStatusId = dataObject.DoiStatusId,
+                PublicationYear = dataObject.PublicationYear,
+                ObjectClassId = dataObject.ObjectClassId,
+                ObjectTypeId = dataObject.ObjectTypeId,
+                ManagingOrgId = dataObject.ManagingOrgId,
+                ManagingOrg = dataObject.ManagingOrg,
+                ManagingOrgRorId = dataObject.ManagingOrgRorId,
+                LangCode = dataObject.LangCode,
+                AccessTypeId = dataObject.AccessTypeId,
+                AccessDetails = dataObject.AccessDetails,
+                AccessDetailsUrl = dataObject.AccessDetailsUrl,
+                UrlLastChecked = dataObject.UrlLastChecked,
+                EoscCategory = dataObject.EoscCategory,
+                AddStudyContribs = dataObject.AddStudyContribs,
+                AddStudyTopics = dataObject.AddStudyTopics,
+                CreatedOn = dataObject.CreatedOn,
+                ObjectContributors = await GetObjectContributors(dataObject.SdOid),
+                ObjectDatasets = await GetObjectDatasets(dataObject.SdOid),
+                ObjectDates = await GetObjectDates(dataObject.SdOid),
+                ObjectDescriptions = await GetObjectDescriptions(dataObject.SdOid),
+                ObjectIdentifiers = await GetObjectIdentifiers(dataObject.SdOid),
+                ObjectInstances = await GetObjectInstances(dataObject.SdOid),
+                ObjectRelationships = await GetObjectRelationships(dataObject.SdOid),
+                ObjectRights = await GetObjectRights(dataObject.SdOid),
+                ObjectTitles = await GetObjectTitles(dataObject.SdOid),
+                ObjectTopics = await GetObjectTopics(dataObject.SdOid)
+            };
+        }
+    }
+}

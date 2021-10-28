@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>context_services</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentMigrator" Version="3.3.1" />
+        <PackageReference Include="HotChocolate.AspNetCore" Version="12.0.1" />
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="12.0.1" />
+        <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
+        <PackageReference Include="HotChocolate.Data" Version="12.0.1" />
+        <PackageReference Include="linq2db" Version="3.5.1" />
+        <PackageReference Include="linq2db.AspNet" Version="3.5.1" />
+        <PackageReference Include="linq2db.PostgreSQL" Version="3.5.1" />
+        <PackageReference Include="Npgsql" Version="5.0.10" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Configs" />
+      <Folder Include="Contracts\Requests" />
+      <Folder Include="Migrations" />
+    </ItemGroup>
+
+</Project>

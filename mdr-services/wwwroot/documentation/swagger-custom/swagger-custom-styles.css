@@ -1,0 +1,21 @@
+.swagger-ui .topbar {
+    background: white;
+}
+
+/*.topbar-wrapper span {
+    visibility: hidden;
+}*/
+
+.topbar-wrapper .link:after {
+    content: 'The RMS REST API';
+    color: #3b4151;
+    visibility: visible;
+    display: block;
+    position: absolute;
+    padding: 15px;
+    margin-left: 115px;
+}
+
+.download-url-wrapper .select-label span {
+    color: #3b4151;
+}
