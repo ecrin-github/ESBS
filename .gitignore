@@ -11,7 +11,7 @@ context-services/appsettings.json
 context-services/Models/DbConnection
 
 identity-services/appsettings.json
-
+identity-services/Configs
 
 mdm-services/appsettings.json
 mdm-services/Models/DbConnection
