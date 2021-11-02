@@ -5,21 +5,23 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea
 
-api-gateway/appsettings.json
+ApiGateway/appsettings.json
 
-context-services/appsettings.json
-context-services/Models/DbConnection
+ContextService/appsettings.json
+ContextService/Models/DbConnection
 
-identity-services/appsettings.json
-identity-services/Configs
+IdentityService/appsettings.json
+IdentityService/Configs
+IdentityService/Models/DbConnection
 
-mdm-services/appsettings.json
-mdm-services/Models/DbConnection
+MdmService/appsettings.json
+MdmService/Models/DbConnection
 
-mdr-services/appsettings.json
+MdrService/appsettings.json
 
 
-rms-services/appsettings.json
-rms-services/Models/DbConnection
+RmsService/appsettings.json
+RmsService/Models/DbConnection
 
-user-services/appsettings.json
+UserService/appsettings.json
+UserService/Models/DbConnection

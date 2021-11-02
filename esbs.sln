@@ -1,18 +1,17 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "identity-services", "identity-services\identity-services.csproj", "{C73E72EE-B484-4576-9C15-B617A1A39C84}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "IdentityService\IdentityService.csproj", "{C73E72EE-B484-4576-9C15-B617A1A39C84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rms-services", "rms-services\rms-services.csproj", "{5973E453-F407-4796-BA48-999948EC1959}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmsService", "RmsService\RmsService.csproj", "{5973E453-F407-4796-BA48-999948EC1959}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mdm-services", "mdm-services\mdm-services.csproj", "{7BCE2EBD-BA18-4033-9037-697E834E1023}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdmService", "MdmService\MdmService.csproj", "{7BCE2EBD-BA18-4033-9037-697E834E1023}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "context-services", "context-services\context-services.csproj", "{45A9EE99-D59B-4DDA-8E79-B2622925245F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContextService", "ContextService\ContextService.csproj", "{45A9EE99-D59B-4DDA-8E79-B2622925245F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mdr-services", "mdr-services\mdr-services.csproj", "{7B3869A9-1EEF-4570-AA6B-B9C314ACE3DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdrService", "MdrService\MdrService.csproj", "{7B3869A9-1EEF-4570-AA6B-B9C314ACE3DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "user-services", "user-services\user-services.csproj", "{00AB8294-17A0-45F7-A953-0B951A548FA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{00AB8294-17A0-45F7-A953-0B951A548FA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "api-gateway", "api-gateway\api-gateway.csproj", "{D7CE2C0B-8B98-4063-9CF2-993A7669E8F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{D7CE2C0B-8B98-4063-9CF2-993A7669E8F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

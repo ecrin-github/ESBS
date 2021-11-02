@@ -1,0 +1,134 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5011
+        }
+      ],
+      "UpstreamPathTemplate": "/context/{everything}",
+      "SwaggerKey": "context"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5021
+        }
+      ],
+      "UpstreamPathTemplate": "/metadata-management/{everything}",
+      "SwaggerKey": "mdm"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5101
+        }
+      ],
+      "UpstreamPathTemplate": "/mdr/{everything}",
+      "SwaggerKey": "mdr"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5031
+        }
+      ],
+      "UpstreamPathTemplate": "/rms/{everything}",
+      "SwaggerKey": "rms"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5041
+        }
+      ],
+      "UpstreamPathTemplate": "/users/{everything}",
+      "SwaggerKey": "user"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "context",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS Context API",
+          "Version": "v1",
+          "Url": "https://localhost:5011/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "mdm",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS MDM API",
+          "Version": "v1",
+          "Url": "https://localhost:5021/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "mdr",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS MDR API",
+          "Version": "v1",
+          "Url": "https://localhost:5101/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "rms",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS RMS API",
+          "Version": "v1",
+          "Url": "https://localhost:5031/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "user",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS User API",
+          "Version": "v1",
+          "Url": "https://localhost:5041/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost"
+  }
+}
