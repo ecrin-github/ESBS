@@ -31,11 +31,6 @@ namespace IdentityService.Extensions
                 .AddDefaultTokenProviders();
             
             services.AddIdentityServer()
-                // .AddInMemoryClients(Clients.Get())
-                // .AddInMemoryIdentityResources(Resources.GetIdentityResources())
-                // .AddInMemoryApiResources(Resources.GetApiResources())
-                // .AddInMemoryApiScopes(Scopes.GetApiScopes())
-                // .AddTestUsers(Users.Get())
                 .AddAspNetIdentity<RmsUser>()
                 .AddConfigurationStore(options =>
                 {
