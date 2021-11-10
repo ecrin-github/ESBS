@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -44,6 +45,19 @@ namespace ApiGateway
             {
                 options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
             });*/
+            
+            const string authenticationProviderKey = "IdentityApiKey";
+
+            services.AddAuthentication().AddJwtBearer(
+                authenticationProviderKey, x =>
+                {
+                    x.Authority = "https://localhost:7001";
+                    // x.RequireHttpsMetadata = false;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
             
             services.AddOcelot(Configuration);
             services.AddSwaggerForOcelot(Configuration);

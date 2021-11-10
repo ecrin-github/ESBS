@@ -19,7 +19,7 @@ namespace MdrService.Models.Elasticsearch.Object
         #nullable enable
         public IdentifierType? IdentifierType { get; set; }
         
-        [Date(Name = "identifier_date", Format = "YYYY MMM dd")]
+        [Date(Name = "identifier_date", Format = "yyyy MMM dd")]
         #nullable enable
         public string? IdentifierDate { get; set; }
         

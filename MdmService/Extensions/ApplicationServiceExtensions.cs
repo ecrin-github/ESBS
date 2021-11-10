@@ -1,12 +1,11 @@
-using MdmService.GraphQL;
 using MdmService.Interfaces;
 using MdmService.Models.DbConnection;
 using MdmService.Repositories;
 using MdmService.Helpers;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MdmService.Extensions
 {
@@ -25,20 +24,19 @@ namespace MdmService.Extensions
             services.AddScoped<IDataMapper, DataMapper>();
             
             services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication("Bearer", options =>
+                .AddJwtBearer("Bearer", options =>
                 {
-                    options.ApiName = "mdmService";
                     options.Authority = "https://localhost:7001";
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateAudience = false
+                    };
                 });
 
-            services.AddScoped<Queries>();
-            services.AddScoped<Mutations>();
-
-            services.AddGraphQLServer()
-                .AddQueryType<Queries>()
-                .AddMutationType<Mutations>()
-                .AddFiltering()
-                .AddSorting();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "mdmClient", "the_rms_client"));
+            });
 
             return services;
         }

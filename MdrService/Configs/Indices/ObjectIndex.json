@@ -478,6 +478,13 @@
             "type":"text",
             "fielddata": true
           },
+          "original_ct_id": {
+            "type": "integer"
+          },
+          "original_ct_code": {
+            "type": "text",
+            "fielddata": true
+          },
           "original_value": {
             "type": "text",
             "fielddata": true

@@ -10,9 +10,13 @@ ApiGateway/appsettings.json
 ContextService/appsettings.json
 ContextService/Models/DbConnection
 
-IdentityService/appsettings.json
-IdentityService/Configs
-IdentityService/Models/DbConnection
+IdentityClient/Models
+IdentityClient/Configs
+IdentityClient/appsettings.json
+
+IdentityServer/appsettings.json
+IdentityServer/Configs
+IdentityServer/Models/DbConnection
 
 MdmService/appsettings.json
 MdmService/Models/DbConnection

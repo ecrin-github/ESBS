@@ -4,10 +4,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1;
 using MdrService.Contracts.Responses.v1;
-using MdrService.Contracts.Responses.v1.FetchedData;
 using MdrService.Contracts.Responses.v1.StudyListResponse;
 using MdrService.Interfaces;
-using MdrService.Models.Elasticsearch.Object;
 using MdrService.Models.Elasticsearch.Study;
 using Nest;
 
@@ -46,17 +44,11 @@ namespace MdrService.Repositories
             var startFrom = CalculateStartFrom(specificStudyRequest.Page, specificStudyRequest.Size);
 
             var identifierValue = specificStudyRequest.SearchValue.ToUpper().Trim();
-
-            FiltersListRequest filtersListRequest = null;
-
+            
             List<QueryContainer> filters = null;
-            if (HasProperty(specificStudyRequest, "Filters") && specificStudyRequest.Filters != null)
+            if (specificStudyRequest.Filters != null && HasProperty(specificStudyRequest, "Filters") && specificStudyRequest.Filters.Count > 0)
             {
-                filtersListRequest = specificStudyRequest.Filters;
-                if (HasProperty(specificStudyRequest.Filters, "StudyFilters"))
-                {
-                    filters = specificStudyRequest.Filters!.StudyFilters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
-                }
+                filters = specificStudyRequest.Filters!.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
             }
             
             var queryClause = new List<QueryContainer>
@@ -94,7 +86,7 @@ namespace MdrService.Repositories
             SearchRequest<Study> searchRequest;
             if (startFrom != null)
             {
-                searchRequest = new SearchRequest<Study>(Indices.Index("study"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     From = startFrom,
                     Size = specificStudyRequest.Size,
@@ -103,45 +95,32 @@ namespace MdrService.Repositories
             }
             else
             {
-                searchRequest = new SearchRequest<Study>(Indices.Index("study"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     Query = boolQuery
                 };
             }
             
             var results = await _elasticSearchService.GetConnection().SearchAsync<Study>(searchRequest);
-            FetchedStudies fetchedStudies = new FetchedStudies()
-            {
-                Total = results.Total,
-                Studies = results.Documents.ToList()
-            };
-            var studies = await _dataMapper.MapStudies(fetchedStudies, filtersListRequest);
+            var studies = _dataMapper.MapStudies(results.Documents.ToList());
             return new BaseResponse()
             {
                 Total = results.Total,
                 Data = studies
             };
-            
         }
 
         public async Task<BaseResponse> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
         {
             var startFrom = CalculateStartFrom(studyCharacteristicsRequest.Page, studyCharacteristicsRequest.Size);
             
-            FiltersListRequest filtersListRequest = null;
-            
             List<QueryContainer> filters = null;
-            if (HasProperty(studyCharacteristicsRequest, "Filters") && studyCharacteristicsRequest.Filters != null)
+            if (studyCharacteristicsRequest.Filters != null && HasProperty(studyCharacteristicsRequest, "Filters") && studyCharacteristicsRequest.Filters.Count > 0)
             {
-                filtersListRequest = studyCharacteristicsRequest.Filters;
-                if (HasProperty(studyCharacteristicsRequest.Filters, "StudyFilters"))
-                {
-                    filters = filtersListRequest.StudyFilters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
-                }
+                filters = studyCharacteristicsRequest.Filters!.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
             }
 
             var queryClauses = new List<QueryContainer>();
-
             if (!string.IsNullOrEmpty(studyCharacteristicsRequest.TitleContains))
             {
                 queryClauses.Add(new SimpleQueryStringQuery()
@@ -210,7 +189,7 @@ namespace MdrService.Repositories
             SearchRequest<Study> searchRequest;
             if (startFrom != null)
             {
-                searchRequest = new SearchRequest<Study>(Indices.Index("study"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     From = startFrom,
                     Size = studyCharacteristicsRequest.Size,
@@ -219,7 +198,7 @@ namespace MdrService.Repositories
             }
             else
             {
-                searchRequest = new SearchRequest<Study>(Indices.Index("study"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     Query = boolQuery
                 };
@@ -227,12 +206,7 @@ namespace MdrService.Repositories
             
             {
                 var results = await _elasticSearchService.GetConnection().SearchAsync<Study>(searchRequest);
-                var fetchedStudies = new FetchedStudies()
-                {
-                    Total = results.Total,
-                    Studies = results.Documents.ToList()
-                };
-                var studies = await _dataMapper.MapStudies(fetchedStudies, filtersListRequest);
+                var studies = _dataMapper.MapStudies(results.Documents.ToList());
                 return new BaseResponse()
                 {
                     Total = results.Total,
@@ -246,13 +220,9 @@ namespace MdrService.Repositories
             var startFrom = CalculateStartFrom(viaPublishedPaperRequest.Page, viaPublishedPaperRequest.Size);
 
             List<QueryContainer> filters = null;
-            if (HasProperty(viaPublishedPaperRequest, "Filters") && viaPublishedPaperRequest.Filters != null)
+            if (viaPublishedPaperRequest.Filters != null && HasProperty(viaPublishedPaperRequest, "Filters") && viaPublishedPaperRequest.Filters.Count > 0)
             {
-                var filtersListRequest = viaPublishedPaperRequest.Filters;
-                if (HasProperty(viaPublishedPaperRequest.Filters, "ObjectFilters"))
-                {
-                    filters = filtersListRequest.ObjectFilters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
-                }
+                filters = viaPublishedPaperRequest.Filters!.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
             }
             
             var mustQuery = new List<QueryContainer>();
@@ -261,7 +231,7 @@ namespace MdrService.Repositories
             {
                 mustQuery.Add(new TermQuery()
                 {
-                    Field = Infer.Field<Object>(p => p.Doi),
+                    Field = Infer.Field<Study>(p => p.LinkedDataObjects.First().Doi),
                     Value = viaPublishedPaperRequest.SearchValue
                 });
             }
@@ -272,16 +242,16 @@ namespace MdrService.Repositories
                     new SimpleQueryStringQuery()
                     {
                         Query = viaPublishedPaperRequest.SearchValue,
-                        Fields = Infer.Field<Object>(p => p.DisplayTitle),
+                        Fields = Infer.Field<Study>(p => p.LinkedDataObjects.First().DisplayTitle),
                         DefaultOperator = Operator.And
                     },
                     new NestedQuery()
                     {
-                        Path = Infer.Field<Object>(p => p.ObjectTitles),
+                        Path = Infer.Field<Study>(p => p.LinkedDataObjects.First().ObjectTitles),
                         Query = new SimpleQueryStringQuery()
                         {
                             Query = viaPublishedPaperRequest.SearchValue,
-                            Fields = Infer.Field<Object>(p => p.ObjectTitles.First().TitleText),
+                            Fields = Infer.Field<Study>(p => p.LinkedDataObjects.First().ObjectTitles.First().TitleText),
                             DefaultOperator = Operator.And
                         }
                     }
@@ -305,10 +275,10 @@ namespace MdrService.Repositories
                 Must = mustQuery
             };
             
-            SearchRequest<Object> searchRequest;
+            SearchRequest<Study> searchRequest;
             if (startFrom != null)
             {
-                searchRequest = new SearchRequest<Object>(Indices.Index("data-object"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     From = startFrom,
                     Size = viaPublishedPaperRequest.Size,
@@ -317,17 +287,15 @@ namespace MdrService.Repositories
             }
             else
             {
-                searchRequest = new SearchRequest<Object>(Indices.Index("data-object"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     Query = boolQuery
                 };
             }
             
             {
-                var results = await _elasticSearchService.GetConnection().SearchAsync<Object>(searchRequest);
-
-                var studies = await _dataMapper.MapViaPublishedPaper(results.Documents.ToList());
-
+                var results = await _elasticSearchService.GetConnection().SearchAsync<Study>(searchRequest);
+                var studies = _dataMapper.MapStudies(results.Documents.ToList());
                 return new BaseResponse()
                 {
                     Total = results.Total,
@@ -339,7 +307,7 @@ namespace MdrService.Repositories
         public async Task<IEnumerable<StudyListResponse>> GetByStudyId(StudyIdRequest studyIdRequest)
         {
             var results = await _elasticSearchService.GetConnection().SearchAsync<Study>(s => s
-                .Index("study")
+                .Index("mdr-record")
                 .From(0)
                 .Size(1)
                 .Query(q => q
@@ -349,7 +317,7 @@ namespace MdrService.Repositories
                     )
                 )
             );
-            return await _dataMapper.MapStudy(results.Documents.ToList());
+            return _dataMapper.MapStudies(results.Documents.ToList());
         }
     }
 }

@@ -22,6 +22,11 @@
         }
       ],
       "UpstreamPathTemplate": "/metadata-management/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      },
       "SwaggerKey": "mdm"
     },
     {
@@ -46,6 +51,11 @@
         }
       ],
       "UpstreamPathTemplate": "/rms/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      },
       "SwaggerKey": "rms"
     },
     {
@@ -58,7 +68,24 @@
         }
       ],
       "UpstreamPathTemplate": "/users/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST", "PUT", "DELETE"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      },
       "SwaggerKey": "user"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5051
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/{everything}",
+      "SwaggerKey": "identity-client"
     }
   ],
   "SwaggerEndPoints": [
@@ -124,6 +151,19 @@
           "Name": "The ESBS User API",
           "Version": "v1",
           "Url": "https://localhost:5041/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "identity-client",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS Identity API",
+          "Version": "v1",
+          "Url": "https://localhost:5051/swagger/v1/swagger.json"
         }
       ]
     }

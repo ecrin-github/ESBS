@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1;
 using MdrService.Contracts.Responses.v1;
 using MdrService.Interfaces;
-using MdrService.Models.Elasticsearch.Object;
 using MdrService.Models.Elasticsearch.Study;
 using Nest;
 
@@ -41,7 +40,7 @@ namespace MdrService.Repositories
             SearchRequest<Study> searchRequest;
             if (startFrom != null)
             {
-                searchRequest = new SearchRequest<Study>(Indices.Index("study"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     From = startFrom,
                     Size = rawQueryRequest.Size,
@@ -50,7 +49,7 @@ namespace MdrService.Repositories
             }
             else
             {
-                searchRequest = new SearchRequest<Study>(Indices.Index("study"))
+                searchRequest = new SearchRequest<Study>(Indices.Index("mdr-record"))
                 {
                     Query = new RawQuery(JsonSerializer.Serialize(rawQueryRequest.Query))
                 };
@@ -58,42 +57,7 @@ namespace MdrService.Repositories
 
             {
                 var results = await _elasticSearchService.GetConnection().SearchAsync<Study>(searchRequest);
-                var studies = await _dataMapper.MapRawStudies(results.Documents.ToList());
-                return new BaseResponse()
-                {
-                    Total = results.Total,
-                    Data = studies
-                };
-            }
-        }
-        
-        public async Task<BaseResponse> GetObjectSearchResults(RawQueryRequest rawQueryRequest)
-        {
-            
-            var startFrom = CalculateStartFrom(page: rawQueryRequest.Page, pageSize: rawQueryRequest.Size);
-            
-            SearchRequest<Object> searchRequest;
-            if (startFrom != null)
-            {
-                searchRequest = new SearchRequest<Object>(Indices.Index("data-object"))
-                {
-                    From = startFrom,
-                    Size = rawQueryRequest.Size,
-                    Query = new RawQuery(JsonSerializer.Serialize(rawQueryRequest.Query))
-                };
-            }
-            else
-            {
-                searchRequest = new SearchRequest<Object>(Indices.Index("data-object"))
-                {
-                    Query = new RawQuery(JsonSerializer.Serialize(rawQueryRequest.Query))
-                };
-            }
-
-            {
-                var results = await _elasticSearchService.GetConnection().SearchAsync<Object>(searchRequest);
-                var studies = await _dataMapper.MapRawObjects(results.Documents.ToList());
-
+                var studies = _dataMapper.MapStudies(results.Documents.ToList());
                 return new BaseResponse()
                 {
                     Total = results.Total,

@@ -3,7 +3,6 @@ using Nest;
 
 namespace MdrService.Models.Elasticsearch.Study
 {
-    [ElasticsearchType(RelationName = "study")]
     public class Study
     {
         [Number(Name = "id")]
@@ -84,8 +83,9 @@ namespace MdrService.Models.Elasticsearch.Study
         #nullable enable
         public string? ProvenanceString { get; set; }
         
-        [Number(Name = "linked_data_objects")]
+        [Nested]
+        [PropertyName("linked_data_objects")]
         #nullable enable
-        public int[]? LinkedDataObjects { get; set; }
+        public ICollection<Object.Object>? LinkedDataObjects { get; set; }
     }
 }

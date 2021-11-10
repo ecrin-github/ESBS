@@ -3,13 +3,11 @@ using MdrService.Contracts.Requests.v1;
 using MdrService.Contracts.Responses.v1;
 using MdrService.Contracts.Routes.ApiRoutes.v1;
 using MdrService.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MdrService.Controllers.Elasticsearch.v1
 {
     [ApiController]
-    [Authorize]
     public class RawQueryController : ControllerBase
     {
         private readonly IRawQueryRepository _rawQueryRepository;
@@ -23,19 +21,6 @@ namespace MdrService.Controllers.Elasticsearch.v1
         public async Task<ActionResult<SearchResponse>> GetStudySearchResults(RawQueryRequest rawQueryRequest)
         {
             var response = await _rawQueryRepository.GetStudySearchResults(rawQueryRequest);
-            return Ok(new SearchResponse()
-            {
-                Total = response.Total,
-                Page = rawQueryRequest.Page,
-                Size = rawQueryRequest.Size,
-                Data = response.Data
-            });
-        }
-        
-        [HttpPost(ApiRoutes.RawQuery.GetObjectSearchResults)]
-        public async Task<ActionResult<SearchResponse>> GetObjectSearchResults(RawQueryRequest rawQueryRequest)
-        {
-            var response = await _rawQueryRepository.GetObjectSearchResults(rawQueryRequest);
             return Ok(new SearchResponse()
             {
                 Total = response.Total,

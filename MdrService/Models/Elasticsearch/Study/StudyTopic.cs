@@ -25,6 +25,14 @@ namespace MdrService.Models.Elasticsearch.Study
         [Text(Name = "mesh_value")]
         #nullable enable
         public string? MeshValue { get; set; }
+        
+        [Number(Name = "original_ct_id")]
+        #nullable enable
+        public int? OriginalCtId { get; set; }
+        
+        [Text(Name = "original_ct_code")]
+        #nullable enable
+        public string? OriginalCtCode { get; set; }
 
         [Text(Name = "original_value")]
         #nullable enable

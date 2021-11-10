@@ -1,8 +1,6 @@
 using System.Net;
 using ContextService.Extensions;
 using ContextService.Middleware;
-using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Playground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -46,29 +44,6 @@ namespace ContextService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "The ESBS REST API - Context Documentation", Version = "v1" });
                 c.EnableAnnotations();
-                
-                var securitySchema = new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                };
-
-                c.AddSecurityDefinition("Bearer", securitySchema);
-
-                var securityRequirement = new OpenApiSecurityRequirement
-                {
-                    { securitySchema, new[] { "Bearer" } }
-                };
-
-                c.AddSecurityRequirement(securityRequirement);
             });
             
             services.AddCors(options =>
@@ -103,26 +78,12 @@ namespace ContextService
                 c.InjectJavascript("/documentation/swagger-custom/swagger-custom-script.js");
                 c.RoutePrefix = "api/rest/documentation";
             });
+            
             app.UseHttpsRedirection();
-
             app.UseRouting();
             
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             app.UseCors("Open");
             
-            app.UseEndpoints(x =>
-            {
-                x.MapGraphQL("/graphql/v1");
-            });
-            
-            app.UsePlayground(new PlaygroundOptions
-            {
-                QueryPath = "/graphql/v1",
-                Path = "/graphql/ui"
-            });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

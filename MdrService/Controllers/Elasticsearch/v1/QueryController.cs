@@ -4,13 +4,11 @@ using MdrService.Contracts.Responses.v1;
 using MdrService.Contracts.Responses.v1.StudyListResponse;
 using MdrService.Contracts.Routes.ApiRoutes.v1;
 using MdrService.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MdrService.Controllers.Elasticsearch.v1
 {
     [ApiController]
-    [Authorize]
     public class QueryController : ControllerBase
     {
         

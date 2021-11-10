@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RmsService.GraphQL;
+using Microsoft.IdentityModel.Tokens;
 using RmsService.Helpers;
 using RmsService.Interfaces;
 using RmsService.Models.DbConnection;
@@ -25,23 +24,22 @@ namespace RmsService.Extensions
             services.AddScoped<IDupRepository, DupRepository>();
             
             services.AddScoped<IDataMapper, DataMapper>();
-            
+
             services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication("Bearer", options =>
+                .AddJwtBearer("Bearer", options =>
                 {
-                    options.ApiName = "rmsService";
                     options.Authority = "https://localhost:7001";
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateAudience = false
+                    };
                 });
 
-            services.AddScoped<Queries>();
-            services.AddScoped<Mutations>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "rmsClient", "the_rms_client"));
+            });
 
-            services.AddGraphQLServer()
-                .AddQueryType<Queries>()
-                .AddMutationType<Mutations>()
-                .AddFiltering()
-                .AddSorting();
-            
             return services;
         }
     }

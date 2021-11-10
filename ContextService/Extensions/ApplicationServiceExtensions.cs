@@ -1,8 +1,6 @@
-using ContextService.GraphQL;
 using ContextService.Interfaces;
 using ContextService.Models.DbConnection;
 using ContextService.Repositories;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,22 +24,6 @@ namespace ContextService.Extensions
             services.AddScoped<ICtxRepository, CtxRepository>();
             services.AddScoped<ILupRepository, LupRepository>();
             services.AddScoped<IRmsContextRepository, RmsContextRepository>();
-            
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication("Bearer", options =>
-                {
-                    options.ApiName = "contextService";
-                    options.Authority = "https://localhost:7001";
-                });
-
-            services.AddScoped<Queries>();
-            services.AddScoped<Mutations>();
-
-            services.AddGraphQLServer()
-                .AddQueryType<Queries>()
-                .AddMutationType<Mutations>()
-                .AddFiltering()
-                .AddSorting();
 
             return services;
         }

@@ -12,7 +12,7 @@ namespace MdrService.Models.Elasticsearch.Object
         #nullable enable
         public string? Url { get; set; }
         
-        [Date(Name = "url_last_checked", Format = "YYYY MMM dd")]
+        [Date(Name = "url_last_checked", Format = "yyyy MMM dd")]
         #nullable enable
         public string? UrlLastChecked { get; set; }
     }

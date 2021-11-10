@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using MdrService.Extensions;
 using MdrService.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace MdrService
@@ -37,7 +30,6 @@ namespace MdrService
             });*/
             
             services.AddApplicationServices(Configuration);
-
             
             services.AddControllers();
             services.AddCors();
@@ -46,29 +38,6 @@ namespace MdrService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "The ESBS REST API - MDR Documentation", Version = "v1"});
                 c.EnableAnnotations();
-                
-                var securitySchema = new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                };
-
-                c.AddSecurityDefinition("Bearer", securitySchema);
-
-                var securityRequirement = new OpenApiSecurityRequirement
-                {
-                    { securitySchema, new[] { "Bearer" } }
-                };
-
-                c.AddSecurityRequirement(securityRequirement);
             });
         }
 
@@ -95,7 +64,7 @@ namespace MdrService
                 c.DocumentTitle = "The ESBS REST API Documentation";
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "The ESBS REST API - MDR Documentation (v.1)");
                 c.InjectStylesheet("/documentation/swagger-custom/swagger-custom-styles.css");
-                c.InjectJavascript("/documentation/swagger-custom/swagger-custom-script.js", "text/javascript");
+                c.InjectJavascript("/documentation/swagger-custom/swagger-custom-script.js");
                 c.RoutePrefix = "api/rest/documentation";
             });
 
@@ -103,9 +72,6 @@ namespace MdrService
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-            
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

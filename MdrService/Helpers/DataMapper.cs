@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using MdrService.Contracts.Requests.v1;
-using MdrService.Contracts.Responses.v1.FetchedData;
 using MdrService.Contracts.Responses.v1.ObjectListResponse;
 using MdrService.Contracts.Responses.v1.StudyListResponse;
 using MdrService.Interfaces;
@@ -14,18 +11,10 @@ namespace MdrService.Helpers
 {
     public class DataMapper : IDataMapper
     {
-        private readonly IFetchedDataRepository _fetchedDataRepository;
-
-        public DataMapper(IFetchedDataRepository fetchedDataRepository)
-        {
-            _fetchedDataRepository = fetchedDataRepository;
-        }
-        
         private static bool HasProperty(object obj, string propertyName)
         {
             if (obj == null) return false;
-            if (obj.GetType().GetProperty(propertyName) != null) return true;
-            return false;
+            return obj.GetType().GetProperty(propertyName) != null;
         }
 
         private ICollection<StudyIdentifierListResponse> StudyIdentifierListResponseMapper(ICollection<StudyIdentifier> studyIdentifiers)
@@ -156,6 +145,8 @@ namespace MdrService.Helpers
                     MeshCoded = studyTopic.MeshCoded,
                     MeshCode = studyTopic.MeshCode,
                     MeshValue = studyTopic.MeshValue,
+                    OriginalCtId = studyTopic.OriginalCtId,
+                    OriginalCtCode = studyTopic.OriginalCtCode,
                     OriginalValue = studyTopic.OriginalValue
                 };
                 studyTopicListResponses.Add(studyTopicObject);
@@ -453,6 +444,8 @@ namespace MdrService.Helpers
                     MeshCoded = objectTopic.MeshCoded,
                     MeshCode = objectTopic.MeshCode,
                     MeshValue = objectTopic.MeshValue,
+                    OriginalCtId = objectTopic.OriginalCtId,
+                    OriginalCtCode = objectTopic.OriginalCtCode,
                     OriginalValue = objectTopic.OriginalValue
                 };
                 objectTopicListResponses.Add(objectTopicRecord);
@@ -525,70 +518,11 @@ namespace MdrService.Helpers
         }
 
 
-        public async Task<List<StudyListResponse>> MapStudies(FetchedStudies fetchedStudies, FiltersListRequest filtersListRequest)
-        {
-            if (fetchedStudies.Total <= 0) return null;
-            if (fetchedStudies.Studies.Count <= 0) return null;
-            var studiesDto = new List<StudyListResponse>();
-
-            foreach (var study in fetchedStudies.Studies)
-            {
-                var fetchedObjects = await _fetchedDataRepository.GetStudyObjects(study.LinkedDataObjects);
-                
-                MinAgeResponse minAgeResponse = null;
-                if (study.MinAge != null)
-                {
-                    minAgeResponse = new MinAgeResponse
-                    {
-                        Value = study.MinAge.Value,
-                        UnitName = study.MinAge.UnitName
-                    };
-                }
-
-                MaxAgeResponse maxAgeResponse = null;
-                if (study.MaxAge != null)
-                {
-                    maxAgeResponse = new MaxAgeResponse
-                    {
-                        Value = study.MaxAge.Value,
-                        UnitName = study.MaxAge.UnitName
-                    };
-                }
-
-                var studyDto = new StudyListResponse
-                {
-                    Id = study.Id!,
-                    DisplayTitle = study.DisplayTitle,
-                    BriefDescription = study.BriefDescription,
-                    StudyType = study.StudyType?.Name,
-                    StudyStatus = study.StudyStatus?.Name,
-                    StudyGenderElig = study.StudyGenderElig?.Name,
-                    StudyEnrolment = study.StudyEnrolment,
-                    MinAge = minAgeResponse,
-                    MaxAge = maxAgeResponse,
-                    StudyIdentifiers = StudyIdentifierListResponseMapper(study.StudyIdentifiers),
-                    StudyTitles = StudyTitleListResponseMapper(study.StudyTitles),
-                    StudyFeatures = StudyFeatureListResponseMapper(study.StudyFeatures),
-                    StudyTopics = StudyTopicResponseMapper(study.StudyTopics),
-                    StudyRelationships = StudyRelationListResponseMapper(study.StudyRelationships),
-                    ProvenanceString = study.ProvenanceString,
-                    LinkedDataObjects = ObjectListResponseMapper(fetchedObjects.Objects),
-                };
-                studiesDto.Add(studyDto);
-            }
-            
-            return studiesDto;
-        }
-
-
-        public async Task<List<StudyListResponse>> MapStudy(ICollection<Study> studies)
+        public List<StudyListResponse> MapStudies(IEnumerable<Study> studies)
         {
             var studiesDto = new List<StudyListResponse>();
             foreach (var study in studies)
             {
-
-                var fetchedObjects = await _fetchedDataRepository.GetStudyObjects(study.LinkedDataObjects);
-                
                 MinAgeResponse minAgeResponse = null;
                 if (study.MinAge != null)
                 {
@@ -626,98 +560,13 @@ namespace MdrService.Helpers
                     StudyTopics = StudyTopicResponseMapper(study.StudyTopics),
                     StudyRelationships = StudyRelationListResponseMapper(study.StudyRelationships),
                     ProvenanceString = study.ProvenanceString,
-                    LinkedDataObjects = ObjectListResponseMapper(fetchedObjects.Objects),
+                    LinkedDataObjects = ObjectListResponseMapper(study.LinkedDataObjects),
                 };
                 studiesDto.Add(studyDto);
             }
             
             return studiesDto;
         }
-        
-        public async Task<List<StudyListResponse>> MapViaPublishedPaper(ICollection<Object> objects)
-        {
-            var studies = new List<StudyListResponse>();
-            foreach (var obj in objects)
-            {
-                if (obj.LinkedStudies == null || obj.LinkedStudies.Length <= 0) continue;
-                var fetchedStudies = await _fetchedDataRepository.GetObjectStudies(obj.LinkedStudies);
 
-                if (fetchedStudies.Total <= 0) continue;
-                var mappedStudies = await MapRawStudies(fetchedStudies.Studies);
-
-                studies.AddRange(mappedStudies);
-            }
-            return studies;
-        }
-
-
-        public async Task<List<StudyListResponse>> MapRawStudies(ICollection<Study> studies)
-        {
-            var studiesDto = new List<StudyListResponse>();
-            foreach (var study in studies)
-            {
-                var fetchedObjects = await _fetchedDataRepository.GetStudyObjects(study.LinkedDataObjects);
-                
-                MinAgeResponse minAgeResponse = null;
-                if (study.MinAge != null)
-                {
-                    minAgeResponse = new MinAgeResponse
-                    {
-                        Value = study.MinAge.Value,
-                        UnitName = study.MinAge.UnitName
-                    };
-                }
-
-                MaxAgeResponse maxAgeResponse = null;
-                if (study.MaxAge != null)
-                {
-                    maxAgeResponse = new MaxAgeResponse
-                    {
-                        Value = study.MaxAge.Value,
-                        UnitName = study.MaxAge.UnitName
-                    };
-                }
-            
-                var studyDto = new StudyListResponse
-                {
-                    Id = study.Id!,
-                    DisplayTitle = study.DisplayTitle,
-                    BriefDescription = study.BriefDescription,
-                    StudyType = study.StudyType?.Name,
-                    StudyStatus = study.StudyStatus?.Name,
-                    StudyGenderElig = study.StudyGenderElig?.Name,
-                    StudyEnrolment = study.StudyEnrolment,
-                    MinAge = minAgeResponse,
-                    MaxAge = maxAgeResponse,
-                    StudyIdentifiers = StudyIdentifierListResponseMapper(study.StudyIdentifiers),
-                    StudyTitles = StudyTitleListResponseMapper(study.StudyTitles),
-                    StudyFeatures = StudyFeatureListResponseMapper(study.StudyFeatures),
-                    StudyTopics = StudyTopicResponseMapper(study.StudyTopics),
-                    StudyRelationships = StudyRelationListResponseMapper(study.StudyRelationships),
-                    ProvenanceString = study.ProvenanceString,
-                    LinkedDataObjects = ObjectListResponseMapper(fetchedObjects.Objects),
-                };
-                studiesDto.Add(studyDto);
-            }
-            return studiesDto;
-        }
-        
-        
-        public async Task<List<StudyListResponse>> MapRawObjects(ICollection<Object> objects)
-        {
-            if (objects.Count <= 0) return null;
-            var studies = new List<StudyListResponse>();
-            foreach (var obj in objects)
-            {
-                if (obj.LinkedStudies == null || obj.LinkedStudies.Length <= 0) continue;
-                var fetchedStudies = await _fetchedDataRepository.GetObjectStudies(obj.LinkedStudies);
-
-                if (fetchedStudies.Total <= 0) continue;
-                var mappedStudies = await MapRawStudies(fetchedStudies.Studies);
-                studies.AddRange(mappedStudies);
-            }
-            return studies;
-        }
-        
     }
 }

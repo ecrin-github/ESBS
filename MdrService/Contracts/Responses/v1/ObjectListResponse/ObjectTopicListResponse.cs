@@ -12,6 +12,10 @@ namespace MdrService.Contracts.Responses.v1.ObjectListResponse
         public string? MeshCode { get; set; }
         
         public string? MeshValue { get; set; }
+        
+        public int? OriginalCtId { get; set; }
+        
+        public string? OriginalCtCode { get; set; }
 
         public string? OriginalValue { get; set; }
     }

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Net;
-using HotChocolate.AspNetCore;
-using HotChocolate.AspNetCore.Playground;
 using MdmService.Extensions;
 using MdmService.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -29,10 +25,12 @@ namespace MdmService
         public void ConfigureServices(IServiceCollection services)
         {
             // Setting for the release build for server
-            /*services.Configure<ForwardedHeadersOptions>(options =>
+            /*
+            services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
-            });*/
+            });
+            */
             
             services.AddApplicationServices(Configuration);
             
@@ -42,12 +40,11 @@ namespace MdmService
             {
                 options.AllowSynchronousIO = true;
             });
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "The ESBS REST API - MDM Documentation", Version = "v1" });
                 c.EnableAnnotations();
-                
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -61,14 +58,11 @@ namespace MdmService
                         Id = "Bearer"
                     }
                 };
-
                 c.AddSecurityDefinition("Bearer", securitySchema);
-
                 var securityRequirement = new OpenApiSecurityRequirement
                 {
                     { securitySchema, new[] { "Bearer" } }
                 };
-
                 c.AddSecurityRequirement(securityRequirement);
             });
             
@@ -82,10 +76,12 @@ namespace MdmService
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Setting for the release build for server
-            /*app.UseForwardedHeaders(new ForwardedHeadersOptions
+            /*
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });*/
+            });
+            */
             
             app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())
@@ -113,17 +109,6 @@ namespace MdmService
             app.UseAuthorization();
             
             app.UseCors("Open");
-            
-            app.UseEndpoints(x =>
-            {
-                x.MapGraphQL("/graphql/v1");
-            });
-            
-            app.UsePlayground(new PlaygroundOptions
-            {
-                QueryPath = "/graphql/v1",
-                Path = "/graphql/ui"
-            });
 
             app.UseEndpoints(endpoints =>
             {

@@ -10,6 +10,6 @@ namespace MdrService.Models.Elasticsearch.Study
         
         [Text(Name = "name")]
         #nullable enable
-        public string?Name { get; set; }
+        public string? Name { get; set; }
     }
 }

@@ -7,6 +7,5 @@ namespace MdrService.Interfaces
     public interface IRawQueryRepository
     {
         Task<BaseResponse> GetStudySearchResults(RawQueryRequest rawQueryRequest);
-        Task<BaseResponse> GetObjectSearchResults(RawQueryRequest rawQueryRequest);
     }
 }

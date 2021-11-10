@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using HotChocolate.Data;
 
 #nullable enable
 namespace MdmService.DTO.Object
@@ -51,44 +50,24 @@ namespace MdmService.DTO.Object
         
         public DateTime? CreatedOn { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectContributorDto>? ObjectContributors { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectDatasetDto>? ObjectDatasets { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectDateDto>? ObjectDates { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectDescriptionDto>? ObjectDescriptions { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectIdentifierDto>? ObjectIdentifiers { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectInstanceDto>? ObjectInstances { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectRelationshipDto>? ObjectRelationships { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectRightDto>? ObjectRights { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectTitleDto>? ObjectTitles { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<ObjectTopicDto>? ObjectTopics { get; set; }
     }
 }

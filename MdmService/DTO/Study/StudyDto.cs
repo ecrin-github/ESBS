@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using HotChocolate.Data;
 
 #nullable enable
 namespace MdmService.DTO.Study
@@ -44,32 +43,18 @@ namespace MdmService.DTO.Study
         
         public string? CreatedOn { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<StudyContributorDto>? StudyContributors { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<StudyFeatureDto>? StudyFeatures { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<StudyIdentifierDto>? StudyIdentifiers { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<StudyReferenceDto>? StudyReferences { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<StudyRelationshipDto>? StudyRelationships { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<StudyTitleDto>? StudyTitles { get; set; }
         
-        [UseFiltering]
-        [UseSorting]
         public ICollection<StudyTopicDto>? StudyTopics { get; set; }
     }
 }
