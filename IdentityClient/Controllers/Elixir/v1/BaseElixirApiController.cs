@@ -4,7 +4,7 @@ namespace IdentityClient.Controllers.Elixir.v1
 {
     [ApiController]
     [Route("elixir")]
-    public class BaseElixirApiController
+    public class BaseElixirApiController : ControllerBase
     {
         
     }

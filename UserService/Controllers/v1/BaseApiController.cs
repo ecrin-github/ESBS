@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace UserService.Controllers.v1
 {
     [ApiController]
-    [Authorize("ClientIdPolicy")]
+    [Authorize]
     public class BaseApiController : ControllerBase
     {
         

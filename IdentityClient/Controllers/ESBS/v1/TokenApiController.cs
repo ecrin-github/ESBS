@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityClient.Configs;
 using IdentityClient.Contracts.Responses;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +12,12 @@ namespace IdentityClient.Controllers.ESBS.v1
     public class TokenApiController : BaseApiController
     {
         [HttpGet("token")]
-        [SwaggerOperation(Tags = new []{"The ESBS Token endpoints"})]
-        public async Task<IActionResult> UserLogin(string username, string password)
+        [SwaggerOperation(Tags = new []{"The ESBS Identity endpoints"})]
+        public async Task<IActionResult> GetAccessToken(string username, string password)
         {
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:7001");
+            var disco = await client.GetDiscoveryDocumentAsync(EsbsIdentityConfigs.EsbsIdentityServerUrl);
             if (disco.IsError)
             {
                 return Ok(new ApiResponse<DiscoveryDocumentResponse>
@@ -33,11 +32,11 @@ namespace IdentityClient.Controllers.ESBS.v1
             var tokenClient = await client.RequestPasswordTokenAsync(new PasswordTokenRequest()
             {
                 Address = disco.TokenEndpoint,
-                ClientId = "the_rms_client",
-                ClientSecret = "r6DBdwHD7OsnUq39p7u0ECw877YSfC7A",
+                ClientId = EsbsIdentityConfigs.EsbsClientId,
+                ClientSecret = EsbsIdentityConfigs.EsbsClientSecret,
                 UserName = username,
                 Password = password,
-                Scope = "openid profile email address mdmAPI rmsAPI userAPI roles"
+                Scope = EsbsIdentityConfigs.EsbsScope
             });
 
             if (tokenClient.IsError) return Ok(new ApiResponse<TokenResponse>

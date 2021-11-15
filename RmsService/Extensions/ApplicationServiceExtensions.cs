@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using RmsService.Configs;
 using RmsService.Helpers;
 using RmsService.Interfaces;
 using RmsService.Models.DbConnection;
@@ -28,18 +29,13 @@ namespace RmsService.Extensions
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:7001";
+                    options.Authority = ElixirIdentityConfigs.OidcUrl;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateAudience = false
                     };
                 });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "rmsClient", "the_rms_client"));
-            });
-
+            
             return services;
         }
     }

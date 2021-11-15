@@ -16,7 +16,6 @@ namespace MdrService.Extensions
             services.AddScoped<IDataMapper, DataMapper>();
             
             services.AddScoped<IQueryRepository, QueryRepository>();
-            services.AddScoped<IRawQueryRepository, RawQueryRepository>();
 
             return services;
         }

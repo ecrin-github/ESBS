@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityClient.Configs;
 using IdentityClient.Contracts.Responses;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Mvc;
@@ -13,12 +14,12 @@ namespace IdentityClient.Controllers.ESBS.v1
     public class UserApiController : BaseApiController
     {
         [HttpGet("user/login")]
-        [SwaggerOperation(Tags = new []{"The ESBS User endpoints"})]
+        [SwaggerOperation(Tags = new []{"The ESBS Identity endpoints"})]
         public async Task<IActionResult> UserLogin(string accessToken)
         {
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:7001");
+            var disco = await client.GetDiscoveryDocumentAsync(EsbsIdentityConfigs.EsbsIdentityServerUrl);
             if (disco.IsError)
             {
                 return Ok(new ApiResponse<DiscoveryDocumentResponse>

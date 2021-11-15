@@ -1,3 +1,4 @@
+using MdmService.Configs;
 using MdmService.Interfaces;
 using MdmService.Models.DbConnection;
 using MdmService.Repositories;
@@ -26,18 +27,13 @@ namespace MdmService.Extensions
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:7001";
+                    options.Authority = ElixirIdentityConfigs.OidcUrl;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateAudience = false
                     };
                 });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "mdmClient", "the_rms_client"));
-            });
-
+            
             return services;
         }
     }

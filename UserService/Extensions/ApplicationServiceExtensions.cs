@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using UserService.Configs;
 
 
 namespace UserService.Extensions
@@ -14,18 +15,13 @@ namespace UserService.Extensions
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:7001";
+                    options.Authority = ElixirIdentityConfigs.OidcUrl;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateAudience = false
                     };
                 });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "userAPI", "the_rms_client"));
-            });
-
+            
             return services;
         }
     }
