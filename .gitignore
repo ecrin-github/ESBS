@@ -20,12 +20,15 @@ IdentityServer/Models/DbConnection
 
 MdmService/appsettings.json
 MdmService/Models/DbConnection
+MdmService/Configs
 
 MdrService/appsettings.json
 
 
 RmsService/appsettings.json
 RmsService/Models/DbConnection
+RmsService/Configs
 
 UserService/appsettings.json
 UserService/Models/DbConnection
+UserService/Configs
