@@ -20,6 +20,7 @@ namespace ApiGateway
                         config.AddJsonFile("ocelot.json");
                     });
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:5000");
                 });
     }
 }

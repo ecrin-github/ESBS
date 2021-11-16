@@ -26,7 +26,7 @@ namespace MdrService
             // Setting for the release build for server
             /*services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.KnownProxies.Add(IPAddress.Parse("51.210.99.18"));
+                options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
             });*/
             
             services.AddApplicationServices(Configuration);
