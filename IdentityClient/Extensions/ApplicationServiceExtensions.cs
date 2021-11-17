@@ -1,4 +1,6 @@
 using IdentityClient.Configs;
+using IdentityClient.Interfaces;
+using IdentityClient.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,10 @@ namespace IdentityClient.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+            
+            services.AddScoped<IElixirRepository, ElixirRepository>();
+            services.AddScoped<IEsbsRepository, EsbsRepository>();
+            
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {

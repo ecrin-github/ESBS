@@ -36,8 +36,4 @@
       <Folder Include="Migrations" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\ContextService\ContextService.csproj" />
-    </ItemGroup>
-
 </Project>
