@@ -1,3 +1,4 @@
+using IdentityClient.Configs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,7 @@ namespace IdentityClient.Extensions
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:7001";
+                    options.Authority = ElixirIdentityConfigs.OidcUrl;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateAudience = false

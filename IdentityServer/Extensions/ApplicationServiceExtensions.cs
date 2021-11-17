@@ -39,7 +39,8 @@ namespace IdentityServer.Extensions
                 .AddInMemoryApiScopes(Scopes.GetApiScopes())
                 .AddTestUsers(TestUsers.Users)
                 // Prod settings
-                /*.AddAspNetIdentity<RmsUser>()
+                /*
+                .AddAspNetIdentity<RmsUser>()
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = builder => builder.UseNpgsql(identityConnectionString, 
@@ -53,7 +54,8 @@ namespace IdentityServer.Extensions
 
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
-                })*/
+                })
+                */
                 .AddDeveloperSigningCredential();
             
             return services;

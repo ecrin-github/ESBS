@@ -28,7 +28,7 @@ namespace IdentityClient.Controllers.Elixir.v1
                 ClientId = ElixirIdentityConfigs.ClientId,
                 GrantType = GrantType.AuthorizationCode,
                 Code = code,
-                RedirectUri = ElixirIdentityConfigs.RedirectUrlToIdentityCallback,
+                RedirectUri = ElixirIdentityConfigs.RedirectUrlToIdentityCallbackApiGateway,
             });
 
             if (response.IsError) return BadRequest(response);
@@ -51,7 +51,7 @@ namespace IdentityClient.Controllers.Elixir.v1
             var url = ru.CreateAuthorizeUrl(
                 clientId: ElixirIdentityConfigs.ClientId,
                 responseType: ElixirIdentityConfigs.Code,
-                redirectUri: ElixirIdentityConfigs.RedirectUrlToIdentityCallback,
+                redirectUri: ElixirIdentityConfigs.RedirectUrlToIdentityCallbackApiGateway,
                 scope: ElixirIdentityConfigs.Scope);
             
             return Ok(new ApiResponse<AuthStringResponse>

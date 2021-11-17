@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using ApiGateway.Configs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -41,17 +42,19 @@ namespace ApiGateway
         public void ConfigureServices(IServiceCollection services)
         {
             // Setting for the release build for server
-            /*services.Configure<ForwardedHeadersOptions>(options =>
+            /*
+            services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
-            });*/
+            });
+            */
             
             const string authenticationProviderKey = "IdentityApiKey";
 
             services.AddAuthentication().AddJwtBearer(
                 authenticationProviderKey, x =>
                 {
-                    x.Authority = "https://localhost:7001";
+                    x.Authority = ElixirIdentityConfigs.OidcUrl;
                     // x.RequireHttpsMetadata = false;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -68,10 +71,12 @@ namespace ApiGateway
         public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Setting for the release build for server
-            /*app.UseForwardedHeaders(new ForwardedHeadersOptions
+            /*
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });*/
+            });
+            */
             
             if (env.IsDevelopment())
             {

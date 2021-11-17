@@ -2,11 +2,10 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5010
+          "Host": "context.ecrin-rms.org"
         }
       ],
       "UpstreamPathTemplate": "/context/{everything}",
@@ -14,11 +13,10 @@
     },
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5020
+          "Host": "mdm.ecrin-rms.org"
         }
       ],
       "UpstreamPathTemplate": "/metadata-management/{everything}",
@@ -31,11 +29,10 @@
     },
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5100
+          "Host": "mdr.ecrin-rms.org"
         }
       ],
       "UpstreamPathTemplate": "/mdr/{everything}",
@@ -43,11 +40,10 @@
     },
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5030
+          "Host": "rms.ecrin-rms.org"
         }
       ],
       "UpstreamPathTemplate": "/rms/{everything}",
@@ -60,11 +56,10 @@
     },
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5040
+          "Host": "user.ecrin-rms.org"
         }
       ],
       "UpstreamPathTemplate": "/users/{everything}",
@@ -77,11 +72,10 @@
     },
     {
       "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5050
+          "Host": "identity.ecrin-rms.org"
         }
       ],
       "UpstreamPathTemplate": "/identity/{everything}",
@@ -98,7 +92,7 @@
         {
           "Name": "The ESBS Context API",
           "Version": "v1",
-          "Url": "http://localhost:5010/swagger/v1/swagger.json"
+          "Url": "https://context.ecrin-rms.org/swagger/v1/swagger.json"
         }
       ]
     },
@@ -111,7 +105,7 @@
         {
           "Name": "The ESBS MDM API",
           "Version": "v1",
-          "Url": "http://localhost:5020/swagger/v1/swagger.json"
+          "Url": "https://mdm.ecrin-rms.org/swagger/v1/swagger.json"
         }
       ]
     },
@@ -124,7 +118,7 @@
         {
           "Name": "The ESBS MDR API",
           "Version": "v1",
-          "Url": "http://localhost:5100/swagger/v1/swagger.json"
+          "Url": "https://mdr.ecrin-rms.org/swagger/v1/swagger.json"
         }
       ]
     },
@@ -137,7 +131,7 @@
         {
           "Name": "The ESBS RMS API",
           "Version": "v1",
-          "Url": "http://localhost:5030/swagger/v1/swagger.json"
+          "Url": "https://rms.ecrin-rms.org/swagger/v1/swagger.json"
         }
       ]
     },
@@ -150,7 +144,7 @@
         {
           "Name": "The ESBS User API",
           "Version": "v1",
-          "Url": "http://localhost:5040/swagger/v1/swagger.json"
+          "Url": "https://user.ecrin-rms.org/swagger/v1/swagger.json"
         }
       ]
     },
@@ -163,12 +157,12 @@
         {
           "Name": "The ESBS Identity API",
           "Version": "v1",
-          "Url": "http://localhost:5050/swagger/v1/swagger.json"
+          "Url": "https://identity.ecrin-rms.org/swagger/v1/swagger.json"
         }
       ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost"
+    "BaseUrl": "https://api.ecrin-rms.org"
   }
 }

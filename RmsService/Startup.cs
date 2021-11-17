@@ -25,10 +25,12 @@ namespace RmsService
         public void ConfigureServices(IServiceCollection services)
         {
             // Setting for the release build for server
-            /*services.Configure<ForwardedHeadersOptions>(options =>
+            /*
+            services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
-            });*/
+            });
+            */
             
             services.AddApplicationServices(Configuration);
             
@@ -75,10 +77,12 @@ namespace RmsService
         {
             
             // Setting for the release build for server
-            /*app.UseForwardedHeaders(new ForwardedHeadersOptions
+            /*
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });*/
+            });
+            */
             
             app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())
