@@ -6,6 +6,7 @@ riderModule.iml
 .idea
 
 ApiGateway/appsettings.json
+ApiGateway/Configs
 
 ContextService/appsettings.json
 ContextService/Models/DbConnection
