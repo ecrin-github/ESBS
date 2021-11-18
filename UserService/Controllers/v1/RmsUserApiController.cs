@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using UserService.Contracts.Requests;
 using UserService.Contracts.Responses;
 
 namespace UserService.Controllers.v1
@@ -11,8 +12,11 @@ namespace UserService.Controllers.v1
     {
         [HttpPost("data-transfers/accesses")]
         [SwaggerOperation(Tags = new []{"User RMS DTP endpoint"})]
-        public IActionResult GetUerDtpAccesses(AccessTokenRequest accessTokenRequest)
+        public async Task<IActionResult> GetUerDtpAccesses()
         {
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
             return NotFound(new ApiResponse<int>()
             {
                 Total = 0,
@@ -24,8 +28,11 @@ namespace UserService.Controllers.v1
         
         [HttpPost("data-transfers/processes")]
         [SwaggerOperation(Tags = new []{"User RMS DTP endpoint"})]
-        public IActionResult GetUerDtpProcesses(AccessTokenRequest accessTokenRequest)
+        public async Task<IActionResult> GetUerDtpProcesses()
         {
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
             return NotFound(new ApiResponse<int>()
             {
                 Total = 0,
@@ -37,8 +44,11 @@ namespace UserService.Controllers.v1
         
         [HttpPost("data-transfers/datasets")]
         [SwaggerOperation(Tags = new []{"User RMS DTP endpoint"})]
-        public IActionResult GetUerDtpDatasets(AccessTokenRequest accessTokenRequest)
+        public async Task<IActionResult> GetUerDtpDatasets()
         {
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
             return NotFound(new ApiResponse<int>()
             {
                 Total = 0,
@@ -50,8 +60,11 @@ namespace UserService.Controllers.v1
         
         [HttpPost("data-transfers/objects")]
         [SwaggerOperation(Tags = new []{"User RMS DTP endpoint"})]
-        public IActionResult GetUerDtpObjects(AccessTokenRequest accessTokenRequest)
+        public async Task<IActionResult> GetUerDtpObjects()
         {
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
             return NotFound(new ApiResponse<int>()
             {
                 Total = 0,
@@ -63,8 +76,11 @@ namespace UserService.Controllers.v1
         
         [HttpPost("data-transfers/studies")]
         [SwaggerOperation(Tags = new []{"User RMS DTP endpoint"})]
-        public IActionResult GetUerDtpStudies(AccessTokenRequest accessTokenRequest)
+        public async Task<IActionResult> GetUerDtpStudies()
         {
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
             return NotFound(new ApiResponse<int>()
             {
                 Total = 0,

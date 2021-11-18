@@ -33,6 +33,7 @@
 
     <ItemGroup>
       <Folder Include="Configs" />
+      <Folder Include="Models\Database\DbConnection" />
       <Folder Include="Models\Elasticsearch" />
     </ItemGroup>
 
