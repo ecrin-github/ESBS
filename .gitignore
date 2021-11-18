@@ -24,7 +24,7 @@ MdmService/Models/DbConnection
 MdmService/Configs
 
 MdrService/appsettings.json
-MdrService/Models/Database
+MdrService/Models/DbConnection
 
 RmsService/appsettings.json
 RmsService/Models/DbConnection
