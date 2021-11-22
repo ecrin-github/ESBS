@@ -1,572 +1,381 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using MdrService.Contracts.Responses.v1.Common;
 using MdrService.Contracts.Responses.v1.ObjectListResponse;
 using MdrService.Contracts.Responses.v1.StudyListResponse;
 using MdrService.Interfaces;
-using MdrService.Models.Elasticsearch.Object;
-using MdrService.Models.Elasticsearch.Study;
+using MdrService.Models.Object;
+using MdrService.Models.Study;
 
 
 namespace MdrService.Helpers
 {
     public class DataMapper : IDataMapper
     {
-        private static bool HasProperty(object obj, string propertyName)
+        private readonly IContextService _contextService;
+
+        public DataMapper(IContextService contextService)
         {
-            if (obj == null) return false;
-            return obj.GetType().GetProperty(propertyName) != null;
+            _contextService = contextService;
         }
 
-        private ICollection<StudyIdentifierListResponse> StudyIdentifierListResponseMapper(ICollection<StudyIdentifier> studyIdentifiers)
+        public async Task<ICollection<StudyFeatureListResponse>> MapStudyFeatures(ICollection<StudyFeature> studyFeatures)
         {
-            if (studyIdentifiers is not { Count: > 0 }) return null;
-            ICollection<StudyIdentifierListResponse> studyIdentifierListResponses =
-                new List<StudyIdentifierListResponse>();
-            
-            foreach (var studyIdentifier in studyIdentifiers)
-            {
-
-                string identifierType = null;
-                if (HasProperty(studyIdentifier, "IdentifierType"))
-                {
-                    if (HasProperty(studyIdentifier.IdentifierType, "Name"))
-                    {
-                        identifierType = studyIdentifier.IdentifierType?.Name;
-                    }
-                }
-
-                var studyIdentifierObject = new StudyIdentifierListResponse
-                {
-                    Id = studyIdentifier.Id,
-                    IdentifierValue = studyIdentifier.IdentifierValue,
-                    IdentifierType = identifierType,
-                    IdentifierDate = studyIdentifier.IdentifierDate,
-                    IdentifierLink = studyIdentifier.IdentifierLink,
-                    IdentifierOrg = studyIdentifier.IdentifierOrg
-                };
-                
-                studyIdentifierListResponses.Add(studyIdentifierObject);
-            }
-
-            return studyIdentifierListResponses;
-
-        }
-
-
-        private ICollection<StudyTitleListResponse> StudyTitleListResponseMapper(ICollection<StudyTitle> studyTitles)
-        {
-            if (studyTitles is not { Count: > 0 }) return null;
-            var studyTitleListResponses = new List<StudyTitleListResponse>();
-
-            foreach (var studyTitle in studyTitles)
-            {
-                
-                string titleType = null;
-                if (HasProperty(studyTitle, "TitleType"))
-                {
-                    if (HasProperty(studyTitle.TitleType, "Name"))
-                    {
-                        titleType = studyTitle.TitleType?.Name;
-                    }
-                }
-                
-                var studyTitleObject = new StudyTitleListResponse
-                {
-                    Id = studyTitle.Id,
-                    TitleType = titleType,
-                    TitleText = studyTitle.TitleText,
-                    LangCode = studyTitle.LangCode,
-                    Comments = studyTitle.Comments
-                };
-                studyTitleListResponses.Add(studyTitleObject);
-            }
-
-            return studyTitleListResponses;
-        }
-
-
-        private ICollection<StudyFeatureListResponse> StudyFeatureListResponseMapper(ICollection<StudyFeature> studyFeatures)
-        {
+            var studyFeaturesDto = new List<StudyFeatureListResponse>();
             if (studyFeatures is not { Count: > 0 }) return null;
-            var studyFeatureListResponses = new List<StudyFeatureListResponse>();
-
-            foreach (var studyFeature in studyFeatures)
+            foreach (var sf in studyFeatures)
             {
-                string featureType = null;
-                if (HasProperty(studyFeature, "FeatureType"))
+                var sfDto = new StudyFeatureListResponse()
                 {
-                    if (HasProperty(studyFeature.FeatureType, "Name"))
-                    {
-                        featureType = studyFeature.FeatureType?.Name;
-                    }
-                }
-                
-                string featureValue = null;
-                if (HasProperty(studyFeature, "FeatureValue"))
-                {
-                    if (HasProperty(studyFeature.FeatureValue, "Name"))
-                    {
-                        featureValue = studyFeature.FeatureValue?.Name;
-                    }
-                }
-                
-                var studyFeatureObject = new StudyFeatureListResponse
-                {
-                    Id = studyFeature.Id,
-                    FeatureType = featureType,
-                    FeatureValue = featureValue
+                    Id = sf.Id,
+                    FeatureType = await _contextService.GetFeatureType(sf.FeatureTypeId),
+                    FeatureValue = await _contextService.GetFeatureValue(sf.FeatureValueId)
                 };
-                studyFeatureListResponses.Add(studyFeatureObject);
+                studyFeaturesDto.Add(sfDto);
             }
 
-            return studyFeatureListResponses;
+            return studyFeaturesDto;
         }
 
-        private ICollection<StudyTopicListResponse> StudyTopicResponseMapper(ICollection<StudyTopic> studyTopics)
+        public async Task<ICollection<StudyIdentifierListResponse>> MapStudyIdentifiers(ICollection<StudyIdentifier> studyIdentifiers)
         {
+            var studyIdentifiersDto = new List<StudyIdentifierListResponse>();
+            if (studyIdentifiers is not { Count: > 0 }) return null;
+            foreach (var si in studyIdentifiers)
+            {
+                var siDto = new StudyIdentifierListResponse()
+                {
+                    Id = si.Id,
+                    IdentifierValue = si.IdentifierValue,
+                    IdentifierType = await _contextService.GetIdentifierType(si.IdentifierTypeId),
+                    IdentifierDate = si.IdentifierDate,
+                    IdentifierLink = si.IdentifierLink,
+                    IdentifierOrg = new IdentifierOrg()
+                    {
+                        Id = si.IdentifierOrgId,
+                        Name = si.IdentifierOrg,
+                        RorId = si.IdentifierOrgRorId
+                    }
+                };
+                studyIdentifiersDto.Add(siDto);
+            }
+
+            return studyIdentifiersDto;
+        }
+
+        public async Task<ICollection<StudyRelationListResponse>> MapStudyRelationships(ICollection<StudyRelationship> studyRelationships)
+        {
+            var studyRelationsDto = new List<StudyRelationListResponse>();
+            if (studyRelationships is not { Count: > 0 }) return null;
+            foreach (var sr in studyRelationships)
+            {
+                var srDto = new StudyRelationListResponse()
+                {
+                    Id = sr.Id,
+                    RelationshipType = await _contextService.GetStudyRelationshipType(sr.RelationshipTypeId),
+                    TargetStudyId = sr.TargetStudyId
+                };
+                studyRelationsDto.Add(srDto);
+            }
+
+            return studyRelationsDto;
+        }
+
+        public async Task<ICollection<StudyTitleListResponse>> MapStudyTitles(ICollection<StudyTitle> studyTitles)
+        {
+            var studyTitlesDto = new List<StudyTitleListResponse>();
+            if (studyTitles is not { Count: > 0 }) return null;
+            foreach (var st in studyTitles)
+            {
+                var stDto = new StudyTitleListResponse()
+                {
+                    Id = st.Id,
+                    TitleType = await _contextService.GetTitleType(st.TitleTypeId),
+                    TitleText = st.TitleText,
+                    LangCode = st.LangCode,
+                    Comments = st.Comments
+                };
+                studyTitlesDto.Add(stDto);
+            }
+            
+            return studyTitlesDto;
+        }
+
+        public async Task<ICollection<StudyTopicListResponse>> MapStudyTopics(ICollection<StudyTopic> studyTopics)
+        {
+            var studyTopicsDto = new List<StudyTopicListResponse>();
             if (studyTopics is not { Count: > 0 }) return null;
-            var studyTopicListResponses = new List<StudyTopicListResponse>();
-
-            foreach (var studyTopic in studyTopics)
+            foreach (var st in studyTopics)
             {
-                string topicType = null;
-                if (HasProperty(studyTopic, "TopicType"))
+                var stDto = new StudyTopicListResponse()
                 {
-                    if (HasProperty(studyTopic.TopicType, "Name"))
-                    {
-                        topicType = studyTopic.TopicType?.Name;
-                    }
-                }
-                
-                var studyTopicObject = new StudyTopicListResponse
-                {
-                    Id = studyTopic.Id,
-                    TopicType = topicType,
-                    MeshCoded = studyTopic.MeshCoded,
-                    MeshCode = studyTopic.MeshCode,
-                    MeshValue = studyTopic.MeshValue,
-                    OriginalCtId = studyTopic.OriginalCtId,
-                    OriginalCtCode = studyTopic.OriginalCtCode,
-                    OriginalValue = studyTopic.OriginalValue
+                    Id = st.Id,
+                    TopicType = await _contextService.GetTopicType(st.TopicTypeId),
+                    MeshCoded = st.MeshCoded,
+                    MeshCode = st.MeshCode,
+                    MeshValue = st.MeshValue,
+                    OriginalCtId = st.OriginalCtId,
+                    OriginalCtCode = st.OriginalCtCode,
+                    OriginalValue = st.OriginalValue
                 };
-                studyTopicListResponses.Add(studyTopicObject);
+                studyTopicsDto.Add(stDto);
             }
             
-            return studyTopicListResponses;
+            return studyTopicsDto;
         }
+        
 
-
-        private ICollection<StudyRelationListResponse> StudyRelationListResponseMapper(
-            ICollection<StudyRelation> studyRelations)
+        public async Task<ICollection<ObjectContributorListResponse>> MapObjectContributors(ICollection<ObjectContributor> objectContributors)
         {
-            if (studyRelations is not { Count: > 0 }) return null;
-            var studyRelationListResponses = new List<StudyRelationListResponse>();
-
-            foreach (var studyRelation in studyRelations)
-            {
-                string relationName = null;
-                if (HasProperty(studyRelation, "RelationshipType"))
-                {
-                    if (HasProperty(studyRelation.RelationshipType, "Name"))
-                    {
-                        relationName = studyRelation.RelationshipType?.Name;
-                    }
-                }
-                
-                var studyRelationObject = new StudyRelationListResponse
-                {
-                    Id = studyRelation.Id,
-                    RelationshipType = relationName,
-                    TargetStudyId = studyRelation.TargetStudyId
-                };
-                studyRelationListResponses.Add(studyRelationObject);
-            }
-            
-            return studyRelationListResponses;
-        }
-
-
-        private static string ObjectUrlExtraction(ICollection<ObjectInstance> objectInstances)
-        {
-            string objectUrlString = null;
-            if (objectInstances is not { Count: > 0 and > 0 }) return null;
-            if (!string.IsNullOrEmpty(objectInstances.First().AccessDetails!.Url))
-            {
-                objectUrlString = objectInstances.First().AccessDetails!.Url;
-            }
-
-            return objectUrlString;
-        }
-
-
-        private ICollection<ObjectContributorListResponse> ObjectContributorListResponseMapper(ICollection<ObjectContributor> objectContributors)
-        {
+            var objectContributorsDto = new List<ObjectContributorListResponse>();
             if (objectContributors is not { Count: > 0 }) return null;
-            var objectContributorListResponses = new List<ObjectContributorListResponse>();
-
-            foreach (var objectContributor in objectContributors)
+            foreach (var oc in objectContributors)
             {
-                string contributorType = null;
-                if (HasProperty(objectContributor, "ContributionType"))
+                var ocDto = new ObjectContributorListResponse()
                 {
-                    if (HasProperty(objectContributor.ContributionType, "Name"))
+                    Id = oc.Id,
+                    ContributionType = await _contextService.GetContributionType(oc.ContribTypeId),
+                    IsIndividual = oc.IsIndividual,
+                    Organisation = new ContribOrg()
                     {
-                        contributorType = objectContributor.ContributionType?.Name;
+                        Id = oc.OrganisationId,
+                        Name = oc.OrganisationName,
+                        RorId = oc.OrganisationRorId
+                    },
+                    Person = new Person()
+                    {
+                        FamilyName = oc.PersonFamilyName,
+                        FullName = oc.PersonFullName,
+                        GivenName = oc.PersonGivenName,
+                        Orcid = oc.OrcidId,
+                        AffiliationString = oc.PersonAffiliation,
+                        AffiliationOrgId = null,
+                        AffiliationOrgName = null,
+                        AffiliationOrgRorId = null
                     }
-                }
-                
-                var objectContributorRecord = new ObjectContributorListResponse
-                {
-                    Id = objectContributor.Id,
-                    ContributionType = contributorType,
-                    IsIndividual = objectContributor.IsIndividual,
-                    Organisation = objectContributor.Organisation,
-                    Person = objectContributor.Person
                 };
-                objectContributorListResponses.Add(objectContributorRecord);
+                objectContributorsDto.Add(ocDto);
             }
 
-            return objectContributorListResponses;
+            return objectContributorsDto;
         }
-        
-        
-        private ICollection<ObjectDateListResponse> ObjectDateListResponseMapper(ICollection<ObjectDate> objectDates)
+
+        public async Task<DatasetRecordKeys> MapDatasetRecordKeys(ObjectDataset objectDataset)
         {
+            if (objectDataset == null) return null;
+            return new DatasetRecordKeys()
+            {
+                KeysTypeId = objectDataset.RecordKeysTypeId,
+                KeysType = await _contextService.GetRecordkeyType(objectDataset.RecordKeysTypeId),
+                KeysDetails = objectDataset.RecordKeysDetails
+            };
+        }
+
+        public async Task<DatasetDeidentLevel> MapDatasetDeidentLevel(ObjectDataset objectDataset)
+        {
+            if (objectDataset == null) return null;
+            return new DatasetDeidentLevel()
+            {
+                DeidentTypeId = objectDataset.DeidentTypeId,
+                DeidentType = await _contextService.GetDeidentType(objectDataset.DeidentTypeId),
+                DeidentDirect = objectDataset.DeidentDirect,
+                DeidentHipaa = objectDataset.DeidentHipaa,
+                DeidentDates = objectDataset.DeidentDates,
+                DeidentNonarr = objectDataset.DeidentNonarr,
+                DeidentKanon = objectDataset.DeidentKanon,
+                DeidentDetails = objectDataset.DeidentDetails
+            };
+        }
+
+        public async Task<DatasetConsent> MapDatasetConsent(ObjectDataset objectDataset)
+        {
+            if (objectDataset == null) return null;
+            return new DatasetConsent()
+            {
+                ConsentTypeId = objectDataset.ConsentTypeId,
+                ConsentType = await _contextService.GetConsentType(objectDataset.ConsentTypeId),
+                ConsentNoncommercial = objectDataset.ConsentNoncommercial,
+                ConsentGeogRestrict = objectDataset.ConsentGeogRestrict,
+                ConsentResearchType = objectDataset.ConsentResearchType,
+                ConsentGeneticOnly = objectDataset.ConsentGeneticOnly,
+                ConsentNoMethods = objectDataset.ConsentNoMethods,
+                ConsentsDetails = objectDataset.ConsentDetails
+            };
+        }
+
+        public async Task<ICollection<ObjectDateListResponse>> MapObjectDates(ICollection<ObjectDate> objectDates)
+        {
+            var objectDatesDto = new List<ObjectDateListResponse>();
             if (objectDates is not { Count: > 0 }) return null;
-            var objectDateListResponses = new List<ObjectDateListResponse>();
-            foreach (var objectDate in objectDates)
+            foreach (var od in objectDates)
             {
-                string dateType = null;
-                if (HasProperty(objectDate, "DateType"))
+                var odDto = new ObjectDateListResponse()
                 {
-                    if (HasProperty(objectDate.DateType, "name"))
+                    Id = od.Id,
+                    DateType = await _contextService.GetDateType(od.DateTypeId),
+                    DateIsRange = od.DateIsRange,
+                    DateAsString = od.DateAsString,
+                    StartDate = new Date()
                     {
-                        dateType = objectDate.DateType?.Name;
-                    }
-                }
-                
-                var objectDateRecord = new ObjectDateListResponse
-                {
-                    Id = objectDate.Id,
-                    DateType = dateType,
-                    DateIsRange = objectDate.DateIsRange,
-                    DateAsString = objectDate.DateAsString,
-                    StartDate = objectDate.StartDate,
-                    EndDate = objectDate.EndDate,
-                    Comments = objectDate.Comments
+                        Year = od.StartYear,
+                        Month = od.StartMonth,
+                        Day = od.StartDay
+                    },
+                    EndDate = new Date()
+                    {
+                        Year = od.EndYear,
+                        Month = od.EndMonth,
+                        Day = od.EndDay
+                    },
+                    Comments = null
                 };
-                objectDateListResponses.Add(objectDateRecord);
+                objectDatesDto.Add(odDto);
             }
-
-            return objectDateListResponses;
+            
+            return objectDatesDto;
         }
-        
-        
-        private ICollection<ObjectDescriptionListResponse> ObjectDescriptionListResponseMapper(ICollection<ObjectDescription> objectDescriptions)
+
+        public async Task<ICollection<ObjectDescriptionListResponse>> MapObjectDescriptions(ICollection<ObjectDescription> objectDescriptions)
         {
+            var objectDescriptionsDto = new List<ObjectDescriptionListResponse>();
             if (objectDescriptions is not { Count: > 0 }) return null;
-            var objectDescriptionListResponses = new List<ObjectDescriptionListResponse>();
-
-            foreach (var objectDescription in objectDescriptions)
+            foreach (var od in objectDescriptions)
             {
-                string descriptionType = null;
-                if (HasProperty(objectDescription, "DescriptionType"))
+                var odDto = new ObjectDescriptionListResponse()
                 {
-                    if (HasProperty(objectDescription.DescriptionType, "Name"))
-                    {
-                        descriptionType = objectDescription.DescriptionType?.Name;
-                    }
-                }
-                
-                var objectDescriptionRecord = new ObjectDescriptionListResponse
-                {
-                    Id = objectDescription.Id,
-                    DescriptionType = descriptionType,
-                    DescriptionLabel = objectDescription.DescriptionLabel,
-                    DescriptionText = objectDescription.DescriptionText,
-                    LangCode = objectDescription.LangCode
+                    Id = od.Id,
+                    DescriptionType = await _contextService.GetDescriptionType(od.DescriptionTypeId),
+                    DescriptionLabel = od.Label,
+                    DescriptionText = od.DescriptionText,
+                    LangCode = od.LangCode
                 };
-                objectDescriptionListResponses.Add(objectDescriptionRecord);
+                objectDescriptionsDto.Add(odDto);
             }
-            
-            return objectDescriptionListResponses;
+
+            return objectDescriptionsDto;
         }
-        
-        
-        private ICollection<ObjectIdentifierListResponse> ObjectIdentifierListResponseMapper(ICollection<ObjectIdentifier> objectIdentifiers)
+
+        public async Task<ICollection<ObjectIdentifierListResponse>> MapObjectIdentifiers(ICollection<ObjectIdentifier> objectIdentifiers)
         {
+            var objectIdentifiersDto = new List<ObjectIdentifierListResponse>();
             if (objectIdentifiers is not { Count: > 0 }) return null;
-            var objectIdentifierListResponses = new List<ObjectIdentifierListResponse>();
-
-            foreach (var objectIdentifier in objectIdentifiers)
+            foreach (var oi in objectIdentifiers)
             {
-                string identifierType = null;
-                if (HasProperty(objectIdentifier, "IdentifierType"))
+                var oiDto = new ObjectIdentifierListResponse()
                 {
-                    if (HasProperty(objectIdentifier.IdentifierType, "Name"))
+                    Id = oi.Id,
+                    IdentifierValue = oi.IdentifierValue,
+                    IdentifierType = await _contextService.GetIdentifierType(oi.IdentifierTypeId),
+                    IdentifierDate = oi.IdentifierDate,
+                    IdentifierOrg = new IdentifierOrg()
                     {
-                        identifierType = objectIdentifier.IdentifierType?.Name;
+                        Id = oi.IdentifierOrgId,
+                        Name = oi.IdentifierOrg,
+                        RorId = oi.IdentifierOrgRorId
                     }
-                }
-                
-                var objectIdentifierRecord = new ObjectIdentifierListResponse
-                {
-                    Id = objectIdentifier.Id,
-                    IdentifierValue = objectIdentifier.IdentifierValue,
-                    IdentifierType = identifierType,
-                    IdentifierDate = objectIdentifier.IdentifierDate,
-                    IdentifierOrg = objectIdentifier.IdentifierOrg
                 };
-                objectIdentifierListResponses.Add(objectIdentifierRecord);
+                objectIdentifiersDto.Add(oiDto);
             }
 
-            return objectIdentifierListResponses;
+            return objectIdentifiersDto;
         }
-        
-        
-        private ICollection<ObjectInstanceListResponse> ObjectInstanceListResponseMapper(ICollection<ObjectInstance> objectInstances)
+
+        public async Task<ICollection<ObjectInstanceListResponse>> MapObjectInstances(ICollection<ObjectInstance> objectInstances)
         {
+            var objectInstancesDto = new List<ObjectInstanceListResponse>();
             if (objectInstances is not { Count: > 0 }) return null;
-
-            var objectInstanceListResponses = new List<ObjectInstanceListResponse>();
-
-            foreach (var objectInstance in objectInstances)
+            foreach (var oi in objectInstances)
             {
-                string repositoryOrg = null;
-                if (HasProperty(objectInstance, "RepositoryOrg"))
+                var oiDto = new ObjectInstanceListResponse()
                 {
-                    if (HasProperty(objectInstance.RepositoryOrg, "Name"))
+                    Id = oi.Id,
+                    RepositoryOrg = oi.RepositoryOrg,
+                    AccessDetails = new InstanceAccessDetails()
                     {
-                        repositoryOrg = objectInstance.RepositoryOrg?.Name;
+                        DirectAccess = oi.UrlAccessible,
+                        Url = oi.Url,
+                        UrlLastChecked = oi.UrlLastChecked.ToString()
+                    },
+                    ResourceDetails = new InstanceResourceDetails()
+                    {
+                        TypeId = oi.ResourceTypeId,
+                        TypeName = await _contextService.GetResourceType(oi.ResourceTypeId),
+                        Size = oi.ResourceSize,
+                        SizeUnit = oi.ResourceSizeUnits,
+                        Comments = oi.ResourceComments
                     }
-                }
-                
-                var objectInstanceRecord = new ObjectInstanceListResponse
-                {
-                    Id = objectInstance.Id,
-                    RepositoryOrg = repositoryOrg,
-                    AccessDetails = objectInstance.AccessDetails,
-                    ResourceDetails = objectInstance.ResourceDetails
                 };
-                objectInstanceListResponses.Add(objectInstanceRecord);
+                objectInstancesDto.Add(oiDto);
             }
 
-            return objectInstanceListResponses;
+            return objectInstancesDto;
         }
-        
-        
-        private ICollection<ObjectRelationshipListResponse> ObjectRelationshipListResponseMapper(ICollection<ObjectRelationship> objectRelationships)
+
+        public async Task<ICollection<ObjectRelationshipListResponse>> MapObjectRelationships(ICollection<ObjectRelationship> objectRelationships)
         {
+            var objectRelationsDto = new List<ObjectRelationshipListResponse>();
             if (objectRelationships is not { Count: > 0 }) return null;
-            var objectRelationshipListResponses = new List<ObjectRelationshipListResponse>();
-
-            foreach (var objectRelation in objectRelationships)
+            foreach (var or in objectRelationships)
             {
-                string relationName = null;
-                if (HasProperty(objectRelation, "RelationshipType"))
+                var orDto = new ObjectRelationshipListResponse()
                 {
-                    if (HasProperty(objectRelation.RelationshipType, "Name"))
-                    {
-                        relationName = objectRelation.RelationshipType?.Name;
-                    }
-                }
-                
-                var objectRelationRecord = new ObjectRelationshipListResponse
-                {
-                    Id = objectRelation.Id,
-                    RelationshipType = relationName,
-                    TargetObjectId = objectRelation.TargetObjectId
+                    Id = or.Id,
+                    RelationshipType = await _contextService.GetObjectRelationshipType(or.RelationshipTypeId),
+                    TargetObjectId = or.TargetObjectId
                 };
-                objectRelationshipListResponses.Add(objectRelationRecord);
+                objectRelationsDto.Add(orDto);
             }
-            
-            return objectRelationshipListResponses;
+
+            return objectRelationsDto;
         }
-        
-        
-        private ICollection<ObjectRightListResponse> ObjectRightListResponseMapper(ICollection<ObjectRight> objectRights)
+
+        public ICollection<ObjectRightListResponse> MapObjectRights(ICollection<ObjectRight> objectRights)
         {
-            return objectRights is not { Count: > 0 } ? null : objectRights.Select(objectRight => new ObjectRightListResponse { Id = objectRight.Id, RightsName = objectRight.RightsName, RightsUrl = objectRight.RightsUrl, Comments = objectRight.Comments }).ToList();
+            return objectRights is not { Count: > 0 } ? null : objectRights.Select(or => new ObjectRightListResponse() { Id = or.Id, RightsName = or.RightsName, RightsUrl = or.RightsUri, Comments = or.Comments }).ToList();
         }
-        
-        
-        private ICollection<ObjectTitleListResponse> ObjectTitleListResponseMapper(ICollection<ObjectTitle> objectTitles)
+
+        public async Task<ICollection<ObjectTitleListResponse>> MapObjectTitles(ICollection<ObjectTitle> objectTitles)
         {
+            var objectTitlesDto = new List<ObjectTitleListResponse>();
             if (objectTitles is not { Count: > 0 }) return null;
-            var objectTitleListResponses = new List<ObjectTitleListResponse>();
-
-            foreach (var objectTitle in objectTitles)
+            foreach (var ot in objectTitles)
             {
-                string titleType = null;
-                if (HasProperty(objectTitle, "TitleType"))
+                var otDto = new ObjectTitleListResponse()
                 {
-                    if (HasProperty(objectTitle.TitleType, "Name"))
-                    {
-                        titleType = objectTitle.TitleType?.Name;
-                    }
-                }
-                
-                var objectTitleRecord = new ObjectTitleListResponse
-                {
-                    Id = objectTitle.Id,
-                    TitleType = titleType,
-                    TitleText = objectTitle.TitleText,
-                    LangCode = objectTitle.LangCode,
-                    Comments = objectTitle.Comments
+                    Id = ot.Id,
+                    TitleType = await _contextService.GetTitleType(ot.TitleTypeId),
+                    TitleText = ot.TitleText,
+                    LangCode = ot.LangCode,
+                    Comments = ot.Comments
                 };
-                objectTitleListResponses.Add(objectTitleRecord);
+                objectTitlesDto.Add(otDto);
             }
 
-            return objectTitleListResponses;
+            return objectTitlesDto;
         }
-        
-        
-        private ICollection<ObjectTopicListResponse> ObjectTopicListResponseMapper(ICollection<ObjectTopic> objectTopics)
+
+        public async Task<ICollection<ObjectTopicListResponse>> MapObjectTopics(ICollection<ObjectTopic> objectTopics)
         {
+            var objectTopicsDto = new List<ObjectTopicListResponse>();
             if (objectTopics is not { Count: > 0 }) return null;
-            var objectTopicListResponses = new List<ObjectTopicListResponse>();
-
-            foreach (var objectTopic in objectTopics)
+            foreach (var ot in objectTopics)
             {
-                string topicType = null;
-                if (HasProperty(objectTopic, "TopicType"))
+                var otDto = new ObjectTopicListResponse()
                 {
-                    if (HasProperty(objectTopic.TopicType, "Name"))
-                    {
-                        topicType = objectTopic.TopicType?.Name;
-                    }
-                }
-                
-                var objectTopicRecord = new ObjectTopicListResponse
-                {
-                    Id = objectTopic.Id,
-                    TopicType = topicType,
-                    MeshCoded = objectTopic.MeshCoded,
-                    MeshCode = objectTopic.MeshCode,
-                    MeshValue = objectTopic.MeshValue,
-                    OriginalCtId = objectTopic.OriginalCtId,
-                    OriginalCtCode = objectTopic.OriginalCtCode,
-                    OriginalValue = objectTopic.OriginalValue
+                    Id = ot.Id,
+                    TopicType = await _contextService.GetTopicType(ot.TopicTypeId),
+                    MeshCoded = ot.MeshCoded,
+                    MeshCode = ot.MeshCode,
+                    MeshValue = ot.MeshValue,
+                    OriginalCtId = ot.OriginalCtId,
+                    OriginalCtCode = ot.OriginalCtCode,
+                    OriginalValue = ot.OriginalValue
                 };
-                objectTopicListResponses.Add(objectTopicRecord);
+                objectTopicsDto.Add(otDto);
             }
 
-            return objectTopicListResponses;
+            return objectTopicsDto;
         }
-
-
-        private ICollection<ObjectListResponse> ObjectListResponseMapper(ICollection<Object> objects)
-        {
-            if (objects is not { Count: > 0 }) return null;
-            var objectListResponses = new List<ObjectListResponse>();
-
-            foreach (var objectRecord in objects)
-            {
-                
-                string objectType = null;
-                if (HasProperty(objectRecord, "ObjectType"))
-                {
-                    if (HasProperty(objectRecord.ObjectType, "Name"))
-                    {
-                        objectType = objectRecord.ObjectType?.Name;
-                    }
-                }
-                
-                string objectClass = null;
-                if (HasProperty(objectRecord, "ObjectClass"))
-                {
-                    if (HasProperty(objectRecord.ObjectClass, "Name"))
-                    {
-                        objectClass = objectRecord.ObjectClass?.Name;
-                    }
-                }
-                
-                var objectDto = new ObjectListResponse
-                {
-                    Id = objectRecord.Id,
-                    Doi = objectRecord.Doi,
-                    DisplayTitle = objectRecord.DisplayTitle,
-                    Version = objectRecord.Version,
-                    ObjectClass = objectClass,
-                    ObjectType = objectType,
-                    ObjectUrl = ObjectUrlExtraction(objectRecord.ObjectInstances),
-                    PublicationYear = objectRecord.PublicationYear,
-                    LangCode = objectRecord.LangCode,
-                    ManagingOrganisation = objectRecord.ManagingOrganisation,
-                    AccessType = objectRecord.AccessType?.Name,
-                    AccessDetails = objectRecord.AccessDetails,
-                    EoscCategory = objectRecord.EoscCategory,
-                    DatasetRecordKeys = objectRecord.DatasetRecordKeys,
-                    DatasetConsent = objectRecord.DatasetConsent,
-                    DatasetDeidentLevel = objectRecord.DatasetDeidentLevel,
-                    ObjectInstances = ObjectInstanceListResponseMapper(objectRecord.ObjectInstances),
-                    ObjectTitles = ObjectTitleListResponseMapper(objectRecord.ObjectTitles),
-                    ObjectDates = ObjectDateListResponseMapper(objectRecord.ObjectDates),
-                    ObjectContributors = ObjectContributorListResponseMapper(objectRecord.ObjectContributors),
-                    ObjectTopics = ObjectTopicListResponseMapper(objectRecord.ObjectTopics),
-                    ObjectIdentifiers = ObjectIdentifierListResponseMapper(objectRecord.ObjectIdentifiers),
-                    ObjectDescriptions = ObjectDescriptionListResponseMapper(objectRecord.ObjectDescriptions),
-                    ObjectRights = ObjectRightListResponseMapper(objectRecord.ObjectRights),
-                    ObjectRelationships = ObjectRelationshipListResponseMapper(objectRecord.ObjectRelationships),
-                    LinkedStudies = objectRecord.LinkedStudies,
-                    ProvenanceString = objectRecord.ProvenanceString
-                };
-                objectListResponses.Add(objectDto);
-            }
-
-            return objectListResponses;
-        }
-
-
-        public List<StudyListResponse> MapStudies(IEnumerable<Study> studies)
-        {
-            var studiesDto = new List<StudyListResponse>();
-            foreach (var study in studies)
-            {
-                MinAgeResponse minAgeResponse = null;
-                if (study.MinAge != null)
-                {
-                    minAgeResponse = new MinAgeResponse
-                    {
-                        Value = study.MinAge.Value,
-                        UnitName = study.MinAge.UnitName
-                    };
-                }
-
-                MaxAgeResponse maxAgeResponse = null;
-                if (study.MaxAge != null)
-                {
-                    maxAgeResponse = new MaxAgeResponse
-                    {
-                        Value = study.MaxAge.Value,
-                        UnitName = study.MaxAge.UnitName
-                    };
-                }
-            
-                var studyDto = new StudyListResponse
-                {
-                    Id = study.Id!,
-                    DisplayTitle = study.DisplayTitle,
-                    BriefDescription = study.BriefDescription,
-                    StudyType = study.StudyType?.Name,
-                    StudyStatus = study.StudyStatus?.Name,
-                    StudyGenderElig = study.StudyGenderElig?.Name,
-                    StudyEnrolment = study.StudyEnrolment,
-                    MinAge = minAgeResponse,
-                    MaxAge = maxAgeResponse,
-                    StudyIdentifiers = StudyIdentifierListResponseMapper(study.StudyIdentifiers),
-                    StudyTitles = StudyTitleListResponseMapper(study.StudyTitles),
-                    StudyFeatures = StudyFeatureListResponseMapper(study.StudyFeatures),
-                    StudyTopics = StudyTopicResponseMapper(study.StudyTopics),
-                    StudyRelationships = StudyRelationListResponseMapper(study.StudyRelationships),
-                    ProvenanceString = study.ProvenanceString,
-                    LinkedDataObjects = ObjectListResponseMapper(study.LinkedDataObjects),
-                };
-                studiesDto.Add(studyDto);
-            }
-            
-            return studiesDto;
-        }
-
     }
 }

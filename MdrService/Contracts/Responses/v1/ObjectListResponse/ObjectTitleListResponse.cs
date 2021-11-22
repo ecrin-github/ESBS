@@ -1,6 +1,6 @@
-#nullable enable
 namespace MdrService.Contracts.Responses.v1.ObjectListResponse
 {
+    #nullable enable
     public class ObjectTitleListResponse
     {
         public int? Id { get; set; }

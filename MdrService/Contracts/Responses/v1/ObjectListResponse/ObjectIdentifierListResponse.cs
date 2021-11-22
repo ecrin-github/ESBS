@@ -1,8 +1,8 @@
-using MdrService.Models.Elasticsearch.Common;
+using MdrService.Contracts.Responses.v1.Common;
 
-#nullable enable
 namespace MdrService.Contracts.Responses.v1.ObjectListResponse
 {
+    #nullable enable
     public class ObjectIdentifierListResponse
     {
         public int? Id { get; set; }

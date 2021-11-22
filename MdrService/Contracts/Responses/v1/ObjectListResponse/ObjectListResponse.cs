@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using MdrService.Models.Elasticsearch.Object;
+using MdrService.Contracts.Responses.v1.Common;
 
-#nullable enable
 namespace MdrService.Contracts.Responses.v1.ObjectListResponse
 {
+    #nullable enable
     public class ObjectListResponse
     {
         public int? Id { get; set; }
@@ -56,7 +56,7 @@ namespace MdrService.Contracts.Responses.v1.ObjectListResponse
         
         public ICollection<ObjectRelationshipListResponse>? ObjectRelationships { get; set; }
         
-        public int[]? LinkedStudies { get; set; }
+        public ICollection<int>? LinkedStudies { get; set; }
         
         public string? ProvenanceString { get; set; }
     }

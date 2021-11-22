@@ -2,11 +2,11 @@ namespace MdrService.Contracts.Routes.ApiRoutes.v1
 {
     public static class ApiRoutes
     {
-        private const string QueryRoot = "/es";
+        private const string QueryRoot = "/api";
 
         private const string QueryVersion = "/v1";
 
-        private const string QueryPath = "/query";
+        private const string QueryPath = "/search";
         
         private const string QueryBase = QueryRoot + QueryVersion + QueryPath;
 

@@ -1,6 +1,6 @@
-#nullable enable
 namespace MdrService.Contracts.Responses.v1.StudyListResponse
 {
+    #nullable enable
     public class StudyTitleListResponse
     {
         public int? Id { get; set; }

@@ -1,8 +1,8 @@
-using MdrService.Models.Elasticsearch.Object;
+using MdrService.Contracts.Responses.v1.Common;
 
-#nullable enable
 namespace MdrService.Contracts.Responses.v1.ObjectListResponse
 {
+    #nullable enable
     public class ObjectDateListResponse
     {
         public int? Id { get; set; }

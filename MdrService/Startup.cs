@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json.Serialization;
 using MdrService.Extensions;
 using MdrService.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +34,9 @@ namespace MdrService
             
             services.AddApplicationServices(Configuration);
             
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            
             services.AddCors();
 
             services.AddSwaggerGen(c =>

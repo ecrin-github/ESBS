@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-#nullable enable
 namespace MdrService.Contracts.Responses.v1.StudyListResponse
 {
+    #nullable enable
     public class StudyListResponse
     {
         public int? Id { get; set; }
@@ -14,12 +14,12 @@ namespace MdrService.Contracts.Responses.v1.StudyListResponse
         public string? StudyEnrolment { get; set; }
         public MinAgeResponse? MinAge { get; set; }
         public MaxAgeResponse? MaxAge { get; set; }
-        public ICollection<StudyIdentifierListResponse>? StudyIdentifiers { get; set; }
-        public ICollection<StudyTitleListResponse>? StudyTitles { get; set; }
-        public ICollection<StudyFeatureListResponse>? StudyFeatures { get; set; }
-        public ICollection<StudyTopicListResponse>? StudyTopics { get; set; }
-        public ICollection<StudyRelationListResponse>? StudyRelationships { get; set; }
+        public IEnumerable<StudyIdentifierListResponse>? StudyIdentifiers { get; set; }
+        public IEnumerable<StudyTitleListResponse>? StudyTitles { get; set; }
+        public IEnumerable<StudyFeatureListResponse>? StudyFeatures { get; set; }
+        public IEnumerable<StudyTopicListResponse>? StudyTopics { get; set; }
+        public IEnumerable<StudyRelationListResponse>? StudyRelationships { get; set; }
         public string? ProvenanceString { get; set; }
-        public ICollection<ObjectListResponse.ObjectListResponse>? LinkedDataObjects { get; set; }
+        public IEnumerable<ObjectListResponse.ObjectListResponse>? LinkedDataObjects { get; set; }
     }
 }
