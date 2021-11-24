@@ -28,78 +28,137 @@ namespace MdrService.Services
 
             return skip;
         }
-        
-        
+
+
         public async Task<ICollection<int>> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
         {
             var skip = CalculateSkip(page:specificStudyRequest.Page, size:specificStudyRequest.Size);
 
-            var query = _dbConnection.StudyIdentifiers.Where(
-                p => p.IdentifierTypeId.Equals(specificStudyRequest.SearchType) &&
-                     p.IdentifierValue.ToUpper().Equals(specificStudyRequest.SearchValue.ToUpper()))
-                .OrderBy(p => p.Id)
-                .Select(p => p.StudyId)
-                .Distinct()
-                .Skip(skip)
-                .Take(specificStudyRequest.Size);
+            var searchQuery = _dbConnection.StudyIdentifiers.Where(
+                    studyIdentifier => studyIdentifier.IdentifierTypeId.Equals(specificStudyRequest.SearchType) &&
+                                       studyIdentifier.IdentifierValue.ToUpper().Equals(specificStudyRequest.SearchValue.ToUpper()))
+                .Select(identifier => identifier.StudyId);
+            
+            var filtersRequest = specificStudyRequest.Filters;
 
-            return await query.ToArrayAsync();
+            var studyFilterQuery = _dbConnection.Studies
+                .Where(study => !filtersRequest.StudyTypes.Contains(study.StudyTypeId)
+                                && !filtersRequest.StudyStatuses.Contains(study.StudyStatusId)
+                                && !filtersRequest.StudyGenderEligibility.Contains(study.StudyGenderEligId)).Select(study => study.Id);
+
+            var studyFeatureFilterQuery = _dbConnection.StudyFeatures
+                .Where(sf => !filtersRequest.StudyFeatureValues.Contains(sf.FeatureValueId)).Select(sf => sf.StudyId);
+
+            var dataObjectFilterQuery = _dbConnection.DataObjects
+                .Where(dataObject => !filtersRequest.ObjectTypes.Contains(dataObject.ObjectTypeId)
+                                     && !filtersRequest.ObjectAccessTypes.Contains(dataObject.AccessTypeId)).Select(o => o.Id);
+            
+            var query = _dbConnection.StudyObjectLinks
+                .Where(link => searchQuery.Contains(link.StudyId)
+                               && studyFilterQuery.Contains(link.StudyId)
+                               && studyFeatureFilterQuery.Contains(link.StudyId) 
+                               && dataObjectFilterQuery.Contains(link.ObjectId));
+
+            var orderedQuery = query.OrderBy(arg => arg.StudyId);
+            
+            var selectRes = orderedQuery
+                .Select(t => t.StudyId)
+                .Distinct()
+                .Skip(skip).Take(specificStudyRequest.Size);
+            
+            return await selectRes.ToArrayAsync();
         }
 
         public async Task<ICollection<int>> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
         {
+            // Get skip
             var skip = CalculateSkip(page:studyCharacteristicsRequest.Page, size:studyCharacteristicsRequest.Size);
-            
-            var query = _dbConnection.StudyTitles.Join(
+
+            var joinQuery = _dbConnection.StudyTitles.Join(
                 _dbConnection.StudyTopics,
                 title => title.StudyId,
                 topic => topic.StudyId,
-                (title, topic) => new {title, topic}
-                );
+                (title, topic) => new
+                {
+                    title.StudyId,
+                    title.TitleText,
+                    topic.OriginalValue
+                });
 
             if (!string.IsNullOrEmpty(studyCharacteristicsRequest.TitleContains))
             {
-                query = query.Where(arg => arg.title.TitleText.ToLower().Contains(studyCharacteristicsRequest.TitleContains.ToLower()));
+                joinQuery = joinQuery.Where(arg => arg.TitleText.ToLower().Contains(studyCharacteristicsRequest.TitleContains.ToLower()));
             }
             
             if (!string.IsNullOrEmpty(studyCharacteristicsRequest.TopicsInclude))
             {
-                query = query.Where(arg => arg.topic.OriginalValue.ToLower().Contains(studyCharacteristicsRequest.TopicsInclude.ToLower()));
+                joinQuery = joinQuery.Where(arg => arg.OriginalValue.ToLower().Contains(studyCharacteristicsRequest.TopicsInclude.ToLower()));
             }
 
-            var orderedQuery = query.OrderBy(arg => arg.title.Id);
+            var joinQueryStudyIds = joinQuery.Select(args => args.StudyId);
+
+            // Get filters
+            var filtersRequest = studyCharacteristicsRequest.Filters;
+            
+            var studyFilterQuery = _dbConnection.Studies
+                .Where(study => !filtersRequest.StudyTypes.Contains(study.StudyTypeId)
+                                && !filtersRequest.StudyStatuses.Contains(study.StudyStatusId)
+                                && !filtersRequest.StudyGenderEligibility.Contains(study.StudyGenderEligId)).Select(study => study.Id);
+
+            var studyFeatureFilterQuery = _dbConnection.StudyFeatures
+                .Where(sf => !filtersRequest.StudyFeatureValues.Contains(sf.FeatureValueId)).Select(sf => sf.StudyId);
+
+            var dataObjectFilterQuery = _dbConnection.DataObjects
+                .Where(dataObject => !filtersRequest.ObjectTypes.Contains(dataObject.ObjectTypeId)
+                && !filtersRequest.ObjectAccessTypes.Contains(dataObject.AccessTypeId)).Select(o => o.Id);
+
+            var query = _dbConnection.StudyObjectLinks
+                            .Where(link => joinQueryStudyIds.Contains(link.StudyId)
+                                           && studyFilterQuery.Contains(link.StudyId)
+                                           && studyFeatureFilterQuery.Contains(link.StudyId) 
+                                           && dataObjectFilterQuery.Contains(link.ObjectId));
+
+            var orderedQuery = query.OrderBy(arg => arg.StudyId);
             
             var selectRes = orderedQuery
-                .Select(t => t.title.StudyId)
+                .Select(t => t.StudyId)
                 .Distinct()
                 .Skip(skip).Take(studyCharacteristicsRequest.Size);
-
+            
             return await selectRes.ToArrayAsync();
+
         }
 
         public async Task<ICollection<int>> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
         {
+
             var skip = CalculateSkip(page:viaPublishedPaperRequest.Page, size:viaPublishedPaperRequest.Size);
 
+            // Get filters
+            var filtersRequest = viaPublishedPaperRequest.Filters;
+            
+            var studyFilterQuery = _dbConnection.Studies
+                .Where(study => !filtersRequest.StudyTypes.Contains(study.StudyTypeId)
+                                && !filtersRequest.StudyStatuses.Contains(study.StudyStatusId)
+                                && !filtersRequest.StudyGenderEligibility.Contains(study.StudyGenderEligId)).Select(study => study.Id);
+
+            var studyFeatureFilterQuery = _dbConnection.StudyFeatures
+                .Where(sf => !filtersRequest.StudyFeatureValues.Contains(sf.FeatureValueId)).Select(sf => sf.StudyId);
+
+            var dataObjectFilterQuery = _dbConnection.DataObjects
+                .Where(dataObject => !filtersRequest.ObjectTypes.Contains(dataObject.ObjectTypeId)
+                                     && !filtersRequest.ObjectAccessTypes.Contains(dataObject.AccessTypeId)).Select(o => o.Id);
+            
+            
             if (viaPublishedPaperRequest.SearchType == "doi")
             {
-                /*
-                var query = _dbConnection.DataObjects.Where(p => p.Doi.Equals(viaPublishedPaperRequest.SearchValue));
-                var orderedQuery = query.OrderBy(p => p.Id);
-                var selectRes = orderedQuery.Select(p => p.Id)
-                    .Distinct()
-                    .Skip(skip)
-                    .Take(viaPublishedPaperRequest.Size);
-                
-                return await selectRes.ToArrayAsync();
-                */
-
                 var query = _dbConnection.StudyObjectLinks.Where(p =>
-                    p.ObjectId.Equals(
-                        _dbConnection.DataObjects
-                            .FirstOrDefault(
-                                dataObject => 
-                                    dataObject.Doi.Equals(viaPublishedPaperRequest.SearchValue)).Id));
+                    _dbConnection.DataObjects
+                        .Where(dataObject => dataObject.Doi.Contains(viaPublishedPaperRequest.SearchValue))
+                        .Select(o => o.Id).Contains(p.ObjectId)
+                                             && studyFilterQuery.Contains(p.StudyId)
+                                             && studyFeatureFilterQuery.Contains(p.StudyId) 
+                                             && dataObjectFilterQuery.Contains(p.ObjectId));
                 
                 var orderedQuery = query.OrderBy(p => p.Id);
                 var selectRes = orderedQuery.Select(p => p.StudyId)
@@ -111,22 +170,13 @@ namespace MdrService.Services
             }
             else
             {
-                /*
-                var query = _dbConnection.ObjectTitles.Where(p => p.TitleText.ToLower().Contains(viaPublishedPaperRequest.SearchValue));
-                var orderedQuery = query.OrderBy(p => p.ObjectId);
-                var selectRes = orderedQuery.Select(p => p.Id)
-                    .Distinct()
-                    .Skip(skip)
-                    .Take(viaPublishedPaperRequest.Size);
-
-                return await selectRes.ToArrayAsync();
-                */
                 var query = _dbConnection.StudyObjectLinks.Where(
-                    link => _dbConnection.ObjectTitles
-                        .Where(ot => 
-                            ot.TitleText.ToLower()
+                    link => _dbConnection.ObjectTitles.Where(ot => ot.TitleText.ToLower()
                                 .Contains(viaPublishedPaperRequest.SearchValue.ToLower()))
-                        .Select(title => title.ObjectId).ToArray().Contains(link.ObjectId));
+                        .Select(title => title.ObjectId).Contains(link.ObjectId)
+                    && studyFilterQuery.Contains(link.StudyId)
+                       && studyFeatureFilterQuery.Contains(link.StudyId) 
+                       && dataObjectFilterQuery.Contains(link.ObjectId));
                 
                 var orderedQuery = query.OrderBy(p => p.StudyId);
                 var selectRes = orderedQuery.Select(p => p.StudyId)

@@ -15,9 +15,9 @@ namespace MdrService.Models.Study
         public int StudyId { get; set; }
         
         [Column("feature_type_id")]
-        public int? FeatureTypeId { get; set; }
+        public int FeatureTypeId { get; set; }
 
         [Column("feature_value_id")]
-        public int? FeatureValueId { get; set; }
+        public int FeatureValueId { get; set; }
     }
 }

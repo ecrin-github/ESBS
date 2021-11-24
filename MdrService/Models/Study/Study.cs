@@ -30,16 +30,16 @@ namespace MdrService.Models.Study
         public int? StudyStartMonth { get; set; }
         
         [Column("study_type_id")]
-        public int? StudyTypeId { get; set; }
+        public int StudyTypeId { get; set; }
         
         [Column("study_status_id")]
-        public int? StudyStatusId { get; set; }
+        public int StudyStatusId { get; set; }
         
         [Column("study_enrolment")]
         public string? StudyEnrolment { get; set; }
         
         [Column("study_gender_elig_id")]
-        public int? StudyGenderEligId { get; set; }
+        public int StudyGenderEligId { get; set; }
         
         [Column("min_age")]
         public int? MinAge { get; set; }

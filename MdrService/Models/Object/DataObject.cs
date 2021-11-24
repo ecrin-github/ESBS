@@ -31,7 +31,7 @@ namespace MdrService.Models.Object
         public int? ObjectClassId { get; set; }
         
         [Column("object_type_id")]
-        public int? ObjectTypeId { get; set; }
+        public int ObjectTypeId { get; set; }
         
         [Column("managing_org_id")]
         public int? ManagingOrgId { get; set; }
@@ -46,7 +46,7 @@ namespace MdrService.Models.Object
         public string? LangCode { get; set; }
         
         [Column("access_type_id")]
-        public int? AccessTypeId { get; set; }
+        public int AccessTypeId { get; set; }
         
         [Column("access_details")]
         public string? AccessDetails { get; set; }

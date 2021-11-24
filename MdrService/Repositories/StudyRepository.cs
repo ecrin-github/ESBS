@@ -19,6 +19,7 @@ namespace MdrService.Repositories
         
         public async Task<Study> GetStudyById(int? id)
         {
+            if (id == null) return null;
             return await _dbConnection.Studies.FirstOrDefaultAsync(p => p.Id == id);
         }
 
