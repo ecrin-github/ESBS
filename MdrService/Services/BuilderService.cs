@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,18 +21,22 @@ namespace MdrService.Services
 
         private readonly ILinksRepository _linksRepository;
 
+        private readonly ILupRepository _lupRepository;
+
         public BuilderService(
             IDataMapper dataMapper,
             IContextService context,
             IStudyRepository studyRepository,
             IObjectRepository objectRepository,
-            ILinksRepository linksRepository)
+            ILinksRepository linksRepository,
+            ILupRepository lupRepository)
         {
-            _dataMapper = dataMapper;
-            _context = context;
-            _studyRepository = studyRepository;
-            _objectRepository = objectRepository;
-            _linksRepository = linksRepository;
+            _dataMapper = dataMapper ?? throw new ArgumentNullException(nameof(dataMapper));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _studyRepository = studyRepository ?? throw new ArgumentNullException(nameof(studyRepository));
+            _objectRepository = objectRepository ?? throw new ArgumentNullException(nameof(objectRepository));
+            _linksRepository = linksRepository ?? throw new ArgumentNullException(nameof(linksRepository));
+            _lupRepository = lupRepository ?? throw new ArgumentNullException(nameof(lupRepository));
         }
         
         public async Task<StudyListResponse> BuildSingleStudyResponse(Study study)
@@ -40,14 +45,14 @@ namespace MdrService.Services
             if (study.MinAge != null && study.MinAgeUnitsId != null)
             {
                 minAge.Value = study.MinAge;
-                minAge.UnitName = await _context.GetTimeUnitType(study.MinAgeUnitsId);
+                minAge.UnitName = await _lupRepository.GetTimeUnit(study.MinAgeUnitsId);
             }
 
             var maxAge = new MaxAgeResponse();
             if (study.MaxAge != null && study.MaxAgeUnitsId != null)
             {
                 maxAge.Value = study.MaxAge;
-                maxAge.UnitName = await _context.GetTimeUnitType(study.MaxAgeUnitsId);
+                maxAge.UnitName = await _lupRepository.GetTimeUnit(study.MaxAgeUnitsId);
             }
             
             
@@ -56,9 +61,9 @@ namespace MdrService.Services
                 Id = study.Id,
                 DisplayTitle = study.DisplayTitle,
                 BriefDescription = study.BriefDescription,
-                StudyType = await _context.GetStudyType(study.StudyTypeId),
-                StudyStatus = await _context.GetStudyStatus(study.StudyStatusId),
-                StudyGenderElig = await _context.GetGenderElig(study.StudyGenderEligId),
+                StudyType = await _lupRepository.GetStudyType(study.StudyTypeId),
+                StudyStatus = await _lupRepository.GetStudyStatus(study.StudyStatusId),
+                StudyGenderElig = await _lupRepository.GetGenderEligType(study.StudyGenderEligId),
                 StudyEnrolment = study.StudyEnrolment,
                 MinAge = minAge,
                 MaxAge = maxAge,
@@ -114,8 +119,8 @@ namespace MdrService.Services
                 Doi = dataObject.Doi,
                 DisplayTitle = dataObject.DisplayTitle,
                 Version = dataObject.Version,
-                ObjectClass = await _context.GetObjectClass(dataObject.ObjectClassId),
-                ObjectType = await _context.GetObjectType(dataObject.ObjectTypeId),
+                ObjectClass = await _lupRepository.GetObjectClass(dataObject.ObjectClassId),
+                ObjectType = await _lupRepository.GetObjectType(dataObject.ObjectTypeId),
                 ObjectUrl = objectUrl,
                 PublicationYear = dataObject.PublicationYear,
                 LangCode = dataObject.LangCode,
@@ -125,7 +130,7 @@ namespace MdrService.Services
                     Name = dataObject.ManagingOrg,
                     RorId = dataObject.ManagingOrgRorId
                 },
-                AccessType = await _context.GetAccessType(dataObject.AccessTypeId),
+                AccessType = await _lupRepository.GetObjectAccessType(dataObject.AccessTypeId),
                 AccessDetails = new AccessDetails()
                 {
                     Description = dataObject.AccessDetails,

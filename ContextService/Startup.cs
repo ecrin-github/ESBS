@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using ContextService.Extensions;
 using ContextService.Middleware;
@@ -18,7 +19,7 @@ namespace ContextService
         
         public Startup(IConfiguration configuration)
         {
-            Config = configuration;
+            Config = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         
 

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1;
+using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 using MdrService.Interfaces;
 using MdrService.Models.DbConnection;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +17,7 @@ namespace MdrService.Services
 
         public SearchService(MdrDbConnection dbConnection)
         {
-            _dbConnection = dbConnection;
+            _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
         }
 
         private static int CalculateSkip(int page, int size)
@@ -30,7 +32,7 @@ namespace MdrService.Services
         }
 
 
-        public async Task<ICollection<int>> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
+        public async Task<SearchServiceResponse> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
         {
             var skip = CalculateSkip(page:specificStudyRequest.Page, size:specificStudyRequest.Size);
 
@@ -60,20 +62,29 @@ namespace MdrService.Services
                                && dataObjectFilterQuery.Contains(link.ObjectId));
 
             var orderedQuery = query.OrderBy(arg => arg.StudyId);
+
+            var totalRes = orderedQuery.Select(t => t.StudyId).Count();
             
             var selectRes = orderedQuery
                 .Select(t => t.StudyId)
                 .Distinct()
                 .Skip(skip).Take(specificStudyRequest.Size);
+
+            var ids = await selectRes.ToArrayAsync();
             
-            return await selectRes.ToArrayAsync();
+            return new SearchServiceResponse()
+            {
+                Total = totalRes,
+                StudyIds = ids
+            };
         }
 
-        public async Task<ICollection<int>> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
+        public async Task<SearchServiceResponse> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
         {
             // Get skip
             var skip = CalculateSkip(page:studyCharacteristicsRequest.Page, size:studyCharacteristicsRequest.Size);
 
+            /*
             var joinQuery = _dbConnection.StudyTitles.Join(
                 _dbConnection.StudyTopics,
                 title => title.StudyId,
@@ -96,6 +107,17 @@ namespace MdrService.Services
             }
 
             var joinQueryStudyIds = joinQuery.Select(args => args.StudyId);
+            */
+            
+            // Search queries
+            var studyTitleQuery = _dbConnection.StudyTitles.Where(title =>
+                    title.TitleText.ToLower().Contains(studyCharacteristicsRequest.TitleContains.ToLower()))
+                .Select(title => title.StudyId);
+
+            var studyTopicsQuery = _dbConnection.StudyTopics.Where(topic =>
+                    topic.OriginalValue.ToLower().Contains(studyCharacteristicsRequest.TopicsInclude.ToLower()))
+                .Select(topic => topic.StudyId);
+            
 
             // Get filters
             var filtersRequest = studyCharacteristicsRequest.Filters;
@@ -112,24 +134,63 @@ namespace MdrService.Services
                 .Where(dataObject => !filtersRequest.ObjectTypes.Contains(dataObject.ObjectTypeId)
                 && !filtersRequest.ObjectAccessTypes.Contains(dataObject.AccessTypeId)).Select(o => o.Id);
 
-            var query = _dbConnection.StudyObjectLinks
-                            .Where(link => joinQueryStudyIds.Contains(link.StudyId)
-                                           && studyFilterQuery.Contains(link.StudyId)
-                                           && studyFeatureFilterQuery.Contains(link.StudyId) 
-                                           && dataObjectFilterQuery.Contains(link.ObjectId));
+            var query = _dbConnection.StudyObjectLinks;
 
-            var orderedQuery = query.OrderBy(arg => arg.StudyId);
+            if (studyCharacteristicsRequest.LogicalOperator != null && 
+                (studyCharacteristicsRequest.LogicalOperator.ToLower() == "and" ||
+                 studyCharacteristicsRequest.LogicalOperator == "&&"))
+            {
+                var resQuery = query.Where(link => studyTitleQuery.Contains(link.StudyId)
+                               && studyTopicsQuery.Contains(link.StudyId)
+                               && studyFilterQuery.Contains(link.StudyId)
+                               && studyFeatureFilterQuery.Contains(link.StudyId) 
+                               && dataObjectFilterQuery.Contains(link.ObjectId));
+                
+                var orderedQuery = resQuery.OrderBy(arg => arg.StudyId);
             
-            var selectRes = orderedQuery
-                .Select(t => t.StudyId)
-                .Distinct()
-                .Skip(skip).Take(studyCharacteristicsRequest.Size);
-            
-            return await selectRes.ToArrayAsync();
+                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
 
+                var selectRes = orderedQuery
+                    .Select(t => t.StudyId)
+                    .Distinct()
+                    .Skip(skip).Take(studyCharacteristicsRequest.Size);
+            
+                var ids = await selectRes.ToArrayAsync();
+            
+                return new SearchServiceResponse()
+                {
+                    Total = totalRes,
+                    StudyIds = ids
+                };
+            }
+            else
+            {
+                var resQuery = query.Where(link => studyTitleQuery.Contains(link.StudyId)
+                                              || studyTopicsQuery.Contains(link.StudyId)
+                                              && studyFilterQuery.Contains(link.StudyId)
+                                              && studyFeatureFilterQuery.Contains(link.StudyId) 
+                                              && dataObjectFilterQuery.Contains(link.ObjectId));
+                
+                var orderedQuery = resQuery.OrderBy(arg => arg.StudyId);
+            
+                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
+
+                var selectRes = orderedQuery
+                    .Select(t => t.StudyId)
+                    .Distinct()
+                    .Skip(skip).Take(studyCharacteristicsRequest.Size);
+            
+                var ids = await selectRes.ToArrayAsync();
+            
+                return new SearchServiceResponse()
+                {
+                    Total = totalRes,
+                    StudyIds = ids
+                };
+            }
         }
 
-        public async Task<ICollection<int>> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
+        public async Task<SearchServiceResponse> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
         {
 
             var skip = CalculateSkip(page:viaPublishedPaperRequest.Page, size:viaPublishedPaperRequest.Size);
@@ -161,12 +222,21 @@ namespace MdrService.Services
                                              && dataObjectFilterQuery.Contains(p.ObjectId));
                 
                 var orderedQuery = query.OrderBy(p => p.Id);
+                
+                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
+
                 var selectRes = orderedQuery.Select(p => p.StudyId)
                     .Distinct()
                     .Skip(skip)
                     .Take(viaPublishedPaperRequest.Size);
                 
-                return await selectRes.ToArrayAsync();
+                var ids = await selectRes.ToArrayAsync();
+            
+                return new SearchServiceResponse()
+                {
+                    Total = totalRes,
+                    StudyIds = ids
+                };
             }
             else
             {
@@ -179,12 +249,21 @@ namespace MdrService.Services
                        && dataObjectFilterQuery.Contains(link.ObjectId));
                 
                 var orderedQuery = query.OrderBy(p => p.StudyId);
+                
+                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
+
                 var selectRes = orderedQuery.Select(p => p.StudyId)
                     .Distinct()
                     .Skip(skip)
                     .Take(viaPublishedPaperRequest.Size);
 
-                return await selectRes.ToArrayAsync();
+                var ids = await selectRes.ToArrayAsync();
+            
+                return new SearchServiceResponse()
+                {
+                    Total = totalRes,
+                    StudyIds = ids
+                };
             }
         }
 

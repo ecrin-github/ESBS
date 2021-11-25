@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace MdrService.Repositories
 
         public LinksRepository(MdrDbConnection mdrDbConnection)
         {
-            _dbConnection = mdrDbConnection;
+            _dbConnection = mdrDbConnection ?? throw new ArgumentNullException(nameof(mdrDbConnection));
         }
         
         public async Task<ICollection<int>> GetObjectStudies(int objectId)

@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1;
+using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 
 namespace MdrService.Interfaces
 {
     public interface ISearchService
     {
-        Task<ICollection<int>> GetSpecificStudy(SpecificStudyRequest specificStudyRequest);
-        Task<ICollection<int>> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest);
-        Task<ICollection<int>> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest);
+        Task<SearchServiceResponse> GetSpecificStudy(SpecificStudyRequest specificStudyRequest);
+        Task<SearchServiceResponse> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest);
+        Task<SearchServiceResponse> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest);
         Task<int?> GetByStudyId(StudyIdRequest studyIdRequest);
     }
 }

@@ -17,13 +17,20 @@ namespace MdrService.Extensions
             {
                 options.UseNpgsql(config.GetConnectionString("MdrDbConnectionString"));
             });
-
+            services.AddDbContext<MdrDbConnection>(options =>
+            {
+                options.UseNpgsql(config.GetConnectionString("ContextDbConnectionString"));
+            });
+            
             services.AddScoped<IContextService, ContextService>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IBuilderService, BuilderService>();
 
             services.AddScoped<IStudyRepository, StudyRepository>();
             services.AddScoped<IObjectRepository, ObjectRepository>();
+            
+            services.AddScoped<ICtxRepository, CtxRepository>();
+            services.AddScoped<ILupRepository, LupRepository>();
             
             services.AddScoped<ILinksRepository, LinksRepository>();
             

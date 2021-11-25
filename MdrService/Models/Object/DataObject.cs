@@ -28,7 +28,7 @@ namespace MdrService.Models.Object
         public int? PublicationYear { get; set; }
         
         [Column("object_class_id")]
-        public int? ObjectClassId { get; set; }
+        public int ObjectClassId { get; set; }
         
         [Column("object_type_id")]
         public int ObjectTypeId { get; set; }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,10 +15,12 @@ namespace MdrService.Helpers
     public class DataMapper : IDataMapper
     {
         private readonly IContextService _contextService;
+        private readonly ILupRepository _lupRepository;
 
-        public DataMapper(IContextService contextService)
+        public DataMapper(IContextService contextService, ILupRepository lupRepository)
         {
-            _contextService = contextService;
+            _contextService = contextService ?? throw new ArgumentNullException(nameof(contextService));
+            _lupRepository = lupRepository ?? throw new ArgumentNullException(nameof(lupRepository));
         }
 
         public async Task<ICollection<StudyFeatureListResponse>> MapStudyFeatures(ICollection<StudyFeature> studyFeatures)
@@ -29,8 +32,8 @@ namespace MdrService.Helpers
                 var sfDto = new StudyFeatureListResponse()
                 {
                     Id = sf.Id,
-                    FeatureType = await _contextService.GetFeatureType(sf.FeatureTypeId),
-                    FeatureValue = await _contextService.GetFeatureValue(sf.FeatureValueId)
+                    FeatureType = await _lupRepository.GetStudyFeatureType(sf.FeatureTypeId),
+                    FeatureValue = await _lupRepository.GetStudyFeatureCategory(sf.FeatureValueId)
                 };
                 studyFeaturesDto.Add(sfDto);
             }
@@ -48,7 +51,7 @@ namespace MdrService.Helpers
                 {
                     Id = si.Id,
                     IdentifierValue = si.IdentifierValue,
-                    IdentifierType = await _contextService.GetIdentifierType(si.IdentifierTypeId),
+                    IdentifierType = await _lupRepository.GetIdentifierType(si.IdentifierTypeId),
                     IdentifierDate = si.IdentifierDate,
                     IdentifierLink = si.IdentifierLink,
                     IdentifierOrg = new IdentifierOrg()
@@ -73,7 +76,7 @@ namespace MdrService.Helpers
                 var srDto = new StudyRelationListResponse()
                 {
                     Id = sr.Id,
-                    RelationshipType = await _contextService.GetStudyRelationshipType(sr.RelationshipTypeId),
+                    RelationshipType = await _lupRepository.GetStudyRelationshipType(sr.RelationshipTypeId),
                     TargetStudyId = sr.TargetStudyId
                 };
                 studyRelationsDto.Add(srDto);
@@ -91,7 +94,7 @@ namespace MdrService.Helpers
                 var stDto = new StudyTitleListResponse()
                 {
                     Id = st.Id,
-                    TitleType = await _contextService.GetTitleType(st.TitleTypeId),
+                    TitleType = await _lupRepository.GetTitleType(st.TitleTypeId),
                     TitleText = st.TitleText,
                     LangCode = st.LangCode,
                     Comments = st.Comments
@@ -111,7 +114,7 @@ namespace MdrService.Helpers
                 var stDto = new StudyTopicListResponse()
                 {
                     Id = st.Id,
-                    TopicType = await _contextService.GetTopicType(st.TopicTypeId),
+                    TopicType = await _lupRepository.GetTopicType(st.TopicTypeId),
                     MeshCoded = st.MeshCoded,
                     MeshCode = st.MeshCode,
                     MeshValue = st.MeshValue,
@@ -135,7 +138,7 @@ namespace MdrService.Helpers
                 var ocDto = new ObjectContributorListResponse()
                 {
                     Id = oc.Id,
-                    ContributionType = await _contextService.GetContributionType(oc.ContribTypeId),
+                    ContributionType = await _lupRepository.GetContributionType(oc.ContribTypeId),
                     IsIndividual = oc.IsIndividual,
                     Organisation = new ContribOrg()
                     {
@@ -167,7 +170,7 @@ namespace MdrService.Helpers
             return new DatasetRecordKeys()
             {
                 KeysTypeId = objectDataset.RecordKeysTypeId,
-                KeysType = await _contextService.GetRecordkeyType(objectDataset.RecordKeysTypeId),
+                KeysType = await _lupRepository.GetDatasetRecordkeyType(objectDataset.RecordKeysTypeId),
                 KeysDetails = objectDataset.RecordKeysDetails
             };
         }
@@ -178,7 +181,7 @@ namespace MdrService.Helpers
             return new DatasetDeidentLevel()
             {
                 DeidentTypeId = objectDataset.DeidentTypeId,
-                DeidentType = await _contextService.GetDeidentType(objectDataset.DeidentTypeId),
+                DeidentType = await _lupRepository.GetDatasetDeidentLevel(objectDataset.DeidentTypeId),
                 DeidentDirect = objectDataset.DeidentDirect,
                 DeidentHipaa = objectDataset.DeidentHipaa,
                 DeidentDates = objectDataset.DeidentDates,
@@ -194,7 +197,7 @@ namespace MdrService.Helpers
             return new DatasetConsent()
             {
                 ConsentTypeId = objectDataset.ConsentTypeId,
-                ConsentType = await _contextService.GetConsentType(objectDataset.ConsentTypeId),
+                ConsentType = await _lupRepository.GetDatasetConsentType(objectDataset.ConsentTypeId),
                 ConsentNoncommercial = objectDataset.ConsentNoncommercial,
                 ConsentGeogRestrict = objectDataset.ConsentGeogRestrict,
                 ConsentResearchType = objectDataset.ConsentResearchType,
@@ -213,7 +216,7 @@ namespace MdrService.Helpers
                 var odDto = new ObjectDateListResponse()
                 {
                     Id = od.Id,
-                    DateType = await _contextService.GetDateType(od.DateTypeId),
+                    DateType = await _lupRepository.GetDateType(od.DateTypeId),
                     DateIsRange = od.DateIsRange,
                     DateAsString = od.DateAsString,
                     StartDate = new Date()
@@ -245,7 +248,7 @@ namespace MdrService.Helpers
                 var odDto = new ObjectDescriptionListResponse()
                 {
                     Id = od.Id,
-                    DescriptionType = await _contextService.GetDescriptionType(od.DescriptionTypeId),
+                    DescriptionType = await _lupRepository.GetDescriptionType(od.DescriptionTypeId),
                     DescriptionLabel = od.Label,
                     DescriptionText = od.DescriptionText,
                     LangCode = od.LangCode
@@ -266,7 +269,7 @@ namespace MdrService.Helpers
                 {
                     Id = oi.Id,
                     IdentifierValue = oi.IdentifierValue,
-                    IdentifierType = await _contextService.GetIdentifierType(oi.IdentifierTypeId),
+                    IdentifierType = await _lupRepository.GetIdentifierType(oi.IdentifierTypeId),
                     IdentifierDate = oi.IdentifierDate,
                     IdentifierOrg = new IdentifierOrg()
                     {
@@ -300,7 +303,7 @@ namespace MdrService.Helpers
                     ResourceDetails = new InstanceResourceDetails()
                     {
                         TypeId = oi.ResourceTypeId,
-                        TypeName = await _contextService.GetResourceType(oi.ResourceTypeId),
+                        TypeName = await _lupRepository.GetResourceType(oi.ResourceTypeId),
                         Size = oi.ResourceSize,
                         SizeUnit = oi.ResourceSizeUnits,
                         Comments = oi.ResourceComments
@@ -321,7 +324,7 @@ namespace MdrService.Helpers
                 var orDto = new ObjectRelationshipListResponse()
                 {
                     Id = or.Id,
-                    RelationshipType = await _contextService.GetObjectRelationshipType(or.RelationshipTypeId),
+                    RelationshipType = await _lupRepository.GetObjectRelationshipType(or.RelationshipTypeId),
                     TargetObjectId = or.TargetObjectId
                 };
                 objectRelationsDto.Add(orDto);
@@ -344,7 +347,7 @@ namespace MdrService.Helpers
                 var otDto = new ObjectTitleListResponse()
                 {
                     Id = ot.Id,
-                    TitleType = await _contextService.GetTitleType(ot.TitleTypeId),
+                    TitleType = await _lupRepository.GetTitleType(ot.TitleTypeId),
                     TitleText = ot.TitleText,
                     LangCode = ot.LangCode,
                     Comments = ot.Comments
@@ -364,7 +367,7 @@ namespace MdrService.Helpers
                 var otDto = new ObjectTopicListResponse()
                 {
                     Id = ot.Id,
-                    TopicType = await _contextService.GetTopicType(ot.TopicTypeId),
+                    TopicType = await _lupRepository.GetTopicType(ot.TopicTypeId),
                     MeshCoded = ot.MeshCoded,
                     MeshCode = ot.MeshCode,
                     MeshValue = ot.MeshValue,

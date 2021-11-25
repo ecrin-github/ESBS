@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace ContextService.Repositories
 
         public CtxRepository(ContextDbConnection dbConnection)
         {
-            _dbConnection = dbConnection;
+            _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
         }
 
         public async Task<ICollection<Organisation>> GetOrganisations()

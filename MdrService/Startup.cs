@@ -1,5 +1,5 @@
+using System;
 using System.Net;
-using System.Text.Json.Serialization;
 using MdrService.Extensions;
 using MdrService.Middleware;
 using Microsoft.AspNetCore.Builder;
@@ -18,7 +18,7 @@ namespace MdrService
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,8 +34,7 @@ namespace MdrService
             
             services.AddApplicationServices(Configuration);
             
-            services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddControllers();
             
             services.AddCors();
 

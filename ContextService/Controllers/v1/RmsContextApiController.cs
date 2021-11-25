@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ContextService.Contracts.Responses;
@@ -15,7 +16,7 @@ namespace ContextService.Controllers.v1
 
         public RmsContextApiController(IRmsContextRepository rmsRepository)
         {
-            _rmsRepository = rmsRepository;
+            _rmsRepository = rmsRepository ?? throw new ArgumentNullException(nameof(rmsRepository));
         }
         
         [HttpGet("rms/access-prereq-types")]

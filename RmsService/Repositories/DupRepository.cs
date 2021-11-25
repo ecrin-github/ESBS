@@ -18,8 +18,8 @@ namespace RmsService.Repositories
 
         public DupRepository(RmsDbConnection dbContext, IDataMapper dataMapper)
         {
-            _dbConnection = dbContext;
-            _dataMapper = dataMapper;
+            _dbConnection = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dataMapper = dataMapper ?? throw new ArgumentNullException(nameof(dataMapper));
         }
 
         public IQueryable<DupObject> GetQueryableDupObjects()

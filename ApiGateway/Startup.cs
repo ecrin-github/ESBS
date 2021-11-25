@@ -29,7 +29,7 @@ namespace ApiGateway
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         private static string AlterUpstreamSwaggerJson(HttpContext context, string swaggerJson)

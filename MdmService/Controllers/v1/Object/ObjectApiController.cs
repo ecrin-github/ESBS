@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace MdmService.Controllers.v1.Object
 
         public ObjectApiController(IObjectRepository objectRepository)
         {
-            _objectRepository = objectRepository;
+            _objectRepository = objectRepository ?? throw new ArgumentNullException(nameof(objectRepository));
         }
         
         [HttpGet("data-objects")]

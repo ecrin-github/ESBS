@@ -17,8 +17,8 @@ namespace MdmService.Repositories
 
         public StudyRepository(MdmDbConnection dbConnection, IDataMapper dataMapper)
         {
-            _dbConnection = dbConnection;
-            _dataMapper = dataMapper;
+            _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
+            _dataMapper = dataMapper ?? throw new ArgumentNullException(nameof(dataMapper));
         }
         
         

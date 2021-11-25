@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using MdmService.Extensions;
 using MdmService.Middleware;
@@ -18,7 +19,7 @@ namespace MdmService
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

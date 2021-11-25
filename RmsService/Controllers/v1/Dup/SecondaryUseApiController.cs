@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace RmsService.Controllers.v1.Dup
 
         public SecondaryUseApiController(IDupRepository dupRepository)
         {
-            _dupRepository = dupRepository;
+            _dupRepository = dupRepository ?? throw new ArgumentNullException(nameof(dupRepository));
         }
         
         

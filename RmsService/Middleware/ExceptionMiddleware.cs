@@ -19,9 +19,9 @@ namespace RmsService.Middleware
             ILogger<ExceptionMiddleware> logger, 
             IHostEnvironment env)
         {
-            _env = env;
-            _logger = logger;
-            _next = next;
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _next = next ?? throw new ArgumentNullException(nameof(next));
         }
 
         public async Task InvokeAsync(HttpContext context)

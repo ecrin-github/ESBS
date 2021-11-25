@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace RmsService.Controllers.v1.Dtp
 
         public DtpDatasetsApiController(IDtpRepository dtpRepository)
         {
-            _dtpRepository = dtpRepository;
+            _dtpRepository = dtpRepository ?? throw new ArgumentNullException(nameof(dtpRepository));
         }
         
         

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace MdmService.Controllers.v1.Study
 
         public StudyReferencesApiController(IStudyRepository studyRepository)
         {
-            _studyRepository = studyRepository;
+            _studyRepository = studyRepository ?? throw new ArgumentNullException(nameof(studyRepository));
         }
         
         [HttpGet("studies/{sdSid}/references")]

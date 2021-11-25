@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ContextService.Contracts.Responses;
@@ -14,7 +15,7 @@ namespace ContextService.Controllers.v1
 
         public CtxApiController(ICtxRepository ctxRepository)
         {
-            _ctxRepository = ctxRepository;
+            _ctxRepository = ctxRepository ?? throw new ArgumentNullException(nameof(ctxRepository));
         }
         
         

@@ -17,8 +17,8 @@ namespace RmsService.Repositories
 
         public DtpRepository(RmsDbConnection dbContext, IDataMapper dataMapper)
         {
-            _dbConnection = dbContext;
-            _dataMapper = dataMapper;
+            _dbConnection = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dataMapper = dataMapper ?? throw new ArgumentNullException(nameof(dataMapper));
         }
 
         public IQueryable<Dta> GetQueryableDta()
