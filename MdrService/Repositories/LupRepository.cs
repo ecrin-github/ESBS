@@ -1,9 +1,9 @@
 #nullable enable
 using System;
-using System.Data.Entity;
 using System.Threading.Tasks;
 using MdrService.Interfaces;
 using MdrService.Models.DbConnection;
+using Microsoft.EntityFrameworkCore;
 
 namespace MdrService.Repositories
 {

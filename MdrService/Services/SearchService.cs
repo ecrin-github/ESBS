@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1;
@@ -63,14 +62,16 @@ namespace MdrService.Services
 
             var orderedQuery = query.OrderBy(arg => arg.StudyId);
 
-            var totalRes = orderedQuery.Select(t => t.StudyId).Count();
-            
             var selectRes = orderedQuery
                 .Select(t => t.StudyId)
-                .Distinct()
+                .Distinct();
+                    
+            var totalRes = selectRes.Count();
+                    
+            var res = selectRes
                 .Skip(skip).Take(specificStudyRequest.Size);
-
-            var ids = await selectRes.ToArrayAsync();
+            
+            var ids = await res.ToArrayAsync();
             
             return new SearchServiceResponse()
             {
@@ -147,15 +148,17 @@ namespace MdrService.Services
                                && dataObjectFilterQuery.Contains(link.ObjectId));
                 
                 var orderedQuery = resQuery.OrderBy(arg => arg.StudyId);
-            
-                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
 
                 var selectRes = orderedQuery
                     .Select(t => t.StudyId)
-                    .Distinct()
+                    .Distinct();
+                    
+                var totalRes = selectRes.Count();
+                    
+                var res = selectRes
                     .Skip(skip).Take(studyCharacteristicsRequest.Size);
             
-                var ids = await selectRes.ToArrayAsync();
+                var ids = await res.ToArrayAsync();
             
                 return new SearchServiceResponse()
                 {
@@ -173,14 +176,16 @@ namespace MdrService.Services
                 
                 var orderedQuery = resQuery.OrderBy(arg => arg.StudyId);
             
-                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
-
                 var selectRes = orderedQuery
                     .Select(t => t.StudyId)
-                    .Distinct()
+                    .Distinct();
+                    
+                var totalRes = selectRes.Count();
+                    
+                var res = selectRes
                     .Skip(skip).Take(studyCharacteristicsRequest.Size);
             
-                var ids = await selectRes.ToArrayAsync();
+                var ids = await res.ToArrayAsync();
             
                 return new SearchServiceResponse()
                 {
@@ -223,14 +228,16 @@ namespace MdrService.Services
                 
                 var orderedQuery = query.OrderBy(p => p.Id);
                 
-                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
-
-                var selectRes = orderedQuery.Select(p => p.StudyId)
-                    .Distinct()
-                    .Skip(skip)
-                    .Take(viaPublishedPaperRequest.Size);
-                
-                var ids = await selectRes.ToArrayAsync();
+                var selectRes = orderedQuery
+                    .Select(t => t.StudyId)
+                    .Distinct();
+                    
+                var totalRes = selectRes.Count();
+                    
+                var res = selectRes
+                    .Skip(skip).Take(viaPublishedPaperRequest.Size);
+            
+                var ids = await res.ToArrayAsync();
             
                 return new SearchServiceResponse()
                 {
@@ -250,14 +257,16 @@ namespace MdrService.Services
                 
                 var orderedQuery = query.OrderBy(p => p.StudyId);
                 
-                var totalRes = orderedQuery.Select(t => t.StudyId).Count();
-
-                var selectRes = orderedQuery.Select(p => p.StudyId)
-                    .Distinct()
-                    .Skip(skip)
-                    .Take(viaPublishedPaperRequest.Size);
-
-                var ids = await selectRes.ToArrayAsync();
+                var selectRes = orderedQuery
+                    .Select(t => t.StudyId)
+                    .Distinct();
+                    
+                var totalRes = selectRes.Count();
+                    
+                var res = selectRes
+                    .Skip(skip).Take(viaPublishedPaperRequest.Size);
+            
+                var ids = await res.ToArrayAsync();
             
                 return new SearchServiceResponse()
                 {
