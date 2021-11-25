@@ -17,7 +17,7 @@ namespace MdrService.Extensions
             {
                 options.UseNpgsql(config.GetConnectionString("MdrDbConnectionString"));
             });
-            services.AddDbContext<MdrDbConnection>(options =>
+            services.AddDbContext<ContextDbConnection>(options =>
             {
                 options.UseNpgsql(config.GetConnectionString("ContextDbConnectionString"));
             });
