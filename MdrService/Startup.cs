@@ -43,6 +43,12 @@ namespace MdrService
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "The ESBS REST API - MDR Documentation", Version = "v1"});
                 c.EnableAnnotations();
             });
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("RedisCacheServerUrl");
+                options.InstanceName = "MdrService_";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

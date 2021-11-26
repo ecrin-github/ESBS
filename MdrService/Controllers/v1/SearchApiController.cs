@@ -16,7 +16,7 @@ namespace MdrService.Controllers.v1
         private readonly ISearchService _searchService;
         private readonly IStudyRepository _studyRepository;
         private readonly IBuilderService _builderService;
-
+        
         public SearchApiController(
             ISearchService searchService,
             IStudyRepository studyRepository,
@@ -33,7 +33,7 @@ namespace MdrService.Controllers.v1
         public async Task<IActionResult> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
         {
             var ids = await _searchService.GetSpecificStudy(specificStudyRequest);
-            if (ids.StudyIds.Count <= 0) return NotFound(new ApiResponse<StudyListResponse>()
+            if (ids.StudyIds.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -42,7 +42,7 @@ namespace MdrService.Controllers.v1
             });
 
             var studies = await _studyRepository.GetStudies(ids.StudyIds);
-            if (studies.Count <= 0) return NotFound(new ApiResponse<StudyListResponse>()
+            if (studies.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -67,7 +67,7 @@ namespace MdrService.Controllers.v1
         public async Task<object> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
         {
             var ids = await _searchService.GetByStudyCharacteristics(studyCharacteristicsRequest);
-            if (ids.StudyIds.Count <= 0) return NotFound(new ApiResponse<StudyListResponse>()
+            if (ids.StudyIds.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -76,7 +76,7 @@ namespace MdrService.Controllers.v1
             });
 
             var studies = await _studyRepository.GetStudies(ids.StudyIds);
-            if (studies.Count <= 0) return NotFound(new ApiResponse<StudyListResponse>()
+            if (studies.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -101,7 +101,7 @@ namespace MdrService.Controllers.v1
         public async Task<IActionResult> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
         {
             var ids = await _searchService.GetViaPublishedPaper(viaPublishedPaperRequest);
-            if (ids.StudyIds.Count <= 0) return NotFound(new ApiResponse<StudyListResponse>()
+            if (ids.StudyIds.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -110,7 +110,7 @@ namespace MdrService.Controllers.v1
             });
 
             var studies = await _studyRepository.GetStudies(ids.StudyIds);
-            if (studies.Count <= 0) return NotFound(new ApiResponse<StudyListResponse>()
+            if (studies.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -136,7 +136,7 @@ namespace MdrService.Controllers.v1
         {
             var studyId = await _searchService.GetByStudyId(studyIdRequest);
             if (studyId == null)
-                return NotFound(new ApiResponse<StudyListResponse>()
+                return Ok(new ApiResponse<StudyListResponse>()
                 {
                     Total = 0,
                     Messages = new List<string>(){"Study hasn't been found."},
@@ -144,7 +144,7 @@ namespace MdrService.Controllers.v1
                     Data = new List<StudyListResponse>()
                 });
             var study = await _studyRepository.GetStudyById(studyId);
-            if (study == null) return NotFound(new ApiResponse<StudyListResponse>()
+            if (study == null) return Ok(new ApiResponse<StudyListResponse>()
             {
                 Total = 0,
                 Messages = new List<string>(){"Study hasn't been found."},
