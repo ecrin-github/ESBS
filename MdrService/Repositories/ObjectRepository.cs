@@ -28,12 +28,12 @@ namespace MdrService.Repositories
         
         public async Task<DataObject> GetDataObjectById(int id)
         {
-            return await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.DataObjects.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<DataObject>> GetDataObjects(ICollection<int> ids)
         {
-            return await _dbConnection.DataObjects.Where(p => ids.Contains(p.Id)).ToArrayAsync();
+            return await _dbConnection.DataObjects.AsNoTracking().Where(p => ids.Contains(p.Id)).ToArrayAsync();
         }
 
         public async Task<ICollection<ObjectContributor>> GetObjectContributors(int objectId)
@@ -51,7 +51,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectContributors = await _dbConnection.ObjectContributors.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectContributors = await _dbConnection.ObjectContributors.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectContributors);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -77,7 +78,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectDataset = await _dbConnection.ObjectDatasets.FirstOrDefaultAsync(p => p.ObjectId == objectId);                
+                objectDataset = await _dbConnection.ObjectDatasets.AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.ObjectId == objectId);                
                 serializedValue = JsonConvert.SerializeObject(objectDataset);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -103,7 +105,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectDates = await _dbConnection.ObjectDates.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectDates = await _dbConnection.ObjectDates.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectDates);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -129,7 +132,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectDescriptions = await _dbConnection.ObjectDescriptions.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectDescriptions = await _dbConnection.ObjectDescriptions.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectDescriptions);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -155,7 +159,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectIdentifiers = await _dbConnection.ObjectIdentifiers.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectIdentifiers = await _dbConnection.ObjectIdentifiers.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectIdentifiers);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -181,7 +186,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectInstances = await _dbConnection.ObjectInstances.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectInstances = await _dbConnection.ObjectInstances.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectInstances);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -207,7 +213,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectRelationships = await _dbConnection.ObjectRelationships.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectRelationships = await _dbConnection.ObjectRelationships.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectRelationships);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -233,7 +240,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectRights = await _dbConnection.ObjectRights.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectRights = await _dbConnection.ObjectRights.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectRights);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -259,7 +267,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectTitles = await _dbConnection.ObjectTitles.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectTitles = await _dbConnection.ObjectTitles.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectTitles);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -285,7 +294,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectTopics = await _dbConnection.ObjectTopics.Where(p => p.ObjectId == objectId).ToArrayAsync();                
+                objectTopics = await _dbConnection.ObjectTopics.AsNoTracking()
+                    .Where(p => p.ObjectId == objectId).ToArrayAsync();                
                 serializedValue = JsonConvert.SerializeObject(objectTopics);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()

@@ -18,6 +18,6 @@ namespace MdrService.Models.Study
         public int? RelationshipTypeId { get; set; }
         
         [Column("target_study_id")]
-        public int TargetStudyId { get; set; }
+        public string? TargetStudyId { get; set; }
     }
 }

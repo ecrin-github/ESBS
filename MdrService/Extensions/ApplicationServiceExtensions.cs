@@ -20,6 +20,7 @@ namespace MdrService.Extensions
             
             services.AddScoped<IContextService, ContextService>();
             services.AddScoped<ISearchService, SearchService>();
+            services.AddScoped<IRawSqlSearchService, RawSqlSearchService>();
             services.AddScoped<IBuilderService, BuilderService>();
             
             services.AddScoped<IStudyRepository, StudyRepository>();

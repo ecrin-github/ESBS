@@ -7,6 +7,6 @@ namespace MdrService.Contracts.Responses.v1.StudyListResponse
         
         public string? RelationshipType { get; set; }
         
-        public int? TargetStudyId { get; set; }
+        public string? TargetStudyId { get; set; }
     }
 }

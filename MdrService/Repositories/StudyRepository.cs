@@ -29,12 +29,12 @@ namespace MdrService.Repositories
         public async Task<Study> GetStudyById(int? id)
         {
             if (id == null) return null;
-            return await _dbConnection.Studies.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.Studies.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<Study>> GetStudies(ICollection<int> ids)
         {
-            return await _dbConnection.Studies.Where(p => ids.Contains(p.Id)).ToListAsync();
+            return await _dbConnection.Studies.AsNoTracking().Where(p => ids.Contains(p.Id)).ToListAsync();
         }
 
         public async Task<ICollection<StudyContributor>> GetStudyContributors(int studyId)
@@ -52,7 +52,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                studyContributors = await _dbConnection.StudyContributors.Where(p => p.StudyId == studyId).ToArrayAsync();
+                studyContributors = await _dbConnection.StudyContributors.AsNoTracking()
+                    .Where(p => p.StudyId == studyId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(studyContributors);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -78,7 +79,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                studyFeatures = await _dbConnection.StudyFeatures.Where(p => p.StudyId == studyId).ToArrayAsync();
+                studyFeatures = await _dbConnection.StudyFeatures.AsNoTracking()
+                    .Where(p => p.StudyId == studyId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(studyFeatures);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -104,7 +106,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                studyIdentifiers = await _dbConnection.StudyIdentifiers.Where(p => p.StudyId == studyId).ToArrayAsync();
+                studyIdentifiers = await _dbConnection.StudyIdentifiers.AsNoTracking()
+                    .Where(p => p.StudyId == studyId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(studyIdentifiers);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -118,7 +121,7 @@ namespace MdrService.Repositories
         public async Task<ICollection<StudyRelationship>> GetStudyRelationships(int studyId)
         {
             var cacheKey = "studyRelationships_" + studyId;
-
+            
             StudyRelationship[] studyRelationships;
             string serializedValue;
             
@@ -130,7 +133,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                studyRelationships = await _dbConnection.StudyRelationships.Where(p => p.StudyId == studyId).ToArrayAsync();
+                studyRelationships = await _dbConnection.StudyRelationships.AsNoTracking()
+                    .Where(p => p.StudyId == studyId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(studyRelationships);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -156,7 +160,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                studyTitles = await _dbConnection.StudyTitles.Where(p => p.StudyId == studyId).ToArrayAsync();
+                studyTitles = await _dbConnection.StudyTitles.AsNoTracking()
+                    .Where(p => p.StudyId == studyId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(studyTitles);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()
@@ -182,7 +187,8 @@ namespace MdrService.Repositories
             }
             else
             {
-                studyTopics = await _dbConnection.StudyTopics.Where(p => p.StudyId == studyId).ToArrayAsync();
+                studyTopics = await _dbConnection.StudyTopics.AsNoTracking()
+                    .Where(p => p.StudyId == studyId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(studyTopics);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
                 var options = new DistributedCacheEntryOptions()

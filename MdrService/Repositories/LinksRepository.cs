@@ -41,7 +41,7 @@ namespace MdrService.Repositories
             }
             else
             {
-                objectStudyIds = await _dbConnection.StudyObjectLinks.Where(p => p.ObjectId.Equals(objectId))
+                objectStudyIds = await _dbConnection.StudyObjectLinks.AsNoTracking().Where(p => p.ObjectId.Equals(objectId))
                     .Select(p => p.StudyId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(objectStudyIds);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
@@ -68,7 +68,7 @@ namespace MdrService.Repositories
             }
             else
             {
-                studyObjectIds = await _dbConnection.StudyObjectLinks.Where(p => p.StudyId.Equals(studyId))
+                studyObjectIds = await _dbConnection.StudyObjectLinks.AsNoTracking().Where(p => p.StudyId.Equals(studyId))
                     .Select(p => p.ObjectId).ToArrayAsync();
                 serializedValue = JsonConvert.SerializeObject(studyObjectIds);
                 encodedValue = Encoding.UTF8.GetBytes(serializedValue);
