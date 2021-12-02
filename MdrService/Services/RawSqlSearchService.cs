@@ -22,6 +22,23 @@ namespace MdrService.Services
 
             return skip;
         }
+
+        private static string FiltersListBuilder(IReadOnlyList<int> filterIds)
+        {
+            var filters = "(";
+            for (var index = 0; index < filterIds.Count; index++)
+            {
+                var idx = index + 1;
+                if (idx == filterIds.Count)
+                {
+                    filters += filterIds[index];
+                }
+
+                filters += filterIds[index] + ", ";
+            }
+            filters += ")";
+            return filters;
+        }
         
         public async Task<RawSqlSearchServiceResponse> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
         {
@@ -29,8 +46,21 @@ namespace MdrService.Services
 
             await using var connection = new NpgsqlConnection(DbConfig.MdrDbConnectionString);
 
-            var queryString = "";
-            var totalQueryString = "";
+            var queryString = "select distinct study_id " +
+                              "from core.study_object_links " +
+                              "where study_id in " +
+                              "(select si.study_id " +
+                              "from core.study_identifiers si " +
+                              $"where si.identifier_type_id = {specificStudyRequest.SearchType} " +
+                              $"and upper(si.identifier_value) = upper({specificStudyRequest.SearchValue})) ";
+            
+            var totalQueryString = "select count(distinct study_id) " +
+                                   "from core.study_object_links " +
+                                   "where study_id in " +
+                                   "(select si.study_id " +
+                                   "from core.study_identifiers si " +
+                                   $"where si.identifier_type_id = {specificStudyRequest.SearchType} " +
+                                   $"and upper(si.identifier_value) = upper({specificStudyRequest.SearchValue})) ";
 
             if (specificStudyRequest.Filters != null)
             {
@@ -65,6 +95,10 @@ namespace MdrService.Services
                     totalQueryString += "";
                 }
             }
+
+            queryString += $"order by study_id asc " +
+                           $"limit {specificStudyRequest.Size} " +
+                           $"offset {skip}";
             
 
             var result = await connection.QueryAsync(queryString);
@@ -90,8 +124,31 @@ namespace MdrService.Services
 
             await using var connection = new NpgsqlConnection(DbConfig.MdrDbConnectionString);
 
-            var queryString = "";
-            var totalQueryString = "";
+            var queryString = "select distinct study_id " +
+                              "from core.study_object_links " +
+                              "where study_id in " +
+                              "(select st1.study_id from core.study_titles st1 " +
+                              "inner join core.study_topics st2 on st1.study_id = st2.study_id " +
+                              $"where lower(st1.title_text) like lower('%{studyCharacteristicsRequest.TitleContains}%') ";
+            
+            var totalQueryString = "select count(distinct study_id) " +
+                                   "from core.study_object_links " +
+                                   "where study_id in " +
+                                   "(select st1.study_id from core.study_titles st1 " +
+                                   "inner join core.study_topics st2 on st1.study_id = st2.study_id " +
+                                   $"where lower(st1.title_text) like lower('%{studyCharacteristicsRequest.TitleContains}%') ";
+
+            if (studyCharacteristicsRequest.LogicalOperator?.ToLower() == "and" ||
+                studyCharacteristicsRequest.LogicalOperator?.ToLower() == "&&")
+            {
+                queryString += $"and lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
+                totalQueryString += $"and lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
+            }
+            else
+            {
+                queryString += $"or lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
+                totalQueryString += $"or lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
+            }
             
             if (studyCharacteristicsRequest.Filters != null)
             {
@@ -126,6 +183,13 @@ namespace MdrService.Services
                     totalQueryString += "";
                 }
             }
+            
+            queryString += ")";
+            totalQueryString += ")";
+            
+            queryString += $"order by study_id asc " +
+                           $"limit {studyCharacteristicsRequest.Size} " +
+                           $"offset {skip}";
 
             var result = await connection.QueryAsync(queryString);
 
@@ -150,8 +214,34 @@ namespace MdrService.Services
 
             await using var connection = new NpgsqlConnection(DbConfig.MdrDbConnectionString);
 
-            var queryString = "";
-            var totalQueryString = "";
+            var queryString = "select distinct study_id " +
+                              "from core.study_object_links " +
+                              "where object_id in ";
+
+            var totalQueryString = "select count(distinct study_id) " +
+                                   "from core.study_object_links " +
+                                   "where object_id in ";
+
+            if (viaPublishedPaperRequest.SearchType.ToLower() == "doi")
+            {
+                queryString += "(select d_o.id " +
+                               "from core.data_objects d_o " +
+                               $"where lower(d_o.doi) = lower({viaPublishedPaperRequest.SearchValue}))";
+                
+                totalQueryString += "(select d_o.id " +
+                                    "from core.data_objects d_o " +
+                                    $"where lower(d_o.doi) = lower({viaPublishedPaperRequest.SearchValue}))";
+            }
+            else
+            {
+                queryString += "(select ot.object_id " +
+                               "from core.object_titles ot " +
+                               $"where lower(ot.title_text) like lower('%{viaPublishedPaperRequest.SearchValue}%'))";
+                
+                totalQueryString += "(select ot.object_id " +
+                                    "from core.object_titles ot " +
+                                    $"where lower(ot.title_text) like lower('%{viaPublishedPaperRequest.SearchValue}%'))";
+            }
             
             if (viaPublishedPaperRequest.Filters != null)
             {
@@ -187,7 +277,9 @@ namespace MdrService.Services
                 }
             }
 
-            queryString += "";
+            queryString += " order by study_id asc " +
+                           $"limit {viaPublishedPaperRequest.Size} " +
+                           $"offset {skip}";
             
             var result = await connection.QueryAsync(queryString);
 
