@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace MdrService.Contracts.Responses.v1.RawSqlSearchServiceResponse
+namespace MdrService.Contracts.Responses.v1.SearchServiceResponse
 {
     public class RawSqlSearchServiceResponse
     {

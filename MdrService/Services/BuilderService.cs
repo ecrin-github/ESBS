@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MdrService.Configs;
 using MdrService.Contracts.Responses.v1.Common;
 using MdrService.Contracts.Responses.v1.ObjectListResponse;
+using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 using MdrService.Contracts.Responses.v1.StudyListResponse;
 using MdrService.Interfaces;
 using MdrService.Models.Object;
@@ -212,6 +213,117 @@ namespace MdrService.Services
             foreach (var obj in dataObjects)
             {
                 objectListResponse.Add(await BuildSingleObjectResponse(obj));
+            }
+
+            return objectListResponse;
+        }
+
+        public async Task<SearchStudyListResponse> BuildSingleSearchStudyResponse(Study study)
+        {
+            var cacheKey = "mappedSearchStudy_" + study.Id;
+
+            SearchStudyListResponse studyListResponse;
+            string serializedValue;
+            
+            var encodedValue = await _distributedCache.GetAsync(cacheKey);
+            if (encodedValue != null)
+            {
+                serializedValue = Encoding.UTF8.GetString(encodedValue);
+                studyListResponse = JsonConvert.DeserializeObject<SearchStudyListResponse>(serializedValue);
+            }
+            else
+            {
+                studyListResponse = new SearchStudyListResponse()
+                {
+                    Id = study.Id,
+                    DisplayTitle = study.DisplayTitle,
+                    BriefDescription = study.BriefDescription,
+                    StudyType = await _context.GetStudyType(study.StudyTypeId),
+                    StudyStatus = await _context.GetStudyStatus(study.StudyStatusId),
+                    StudyGenderElig = await _context.GetGenderElig(study.StudyGenderEligId),
+                    StudyEnrolment = study.StudyEnrolment,
+                    ProvenanceString = study.ProvenanceString,
+                    LinkedDataObjects = await BuildSearchObjectResponse(
+                        await _objectRepository.GetDataObjects(
+                            await _linksRepository.GetStudyObjects(study.Id)))
+                };
+                
+                serializedValue = JsonConvert.SerializeObject(studyListResponse);
+                encodedValue = Encoding.UTF8.GetBytes(serializedValue);
+                var options = new DistributedCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(RedisConfig.SlidingExpirationData))
+                    .SetAbsoluteExpiration(TimeSpan.FromHours(RedisConfig.AbsoluteExpirationData));
+                await _distributedCache.SetAsync(cacheKey, encodedValue, options);
+
+            }
+
+            return studyListResponse;
+        }
+
+        public async Task<ICollection<SearchStudyListResponse>> BuildSearchStudyResponse(ICollection<Study> studies)
+        {
+            var studyListResponse = new List<SearchStudyListResponse>();
+            foreach (var study in studies)
+            {
+                studyListResponse.Add(await BuildSingleSearchStudyResponse(study));
+            }
+
+            return studyListResponse;
+        }
+
+        public async Task<SearchDataObjectListResponse> BuildSingleSearchObjectResponse(DataObject dataObject)
+        {
+            var cacheKey = "mappedSearchObject_" + dataObject.Id;
+
+            SearchDataObjectListResponse objectListResponse;
+            string serializedValue;
+            
+            var encodedValue = await _distributedCache.GetAsync(cacheKey);
+            if (encodedValue != null)
+            {
+                serializedValue = Encoding.UTF8.GetString(encodedValue);
+                objectListResponse = JsonConvert.DeserializeObject<SearchDataObjectListResponse>(serializedValue);
+            }
+            else
+            {
+                var objectInstances = await _objectRepository.GetObjectInstances(dataObject.Id);
+
+                string objectUrl;
+                if (objectInstances is not { Count: > 0 }) objectUrl = null;
+                objectUrl = ObjectUrlExtraction(objectInstances);
+                
+                objectListResponse = new SearchDataObjectListResponse()
+                {
+                    Id = dataObject.Id,
+                    Doi = dataObject.Doi,
+                    DisplayTitle = dataObject.DisplayTitle,
+                    ObjectClass = await _context.GetObjectClass(dataObject.ObjectClassId),
+                    ObjectType = await _context.GetObjectType(dataObject.ObjectTypeId),
+                    ObjectUrl = objectUrl,
+                    PublicationYear = dataObject.PublicationYear,
+                    LangCode = dataObject.LangCode,
+                    AccessType = await _context.GetAccessType(dataObject.AccessTypeId),
+                    EoscCategory = dataObject.EoscCategory,
+                    ObjectInstances = await _dataMapper.MapObjectInstances(await _objectRepository.GetObjectInstances(dataObject.Id)),
+                    ProvenanceString = dataObject.ProvenanceString
+                };
+                serializedValue = JsonConvert.SerializeObject(objectListResponse);
+                encodedValue = Encoding.UTF8.GetBytes(serializedValue);
+                var options = new DistributedCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromHours(RedisConfig.SlidingExpirationData))
+                    .SetAbsoluteExpiration(TimeSpan.FromHours(RedisConfig.AbsoluteExpirationData));
+                await _distributedCache.SetAsync(cacheKey, encodedValue, options);
+            }
+
+            return objectListResponse;
+        }
+
+        public async Task<ICollection<SearchDataObjectListResponse>> BuildSearchObjectResponse(ICollection<DataObject> dataObjects)
+        {
+            var objectListResponse = new List<SearchDataObjectListResponse>();
+            foreach (var obj in dataObjects)
+            {
+                objectListResponse.Add(await BuildSingleSearchObjectResponse(obj));
             }
 
             return objectListResponse;

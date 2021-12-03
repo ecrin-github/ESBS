@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using MdrService.Configs;
 using MdrService.Contracts.Requests.v1;
-using MdrService.Contracts.Responses.v1.RawSqlSearchServiceResponse;
+using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 using MdrService.Interfaces;
 using Npgsql;
 
@@ -23,22 +24,61 @@ namespace MdrService.Services
             return skip;
         }
 
-        private static string FiltersListBuilder(IReadOnlyList<int> filterIds)
+        private static StringBuilder FiltersListBuilder(IList<int> filterIds)
         {
-            var filters = "(";
+            var filters = new StringBuilder("(");
             for (var index = 0; index < filterIds.Count; index++)
             {
                 var idx = index + 1;
                 if (idx == filterIds.Count)
                 {
-                    filters += filterIds[index];
+                    filters.Append(filterIds[index]);
                 }
-
-                filters += filterIds[index] + ", ";
+                else
+                {
+                    filters.Append(filterIds[index] + ", ");
+                }
             }
-            filters += ")";
+            filters.Append(')');
             return filters;
         }
+
+
+        private static StringBuilder FiltersBuilder(FiltersRequest filtersRequest)
+        {
+            if (filtersRequest == null) return null;
+
+            var queryFilterString = new StringBuilder();
+            
+            if (filtersRequest.StudyTypes.Count > 0)
+            {
+                queryFilterString.Append($" and study_id in (select studies.id from core.studies studies where studies.study_type_id in {FiltersListBuilder(filtersRequest.StudyTypes)})");
+            }
+            if (filtersRequest.StudyStatuses.Count > 0)
+            {
+                queryFilterString.Append($" and study_id in (select studies.id from core.studies studies where studies.study_status_id in {FiltersListBuilder(filtersRequest.StudyStatuses)})");
+            }
+            if (filtersRequest.StudyGenderEligibility.Count > 0)
+            {
+                queryFilterString.Append($" and study_id in (select studies.id from core.studies studies where studies.study_gender_elig_id in {FiltersListBuilder(filtersRequest.StudyGenderEligibility)})");
+            }
+            if (filtersRequest.StudyFeatureValues.Count > 0)
+            {
+                queryFilterString.Append($" and study_id in (select sf.id from core.study_features sf where sf.feature_value_id in {FiltersListBuilder(filtersRequest.StudyFeatureValues)})");
+            }
+            if (filtersRequest.ObjectTypes.Count > 0)
+            {
+                queryFilterString.Append($" and object_id in (select d_o.id from core.data_objects d_o where d_o.object_type_id in {FiltersListBuilder(filtersRequest.ObjectTypes)})");
+            }
+            if (filtersRequest.ObjectAccessTypes.Count > 0)
+            {
+                queryFilterString.Append($" and object_id in (select d_o.id from core.data_objects d_o where d_o.access_type_id in {FiltersListBuilder(filtersRequest.ObjectAccessTypes)})");
+            }
+
+            return queryFilterString;
+        }
+        
+        
         
         public async Task<RawSqlSearchServiceResponse> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
         {
@@ -46,62 +86,35 @@ namespace MdrService.Services
 
             await using var connection = new NpgsqlConnection(DbConfig.MdrDbConnectionString);
 
-            var queryString = "select distinct study_id " +
-                              "from core.study_object_links " +
-                              "where study_id in " +
-                              "(select si.study_id " +
-                              "from core.study_identifiers si " +
-                              $"where si.identifier_type_id = {specificStudyRequest.SearchType} " +
-                              $"and upper(si.identifier_value) = upper({specificStudyRequest.SearchValue})) ";
-            
-            var totalQueryString = "select count(distinct study_id) " +
-                                   "from core.study_object_links " +
-                                   "where study_id in " +
-                                   "(select si.study_id " +
-                                   "from core.study_identifiers si " +
-                                   $"where si.identifier_type_id = {specificStudyRequest.SearchType} " +
-                                   $"and upper(si.identifier_value) = upper({specificStudyRequest.SearchValue})) ";
+            var queryString = new StringBuilder();
+            var totalQueryString = new StringBuilder();
 
-            if (specificStudyRequest.Filters != null)
+            queryString.Append("select distinct study_id ");
+            queryString.Append("from core.study_object_links ");
+            queryString.Append("where study_id in ");
+            queryString.Append("(select si.study_id ");
+            queryString.Append("from core.study_identifiers si ");
+            queryString.Append($"where si.identifier_type_id = {specificStudyRequest.SearchType} ");
+            queryString.Append($"and upper(si.identifier_value) = upper('{specificStudyRequest.SearchValue}')) ");
+
+            totalQueryString.Append("select count(distinct study_id) ");
+            totalQueryString.Append("from core.study_object_links ");
+            totalQueryString.Append("where study_id in ");
+            totalQueryString.Append("(select si.study_id ");
+            totalQueryString.Append("from core.study_identifiers si ");
+            totalQueryString.Append($"where si.identifier_type_id = {specificStudyRequest.SearchType} ");
+            totalQueryString.Append($"and upper(si.identifier_value) = upper('{specificStudyRequest.SearchValue}'))");
+
+            var filters = FiltersBuilder(specificStudyRequest.Filters);
+            if (filters != null)
             {
-                if (specificStudyRequest.Filters.StudyTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (specificStudyRequest.Filters.StudyStatuses.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (specificStudyRequest.Filters.StudyGenderEligibility.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (specificStudyRequest.Filters.StudyFeatureValues.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (specificStudyRequest.Filters.ObjectTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (specificStudyRequest.Filters.ObjectAccessTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
+                queryString.Append(filters);
+                totalQueryString.Append(filters);
             }
 
-            queryString += $"order by study_id asc " +
-                           $"limit {specificStudyRequest.Size} " +
-                           $"offset {skip}";
+            queryString.Append($" order by study_id asc limit {specificStudyRequest.Size} offset {skip}");
             
-
-            var result = await connection.QueryAsync(queryString);
+            var result = await connection.QueryAsync(queryString.ToString());
 
             var ids = new List<int>();
             if (result != null)
@@ -109,7 +122,7 @@ namespace MdrService.Services
                 ids.AddRange(result.Select(studyId => studyId.study_id).Cast<int>());
             }
 
-            var totalRecords = await connection.QueryFirstAsync(totalQueryString);
+            var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
             
             return new RawSqlSearchServiceResponse()
             {
@@ -124,83 +137,56 @@ namespace MdrService.Services
 
             await using var connection = new NpgsqlConnection(DbConfig.MdrDbConnectionString);
 
-            var queryString = "select distinct study_id " +
-                              "from core.study_object_links " +
-                              "where study_id in " +
-                              "(select st1.study_id from core.study_titles st1 " +
-                              "inner join core.study_topics st2 on st1.study_id = st2.study_id " +
-                              $"where lower(st1.title_text) like lower('%{studyCharacteristicsRequest.TitleContains}%') ";
-            
-            var totalQueryString = "select count(distinct study_id) " +
-                                   "from core.study_object_links " +
-                                   "where study_id in " +
-                                   "(select st1.study_id from core.study_titles st1 " +
-                                   "inner join core.study_topics st2 on st1.study_id = st2.study_id " +
-                                   $"where lower(st1.title_text) like lower('%{studyCharacteristicsRequest.TitleContains}%') ";
+            var queryString = new StringBuilder();
+            var totalQueryString = new StringBuilder();
 
+            queryString.Append("select distinct study_id ");
+            queryString.Append("from core.study_object_links ");
+            queryString.Append("where study_id in ");
+            queryString.Append("(select st1.study_id from core.study_titles st1 ");
+            queryString.Append("inner join core.study_topics st2 on st1.study_id = st2.study_id ");
+            queryString.Append($"where lower(st1.title_text) like lower('%{studyCharacteristicsRequest.TitleContains}%') ");
+            
+            totalQueryString.Append("select count(distinct study_id) ");
+            totalQueryString.Append("from core.study_object_links ");
+            totalQueryString.Append("where study_id in ");
+            totalQueryString.Append("(select st1.study_id from core.study_titles st1 ");
+            totalQueryString.Append("inner join core.study_topics st2 on st1.study_id = st2.study_id ");
+            totalQueryString.Append($"where lower(st1.title_text) like lower('%{studyCharacteristicsRequest.TitleContains}%') ");
+            
             if (studyCharacteristicsRequest.LogicalOperator?.ToLower() == "and" ||
                 studyCharacteristicsRequest.LogicalOperator?.ToLower() == "&&")
             {
-                queryString += $"and lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
-                totalQueryString += $"and lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
+                queryString.Append($"and lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%'))");
+                totalQueryString.Append($"and lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%'))");
             }
             else
             {
-                queryString += $"or lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
-                totalQueryString += $"or lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%')";
+                queryString.Append($"or lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%'))");
+                totalQueryString.Append($"or lower(st2.original_value) like lower('%{studyCharacteristicsRequest.TopicsInclude}%'))");
             }
             
-            if (studyCharacteristicsRequest.Filters != null)
+            var filters = FiltersBuilder(studyCharacteristicsRequest.Filters);
+            if (filters != null)
             {
-                if (studyCharacteristicsRequest.Filters.StudyTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (studyCharacteristicsRequest.Filters.StudyStatuses.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (studyCharacteristicsRequest.Filters.StudyGenderEligibility.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (studyCharacteristicsRequest.Filters.StudyFeatureValues.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (studyCharacteristicsRequest.Filters.ObjectTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (studyCharacteristicsRequest.Filters.ObjectAccessTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
+                queryString.Append(filters);
+                totalQueryString.Append(filters);
             }
-            
-            queryString += ")";
-            totalQueryString += ")";
-            
-            queryString += $"order by study_id asc " +
-                           $"limit {studyCharacteristicsRequest.Size} " +
-                           $"offset {skip}";
 
-            var result = await connection.QueryAsync(queryString);
-
+            queryString.Append(" order by study_id asc ");
+            queryString.Append($"limit {studyCharacteristicsRequest.Size} ");
+            queryString.Append($"offset {skip}");
+            
+            var result = await connection.QueryAsync(queryString.ToString());
+            
             var ids = new List<int>();
             if (result != null)
             {
                 ids.AddRange(result.Select(studyId => studyId.study_id).Cast<int>());
             }
 
-            var totalRecords = await connection.QueryFirstAsync(totalQueryString);
-
+            var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
+            
             return new RawSqlSearchServiceResponse()
             {
                 Total = totalRecords.count,
@@ -214,74 +200,51 @@ namespace MdrService.Services
 
             await using var connection = new NpgsqlConnection(DbConfig.MdrDbConnectionString);
 
-            var queryString = "select distinct study_id " +
-                              "from core.study_object_links " +
-                              "where object_id in ";
+            var queryString = new StringBuilder();
+            var totalQueryString = new StringBuilder();
 
-            var totalQueryString = "select count(distinct study_id) " +
-                                   "from core.study_object_links " +
-                                   "where object_id in ";
+            queryString.Append("select distinct study_id ");
+            queryString.Append("from core.study_object_links ");
+            queryString.Append("where object_id in ");
+
+            totalQueryString.Append("select count(distinct study_id) ");
+            totalQueryString.Append("from core.study_object_links ");
+            totalQueryString.Append("where object_id in ");
 
             if (viaPublishedPaperRequest.SearchType.ToLower() == "doi")
             {
-                queryString += "(select d_o.id " +
-                               "from core.data_objects d_o " +
-                               $"where lower(d_o.doi) = lower({viaPublishedPaperRequest.SearchValue}))";
+                queryString.Append("(select d_o.id ");
+                queryString.Append("from core.data_objects d_o ");
+                queryString.Append($"where lower(d_o.doi) = lower({viaPublishedPaperRequest.SearchValue}))");
                 
-                totalQueryString += "(select d_o.id " +
-                                    "from core.data_objects d_o " +
-                                    $"where lower(d_o.doi) = lower({viaPublishedPaperRequest.SearchValue}))";
+                totalQueryString.Append("(select d_o.id ");
+                totalQueryString.Append("from core.data_objects d_o ");
+                totalQueryString.Append($"where lower(d_o.doi) = lower({viaPublishedPaperRequest.SearchValue}))");
             }
             else
             {
-                queryString += "(select ot.object_id " +
-                               "from core.object_titles ot " +
-                               $"where lower(ot.title_text) like lower('%{viaPublishedPaperRequest.SearchValue}%'))";
+
+                queryString.Append("(select ot.object_id ");
+                queryString.Append("from core.object_titles ot ");
+                queryString.Append($"where lower(ot.title_text) like lower('%{viaPublishedPaperRequest.SearchValue}%'))");
                 
-                totalQueryString += "(select ot.object_id " +
-                                    "from core.object_titles ot " +
-                                    $"where lower(ot.title_text) like lower('%{viaPublishedPaperRequest.SearchValue}%'))";
+                totalQueryString.Append("(select ot.object_id ");
+                totalQueryString.Append("from core.object_titles ot ");
+                totalQueryString.Append($"where lower(ot.title_text) like lower('%{viaPublishedPaperRequest.SearchValue}%'))");
             }
             
-            if (viaPublishedPaperRequest.Filters != null)
+            var filters = FiltersBuilder(viaPublishedPaperRequest.Filters);
+            if (filters != null)
             {
-                if (viaPublishedPaperRequest.Filters.StudyTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (viaPublishedPaperRequest.Filters.StudyStatuses.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (viaPublishedPaperRequest.Filters.StudyGenderEligibility.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (viaPublishedPaperRequest.Filters.StudyFeatureValues.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (viaPublishedPaperRequest.Filters.ObjectTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
-                if (viaPublishedPaperRequest.Filters.ObjectAccessTypes.Count > 0)
-                {
-                    queryString += "";
-                    totalQueryString += "";
-                }
+                queryString.Append(filters);
+                totalQueryString.Append(filters);
             }
 
-            queryString += " order by study_id asc " +
-                           $"limit {viaPublishedPaperRequest.Size} " +
-                           $"offset {skip}";
+            queryString.Append(" order by study_id asc ");
+            queryString.Append($"limit {viaPublishedPaperRequest.Size} ");
+            queryString.Append($"offset {skip}");
             
-            var result = await connection.QueryAsync(queryString);
+            var result = await connection.QueryAsync(queryString.ToString());
 
             var ids = new List<int>();
             if (result != null)
@@ -289,7 +252,7 @@ namespace MdrService.Services
                 ids.AddRange(result.Select(studyId => studyId.study_id).Cast<int>());
             }
 
-            var totalRecords = await connection.QueryFirstAsync(totalQueryString);
+            var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
 
             return new RawSqlSearchServiceResponse()
             {

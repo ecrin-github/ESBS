@@ -26,11 +26,6 @@ namespace IdentityClient.Extensions
                     };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "mdmClient", "the_rms_client"));
-            });
-
             return services;
         }
     }

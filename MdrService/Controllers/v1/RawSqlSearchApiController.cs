@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1;
 using MdrService.Contracts.Responses.v1;
+using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 using MdrService.Contracts.Responses.v1.StudyListResponse;
 using MdrService.Contracts.Routes.ApiRoutes.v1;
 using MdrService.Interfaces;
@@ -49,8 +50,8 @@ namespace MdrService.Controllers.v1
                 Data = new List<StudyListResponse>()
             });
 
-            var outputResult = await _builderService.BuildStudyResponse(studies);
-            return Ok(new RawSqlSearchApiResponse<StudyListResponse>()
+            var outputResult = await _builderService.BuildSearchStudyResponse(studies);
+            return Ok(new RawSqlSearchApiResponse<SearchStudyListResponse>()
             {
                 Total = ids.Total,
                 Data = outputResult,
@@ -83,8 +84,8 @@ namespace MdrService.Controllers.v1
                 Data = new List<StudyListResponse>()
             });
 
-            var outputResult = await _builderService.BuildStudyResponse(studies);
-            return Ok(new RawSqlSearchApiResponse<StudyListResponse>()
+            var outputResult = await _builderService.BuildSearchStudyResponse(studies);
+            return Ok(new RawSqlSearchApiResponse<SearchStudyListResponse>()
             {
                 Total = ids.Total,
                 Data = outputResult,
@@ -117,8 +118,8 @@ namespace MdrService.Controllers.v1
                 Data = new List<StudyListResponse>()
             });
 
-            var outputResult = await _builderService.BuildStudyResponse(studies);
-            return Ok(new RawSqlSearchApiResponse<StudyListResponse>()
+            var outputResult = await _builderService.BuildSearchStudyResponse(studies);
+            return Ok(new RawSqlSearchApiResponse<SearchStudyListResponse>()
             {
                 Total = ids.Total,
                 Data = outputResult,

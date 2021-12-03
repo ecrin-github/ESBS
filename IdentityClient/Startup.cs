@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using IdentityClient.Extensions;
 using IdentityClient.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,12 +31,35 @@ namespace IdentityClient
                 options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
             });
             */
+
+            services.AddApplicationServices(Configuration);
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "The ESBS REST API - Identity client Documentation", Version = "v1" });
-                c.EnableAnnotations();            
+                c.EnableAnnotations();
+                /*
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+                c.AddSecurityDefinition("Bearer", securitySchema);
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securitySchema, new[] { "Bearer" } }
+                };
+                c.AddSecurityRequirement(securityRequirement);
+                */
             });
             
             services.AddCors(options =>
@@ -75,6 +99,9 @@ namespace IdentityClient
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            // app.UseAuthentication();
+            // app.UseAuthorization();
             
             app.UseCors("Open");
 

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using IdentityClient.Configs;
+using IdentityClient.Contracts.Requests;
 using IdentityClient.Contracts.Responses;
 using IdentityModel.Client;
 using IdentityServer4.Models;
@@ -63,6 +64,31 @@ namespace IdentityClient.Controllers.Elixir.v1
                 {
                     AuthString = url
                 }}
+            });
+        }
+        
+        [HttpPost("refresh-token")]
+        [SwaggerOperation(Tags = new []{"The Elixir AAI endpoints"})]
+        public async Task<IActionResult> GetRefreshToken([FromBody] RefreshTokenBodyRequest refreshTokenBodyRequest)
+        {
+            var client = new HttpClient();
+            
+            var response = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
+            {
+                Address = ElixirIdentityConfigs.TokenUrl,
+                ClientId = ElixirIdentityConfigs.ClientId,
+                RefreshToken = refreshTokenBodyRequest.RefreshToken,
+                GrantType = "refresh_token"
+            });
+            
+            if (response.IsError) return BadRequest(response);
+            
+            return Ok(new ApiResponse<JsonElement>()
+            {
+                StatusCode = 200,
+                Messages = null,
+                Total = 1,
+                Data = new List<JsonElement>(){response.Json}
             });
         }
     }

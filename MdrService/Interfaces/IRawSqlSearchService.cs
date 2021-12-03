@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1;
-using MdrService.Contracts.Responses.v1.RawSqlSearchServiceResponse;
+using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 
 namespace MdrService.Interfaces
 {

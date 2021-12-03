@@ -4,11 +4,11 @@ namespace MdrService.Contracts.Requests.v1
 {
     public class FiltersRequest
     {
-        public ICollection<int> StudyTypes { get; set; }
-        public ICollection<int> StudyStatuses { get; set; }
-        public ICollection<int> StudyGenderEligibility { get; set; }
-        public ICollection<int> StudyFeatureValues { get; set; }
-        public ICollection<int> ObjectTypes { get; set; }
-        public ICollection<int> ObjectAccessTypes { get; set; }
+        public IList<int> StudyTypes { get; set; }
+        public IList<int> StudyStatuses { get; set; }
+        public IList<int> StudyGenderEligibility { get; set; }
+        public IList<int> StudyFeatureValues { get; set; }
+        public IList<int> ObjectTypes { get; set; }
+        public IList<int> ObjectAccessTypes { get; set; }
     }
 }
