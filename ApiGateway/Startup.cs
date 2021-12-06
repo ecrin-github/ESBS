@@ -92,6 +92,8 @@ namespace ApiGateway
                 opt.ReConfigureUpstreamSwaggerJson = AlterUpstreamSwaggerJson;
             });
 
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

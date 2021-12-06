@@ -89,6 +89,9 @@ namespace MdrService.Services
             var queryString = new StringBuilder();
             var totalQueryString = new StringBuilder();
 
+            queryString.Append("with search_query as (");
+            totalQueryString.Append("with total_query as (");
+            
             queryString.Append("select distinct study_id ");
             queryString.Append("from core.study_object_links ");
             queryString.Append("where study_id in ");
@@ -111,8 +114,14 @@ namespace MdrService.Services
                 queryString.Append(filters);
                 totalQueryString.Append(filters);
             }
+            
+            queryString.Append(") ");
+            totalQueryString.Append(") ");
 
+            queryString.Append("select * from search_query");
             queryString.Append($" order by study_id asc limit {specificStudyRequest.Size} offset {skip}");
+            
+            totalQueryString.Append("select * from total_query");
             
             var result = await connection.QueryAsync(queryString.ToString());
 
@@ -139,6 +148,9 @@ namespace MdrService.Services
 
             var queryString = new StringBuilder();
             var totalQueryString = new StringBuilder();
+            
+            queryString.Append("with search_query as (");
+            totalQueryString.Append("with total_query as (");
 
             queryString.Append("select distinct study_id ");
             queryString.Append("from core.study_object_links ");
@@ -172,11 +184,15 @@ namespace MdrService.Services
                 queryString.Append(filters);
                 totalQueryString.Append(filters);
             }
-
-            queryString.Append(" order by study_id asc ");
-            queryString.Append($"limit {studyCharacteristicsRequest.Size} ");
-            queryString.Append($"offset {skip}");
             
+            queryString.Append(") ");
+            totalQueryString.Append(") ");
+
+            queryString.Append("select * from search_query");
+            queryString.Append($" order by study_id asc limit {studyCharacteristicsRequest.Size} offset {skip}");
+            
+            totalQueryString.Append("select * from total_query");
+
             var result = await connection.QueryAsync(queryString.ToString());
             
             var ids = new List<int>();
@@ -184,9 +200,9 @@ namespace MdrService.Services
             {
                 ids.AddRange(result.Select(studyId => studyId.study_id).Cast<int>());
             }
-
-            var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
             
+            var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
+
             return new RawSqlSearchServiceResponse()
             {
                 Total = totalRecords.count,
@@ -202,6 +218,9 @@ namespace MdrService.Services
 
             var queryString = new StringBuilder();
             var totalQueryString = new StringBuilder();
+            
+            queryString.Append("with search_query as (");
+            totalQueryString.Append("with total_query as (");
 
             queryString.Append("select distinct study_id ");
             queryString.Append("from core.study_object_links ");
@@ -239,10 +258,14 @@ namespace MdrService.Services
                 queryString.Append(filters);
                 totalQueryString.Append(filters);
             }
+            
+            queryString.Append(") ");
+            totalQueryString.Append(") ");
 
-            queryString.Append(" order by study_id asc ");
-            queryString.Append($"limit {viaPublishedPaperRequest.Size} ");
-            queryString.Append($"offset {skip}");
+            queryString.Append("select * from search_query");
+            queryString.Append($" order by study_id asc limit {viaPublishedPaperRequest.Size} offset {skip}");
+            
+            totalQueryString.Append("select * from total_query");
             
             var result = await connection.QueryAsync(queryString.ToString());
 
@@ -253,7 +276,7 @@ namespace MdrService.Services
             }
 
             var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
-
+            
             return new RawSqlSearchServiceResponse()
             {
                 Total = totalRecords.count,
