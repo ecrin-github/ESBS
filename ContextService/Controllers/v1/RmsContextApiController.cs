@@ -24,7 +24,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetAccessPrereqTypes()
         {
             var data = await _rmsRepository.GetAccessPrereqTypes();
-            if (data == null) return NotFound(new ApiResponse<AccessPrereqType>()
+            if (data == null) return Ok(new ApiResponse<AccessPrereqType>()
             {
                 Total = 0,
                 Data = null,
@@ -45,7 +45,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetAccessPrereqType(int id)
         {
             var data = await _rmsRepository.GetAccessPrereqType(id);
-            if (data == null) return NotFound(new ApiResponse<AccessPrereqType>()
+            if (data == null) return Ok(new ApiResponse<AccessPrereqType>()
             {
                 Total = 0,
                 Data = null,
@@ -66,7 +66,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetCheckStatusTypes()
         {
             var data = await _rmsRepository.GetCheckStatusTypes();
-            if (data == null) return NotFound(new ApiResponse<CheckStatusType>()
+            if (data == null) return Ok(new ApiResponse<CheckStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -87,7 +87,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetCheckStatusType(int id)
         {
             var data = await _rmsRepository.GetCheckStatusType(id);
-            if (data == null) return NotFound(new ApiResponse<CheckStatusType>()
+            if (data == null) return Ok(new ApiResponse<CheckStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -108,7 +108,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDtpStatusTypes()
         {
             var data = await _rmsRepository.GetDtpStatusTypes();
-            if (data == null) return NotFound(new ApiResponse<DtpStatusType>()
+            if (data == null) return Ok(new ApiResponse<DtpStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -129,7 +129,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDtpStatusType(int id)
         {
             var data = await _rmsRepository.GetDtpStatusType(id);
-            if (data == null) return NotFound(new ApiResponse<DtpStatusType>()
+            if (data == null) return Ok(new ApiResponse<DtpStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -150,7 +150,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDupStatusTypes()
         {
             var data = await _rmsRepository.GetDupStatusTypes();
-            if (data == null) return NotFound(new ApiResponse<DupStatusType>()
+            if (data == null) return Ok(new ApiResponse<DupStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -171,7 +171,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDupStatusType(int id)
         {
             var data = await _rmsRepository.GetDupStatusType(id);
-            if (data == null) return NotFound(new ApiResponse<DupStatusType>()
+            if (data == null) return Ok(new ApiResponse<DupStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -192,7 +192,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetLegalStatusTypes()
         {
             var data = await _rmsRepository.GetLegalStatusTypes();
-            if (data == null) return NotFound(new ApiResponse<LegalStatusType>()
+            if (data == null) return Ok(new ApiResponse<LegalStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -213,7 +213,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetLegalStatusType(int id)
         {
             var data = await _rmsRepository.GetLegalStatusType(id);
-            if (data == null) return NotFound(new ApiResponse<LegalStatusType>()
+            if (data == null) return Ok(new ApiResponse<LegalStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -235,7 +235,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetRepoStatusTypes()
         {
             var data = await _rmsRepository.GetRepoAccessTypes();
-            if (data == null) return NotFound(new ApiResponse<RepoAccessType>()
+            if (data == null) return Ok(new ApiResponse<RepoAccessType>()
             {
                 Total = 0,
                 Data = null,
@@ -256,7 +256,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetRepoStatusType(int id)
         {
             var data = await _rmsRepository.GetRepoAccessType(id);
-            if (data == null) return NotFound(new ApiResponse<RepoAccessType>()
+            if (data == null) return Ok(new ApiResponse<RepoAccessType>()
             {
                 Total = 0,
                 Data = null,

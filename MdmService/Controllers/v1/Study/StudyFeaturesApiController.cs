@@ -24,7 +24,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyFeatures(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (study == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -34,7 +34,7 @@ namespace MdmService.Controllers.v1.Study
             
             var studyFeatures = await _studyRepository.GetStudyFeatures(sdSid);
             if (studyFeatures == null)
-                return NotFound(new ApiResponse<StudyFeatureDto>()
+                return Ok(new ApiResponse<StudyFeatureDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -56,7 +56,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyFeature(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (study == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -65,7 +65,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyFeature = await _studyRepository.GetStudyFeature(id);
-            if (studyFeature == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (studyFeature == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -88,7 +88,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> CreateStudyFeature(string sdSid, [FromBody] StudyFeatureDto studyFeatureDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (study == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -98,7 +98,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyFeature = await _studyRepository.CreateStudyFeature(sdSid, studyFeatureDto);
             if (studyFeature == null)
-                return BadRequest(new ApiResponse<StudyFeatureDto>()
+                return Ok(new ApiResponse<StudyFeatureDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -121,7 +121,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> UpdateStudyFeature(string sdSid, int id, [FromBody] StudyFeatureDto studyFeatureDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (study == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -130,7 +130,7 @@ namespace MdmService.Controllers.v1.Study
             });
             
             var studyFeature = await _studyRepository.GetStudyFeature(id);
-            if (studyFeature == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (studyFeature == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -140,7 +140,7 @@ namespace MdmService.Controllers.v1.Study
 
             var updatedStudyFeature = await _studyRepository.UpdateStudyFeature(studyFeatureDto);
             if (updatedStudyFeature == null)
-                return BadRequest(new ApiResponse<StudyFeatureDto>()
+                return Ok(new ApiResponse<StudyFeatureDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -163,7 +163,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteStudyFeature(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (study == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -172,7 +172,7 @@ namespace MdmService.Controllers.v1.Study
             });
             
             var studyFeature = await _studyRepository.GetStudyFeature(id);
-            if (studyFeature == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (studyFeature == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -195,7 +195,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteAllStudyFeatures(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyFeatureDto>()
+            if (study == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

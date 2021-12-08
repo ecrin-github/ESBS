@@ -25,7 +25,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectRelationships(string sdOid)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objRel = await _dataObjectRepository.GetObjectRelationships(sdOid);
             if (objRel == null)
-                return NotFound(new ApiResponse<ObjectRelationshipDto>()
+                return Ok(new ApiResponse<ObjectRelationshipDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -57,7 +57,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectRelationship(string sdOid, int id)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -66,7 +66,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objRel = await _dataObjectRepository.GetObjectRelationship(id);
-            if (objRel == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (objRel == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -90,7 +90,7 @@ namespace MdmService.Controllers.v1.Object
             [FromBody] ObjectRelationshipDto objectRelationshipDto)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -100,7 +100,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objRel = await _dataObjectRepository.CreateObjectRelationship(sdOid, objectRelationshipDto);
             if (objRel == null)
-                return BadRequest(new ApiResponse<ObjectRelationshipDto>()
+                return Ok(new ApiResponse<ObjectRelationshipDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -123,7 +123,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> UpdateObjectRelationship(string sdOid, int id, [FromBody] ObjectRelationshipDto objectRelationshipDto)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -132,7 +132,7 @@ namespace MdmService.Controllers.v1.Object
             });
             
             var objRel = _dataObjectRepository.GetObjectRelationship(id);
-            if (objRel == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (objRel == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -141,7 +141,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var updatedObjectRel = await _dataObjectRepository.UpdateObjectRelationship(objectRelationshipDto);
-            if (updatedObjectRel == null) return BadRequest(new ApiResponse<ObjectRelationshipDto>()
+            if (updatedObjectRel == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -164,7 +164,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteObjectRelationship(string sdOid, int id)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -173,7 +173,7 @@ namespace MdmService.Controllers.v1.Object
             });
             
             var objRel = await _dataObjectRepository.GetObjectRelationship(id);
-            if (objRel == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (objRel == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -196,7 +196,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteAllObjectRelationships(string sdOid)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectRelationshipDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

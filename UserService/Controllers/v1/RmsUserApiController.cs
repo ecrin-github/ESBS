@@ -17,7 +17,7 @@ namespace UserService.Controllers.v1
             var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
             var accessToken = accessTokenRes?.ToString();
             
-            return NotFound(new ApiResponse<int>()
+            return Ok(new ApiResponse<int>()
             {
                 Total = 0,
                 Messages = new List<string>(){"No DTP access have been found."},
@@ -33,7 +33,7 @@ namespace UserService.Controllers.v1
             var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
             var accessToken = accessTokenRes?.ToString();
             
-            return NotFound(new ApiResponse<int>()
+            return Ok(new ApiResponse<int>()
             {
                 Total = 0,
                 Messages = new List<string>(){"No DTP access have been found."},
@@ -49,7 +49,7 @@ namespace UserService.Controllers.v1
             var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
             var accessToken = accessTokenRes?.ToString();
             
-            return NotFound(new ApiResponse<int>()
+            return Ok(new ApiResponse<int>()
             {
                 Total = 0,
                 Messages = new List<string>(){"No DTP access have been found."},
@@ -65,7 +65,7 @@ namespace UserService.Controllers.v1
             var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
             var accessToken = accessTokenRes?.ToString();
             
-            return NotFound(new ApiResponse<int>()
+            return Ok(new ApiResponse<int>()
             {
                 Total = 0,
                 Messages = new List<string>(){"No DTP access have been found."},
@@ -81,7 +81,7 @@ namespace UserService.Controllers.v1
             var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
             var accessToken = accessTokenRes?.ToString();
             
-            return NotFound(new ApiResponse<int>()
+            return Ok(new ApiResponse<int>()
             {
                 Total = 0,
                 Messages = new List<string>(){"No DTP access have been found."},

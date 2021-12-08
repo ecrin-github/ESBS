@@ -863,6 +863,86 @@ namespace MdmService.Repositories
 
             await _dbConnection.DataObjects.AddAsync(dataObject);
             await _dbConnection.SaveChangesAsync();
+
+            if (dataObjectDto.ObjectContributors is { Count: > 0 })
+            {
+                foreach (var oc in dataObjectDto.ObjectContributors)
+                {
+                    await CreateObjectContributor(objId.ToString(), oc);
+                }
+            }
+            
+            if (dataObjectDto.ObjectDatasets is { Count: > 0 })
+            {
+                foreach (var od in dataObjectDto.ObjectDatasets)
+                {
+                    await CreateObjectDataset(objId.ToString(), od);
+                }
+            }
+            
+            if (dataObjectDto.ObjectDates is { Count: > 0 })
+            {
+                foreach (var od in dataObjectDto.ObjectDates)
+                {
+                    await CreateObjectDate(objId.ToString(), od);
+                }
+            }
+            
+            if (dataObjectDto.ObjectDescriptions is { Count: > 0 })
+            {
+                foreach (var od in dataObjectDto.ObjectDescriptions)
+                {
+                    await CreateObjectDescription(objId.ToString(), od);
+                }
+            }
+            
+            if (dataObjectDto.ObjectIdentifiers is { Count: > 0 })
+            {
+                foreach (var oi in dataObjectDto.ObjectIdentifiers)
+                {
+                    await CreateObjectIdentifier(objId.ToString(), oi);
+                }
+            }
+            
+            if (dataObjectDto.ObjectInstances is { Count: > 0 })
+            {
+                foreach (var oi in dataObjectDto.ObjectInstances)
+                {
+                    await CreateObjectInstance(objId.ToString(), oi);
+                }
+            }
+            
+            if (dataObjectDto.ObjectRelationships is { Count: > 0 })
+            {
+                foreach (var or in dataObjectDto.ObjectRelationships)
+                {
+                    await CreateObjectRelationship(objId.ToString(), or);
+                }
+            }
+            
+            if (dataObjectDto.ObjectRights is { Count: > 0 })
+            {
+                foreach (var or in dataObjectDto.ObjectRights)
+                {
+                    await CreateObjectRight(objId.ToString(), or);
+                }
+            }
+            
+            if (dataObjectDto.ObjectTitles is { Count: > 0 })
+            {
+                foreach (var ot in dataObjectDto.ObjectTitles)
+                {
+                    await CreateObjectTitle(objId.ToString(), ot);
+                }
+            }
+            
+            if (dataObjectDto.ObjectTopics is { Count: > 0 })
+            {
+                foreach (var ot in dataObjectDto.ObjectTopics)
+                {
+                    await CreateObjectTopic(objId.ToString(), ot);
+                }
+            }
             
             return await DataObjectBuilder(dataObject);
         }

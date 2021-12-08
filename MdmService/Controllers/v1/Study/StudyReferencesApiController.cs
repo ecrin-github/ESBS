@@ -24,7 +24,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyReferences(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (study == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -34,7 +34,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyRefs = await _studyRepository.GetStudyReferences(sdSid);
             if (studyRefs == null)
-                return NotFound(new ApiResponse<StudyReferenceDto>()
+                return Ok(new ApiResponse<StudyReferenceDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -56,7 +56,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyReferences(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (study == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -65,7 +65,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyRef = await _studyRepository.GetStudyReference(id);
-            if (studyRef == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (studyRef == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -89,7 +89,7 @@ namespace MdmService.Controllers.v1.Study
             [FromBody] StudyReferenceDto studyReferenceDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (study == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyRef = await _studyRepository.CreateStudyReference(sdSid, studyReferenceDto);
             if (studyRef == null)
-                return BadRequest(new ApiResponse<StudyReferenceDto>()
+                return Ok(new ApiResponse<StudyReferenceDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> UpdateStudyReference(string sdSid, int id, [FromBody] StudyReferenceDto studyReferenceDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (study == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -130,7 +130,7 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
             var studyRef = await _studyRepository.GetStudyReference(id);
-            if (studyRef == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (studyRef == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -140,7 +140,7 @@ namespace MdmService.Controllers.v1.Study
 
             var updatedStudyRef = await _studyRepository.UpdateStudyReference(studyReferenceDto);
             if (updatedStudyRef == null)
-                return BadRequest(new ApiResponse<StudyReferenceDto>()
+                return Ok(new ApiResponse<StudyReferenceDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -163,7 +163,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteStudyReference(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (study == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -172,7 +172,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyRef = await _studyRepository.GetStudyReference(id);
-            if (studyRef == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (studyRef == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -195,7 +195,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteAllStudyReferences(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyReferenceDto>()
+            if (study == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

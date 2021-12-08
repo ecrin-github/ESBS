@@ -25,7 +25,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectDatasets(string sdOid)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objDatasets = await _dataObjectRepository.GetObjectDatasets(sdOid);
             if (objDatasets == null)
-                return NotFound(new ApiResponse<ObjectDatasetDto>()
+                return Ok(new ApiResponse<ObjectDatasetDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -58,7 +58,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectDatasets(string sdOid, int id)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -67,7 +67,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objDataset = await _dataObjectRepository.GetObjectDataset(id);
-            if (objDataset == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (objDataset == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -92,7 +92,7 @@ namespace MdmService.Controllers.v1.Object
             [FromBody] ObjectDatasetDto objectDatasetDto)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -102,7 +102,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objDataset = await _dataObjectRepository.CreateObjectDataset(sdOid, objectDatasetDto);
             if (objDataset == null)
-                return BadRequest(new ApiResponse<ObjectDatasetDto>()
+                return Ok(new ApiResponse<ObjectDatasetDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -125,7 +125,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> UpdateObjectDataset(string sdOid, int id, [FromBody] ObjectDatasetDto objectDatasetDto)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -134,7 +134,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objDataset = await _dataObjectRepository.GetObjectDataset(id);
-            if (objDataset == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (objDataset == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -144,7 +144,7 @@ namespace MdmService.Controllers.v1.Object
 
             var updatedObjDataset = await _dataObjectRepository.UpdateObjectDataset(objectDatasetDto);
             if (updatedObjDataset == null)
-                return BadRequest(new ApiResponse<ObjectDatasetDto>()
+                return Ok(new ApiResponse<ObjectDatasetDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -167,7 +167,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteObjectDataset(string sdOid, int id)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -176,7 +176,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objectDataset = await _dataObjectRepository.GetObjectDataset(id);
-            if (objectDataset == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (objectDataset == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -199,7 +199,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteAllObjectDatasets(string sdOid)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectDatasetDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

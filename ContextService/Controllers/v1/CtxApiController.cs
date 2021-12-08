@@ -24,7 +24,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetOrganisations()
         {
             var data = await _ctxRepository.GetOrganisations();
-            if (data == null) return NotFound(new ApiResponse<Organisation>()
+            if (data == null) return Ok(new ApiResponse<Organisation>()
             {
                 Total = 0,
                 Data = null,
@@ -45,7 +45,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetOrganisation(int id)
         {
             var data = await _ctxRepository.GetOrganisation(id);
-            if (data == null) return NotFound(new ApiResponse<Organisation>()
+            if (data == null) return Ok(new ApiResponse<Organisation>()
             {
                 Total = 0,
                 Data = null,
@@ -66,7 +66,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetOrgAttributes(int id)
         {
             var data = await _ctxRepository.GetOrgAttributes(id);
-            if (data == null) return NotFound(new ApiResponse<OrgAttribute>()
+            if (data == null) return Ok(new ApiResponse<OrgAttribute>()
             {
                 Total = 0,
                 Data = null,
@@ -87,7 +87,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetOrgLinks(int id)
         {
             var data = await _ctxRepository.GetOrgLinks(id);
-            if (data == null) return NotFound(new ApiResponse<OrgLink>()
+            if (data == null) return Ok(new ApiResponse<OrgLink>()
             {
                 Total = 0,
                 Data = null,
@@ -108,7 +108,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetOrgLocations(int id)
         {
             var data = await _ctxRepository.GetOrgLocations(id);
-            if (data == null) return NotFound(new ApiResponse<OrgLocation>()
+            if (data == null) return Ok(new ApiResponse<OrgLocation>()
             {
                 Total = 0,
                 Data = null,
@@ -129,7 +129,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetOrgNames(int id)
         {
             var data = await _ctxRepository.GetOrgNames(id);
-            if (data == null) return NotFound(new ApiResponse<OrgName>()
+            if (data == null) return Ok(new ApiResponse<OrgName>()
             {
                 Total = 0,
                 Data = null,
@@ -150,7 +150,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetOrgRelationships(int id)
         {
             var data = await _ctxRepository.GetOrgRelationships(id);
-            if (data == null) return NotFound(new ApiResponse<OrgRelationship>()
+            if (data == null) return Ok(new ApiResponse<OrgRelationship>()
             {
                 Total = 0,
                 Data = null,
@@ -172,7 +172,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPeople()
         {
             var data = await _ctxRepository.GetPeople();
-            if (data == null) return NotFound(new ApiResponse<People>()
+            if (data == null) return Ok(new ApiResponse<People>()
             {
                 Total = 0,
                 Data = null,
@@ -193,7 +193,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPerson(int id)
         {
             var data = await _ctxRepository.GetPerson(id);
-            if (data == null) return NotFound(new ApiResponse<People>()
+            if (data == null) return Ok(new ApiResponse<People>()
             {
                 Total = 0,
                 Data = null,
@@ -214,7 +214,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPersonLinks(int id)
         {
             var data = await _ctxRepository.GetPersonLinks(id);
-            if (data == null) return NotFound(new ApiResponse<PeopleLink>()
+            if (data == null) return Ok(new ApiResponse<PeopleLink>()
             {
                 Total = 0,
                 Data = null,
@@ -235,7 +235,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPersonRoles(int id)
         {
             var data = await _ctxRepository.GetPersonRoles(id);
-            if (data == null) return NotFound(new ApiResponse<PeopleRole>()
+            if (data == null) return Ok(new ApiResponse<PeopleRole>()
             {
                 Total = 0,
                 Data = null,
@@ -257,7 +257,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPublishers()
         {
             var data = await _ctxRepository.GetPublishers();
-            if (data == null) return NotFound(new ApiResponse<Publisher>()
+            if (data == null) return Ok(new ApiResponse<Publisher>()
             {
                 Total = 0,
                 Data = null,
@@ -278,7 +278,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPublisher(int id)
         {
             var data = await _ctxRepository.GetPublisher(id);
-            if (data == null) return NotFound(new ApiResponse<Publisher>()
+            if (data == null) return Ok(new ApiResponse<Publisher>()
             {
                 Total = 0,
                 Data = null,
@@ -299,7 +299,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPublisherEissns(int id)
         {
             var data = await _ctxRepository.GetPubEissns(id);
-            if (data == null) return NotFound(new ApiResponse<PubEissn>()
+            if (data == null) return Ok(new ApiResponse<PubEissn>()
             {
                 Total = 0,
                 Data = null,
@@ -320,7 +320,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPublisherJournals(int id)
         {
             var data = await _ctxRepository.GetPubJournals(id);
-            if (data == null) return NotFound(new ApiResponse<PubJournal>()
+            if (data == null) return Ok(new ApiResponse<PubJournal>()
             {
                 Total = 0,
                 Data = null,
@@ -341,7 +341,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetPublisherPissns(int id)
         {
             var data = await _ctxRepository.GetPubPissns(id);
-            if (data == null) return NotFound(new ApiResponse<PubPissn>()
+            if (data == null) return Ok(new ApiResponse<PubPissn>()
             {
                 Total = 0,
                 Data = null,

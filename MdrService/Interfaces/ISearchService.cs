@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using MdrService.Contracts.Requests.v1;
+using MdrService.Contracts.Requests.v1.DbSearch;
 using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 
 namespace MdrService.Interfaces

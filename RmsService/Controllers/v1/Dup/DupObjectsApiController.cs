@@ -25,7 +25,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetDupObjectList(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dup == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var dupObjects = await _dupRepository.GetDupObjects(dupId);
             if (dupObjects == null)
-                return NotFound(new ApiResponse<DupObjectDto>()
+                return Ok(new ApiResponse<DupObjectDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -57,7 +57,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetDupObject(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dup == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -66,7 +66,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var dupObj = await _dupRepository.GetDupObject(id);
-            if (dupObj == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dupObj == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -89,7 +89,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> CreateDupObject(int dupId, [FromBody] DupObjectDto dupObjectDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dup == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var dupObj = await _dupRepository.CreateDupObject(dupId, dupObjectDto);
             if (dupObj == null)
-                return BadRequest(new ApiResponse<DupObjectDto>()
+                return Ok(new ApiResponse<DupObjectDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> UpdateDupObject(int dupId, int id, [FromBody] DupObjectDto dupObjectDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dup == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -131,7 +131,7 @@ namespace RmsService.Controllers.v1.Dup
             });
             
             var dupObj = await _dupRepository.GetDupObject(id);
-            if (dupObj == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dupObj == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -140,7 +140,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var updatedDupObject = await _dupRepository.UpdateDupObject(dupObjectDto);
-            if (updatedDupObject == null) return BadRequest(new ApiResponse<DupObjectDto>()
+            if (updatedDupObject == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -163,7 +163,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteDupObject(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dup == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -172,7 +172,7 @@ namespace RmsService.Controllers.v1.Dup
             });
             
             var dupObj = await _dupRepository.GetDupObject(id);
-            if (dupObj == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dupObj == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -195,7 +195,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteAllDupObjects(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupObjectDto>()
+            if (dup == null) return Ok(new ApiResponse<DupObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

@@ -25,7 +25,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDtpStudyList(int dtpId)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -34,7 +34,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
             var dtpStudies = await _dtpRepository.GetAllDtpStudies(dtpId);
             if (dtpStudies == null)
-                return NotFound(new ApiResponse<DtpStudyDto>()
+                return Ok(new ApiResponse<DtpStudyDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -55,7 +55,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDtpStudy(int dtpId, int id)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -64,7 +64,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
 
             var dtpStudy = await _dtpRepository.GetDtpStudy(id);
-            if (dtpStudy == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtpStudy == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -86,7 +86,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> CreateDtpStudy(int dtpId, [FromBody] DtpStudyDto dtpStudyDto)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -96,7 +96,7 @@ namespace RmsService.Controllers.v1.Dtp
 
             var dtpStudy = await _dtpRepository.CreateDtpStudy(dtpId, dtpStudyDto.StudyId, dtpStudyDto);
             if (dtpStudy == null)
-                return BadRequest(new ApiResponse<DtpStudyDto>()
+                return Ok(new ApiResponse<DtpStudyDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -118,7 +118,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> UpdateDtpStudy(int dtpId, int id, [FromBody] DtpStudyDto dtpStudyDto)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -127,7 +127,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
             
             var dtpStudy = await _dtpRepository.GetDtpStudy(id);
-            if (dtpStudy == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtpStudy == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -137,7 +137,7 @@ namespace RmsService.Controllers.v1.Dtp
 
             var updatedDtpStudy = await _dtpRepository.UpdateDtpStudy(dtpStudyDto);
             if (updatedDtpStudy == null)
-                return BadRequest(new ApiResponse<DtpStudyDto>()
+                return Ok(new ApiResponse<DtpStudyDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -159,7 +159,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> DeleteDtpStudy(int dtpId, int id)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -168,7 +168,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
             
             var dtpStudy = await _dtpRepository.GetDtpStudy(id);
-            if (dtpStudy == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtpStudy == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -191,7 +191,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> DeleteAllDtpStudies(int dtpId)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpStudyDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpStudyDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

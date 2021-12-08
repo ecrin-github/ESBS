@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MdrService.Contracts.Requests.v1;
+using MdrService.Contracts.Requests.v1.DbSearch;
 using MdrService.Contracts.Responses.v1;
 using MdrService.Contracts.Responses.v1.StudyListResponse;
 using MdrService.Contracts.Routes.ApiRoutes.v1;

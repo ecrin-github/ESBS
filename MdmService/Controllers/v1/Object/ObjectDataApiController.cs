@@ -25,7 +25,7 @@ namespace MdmService.Controllers.v1.Object
         {
             var objectData = await _dataObjectRepository.GetDataObjectsData();
             if (objectData == null)
-                return NotFound(new ApiResponse<DataObjectDataDto>()
+                return Ok(new ApiResponse<DataObjectDataDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -46,7 +46,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetRecentObjectData(int number)
         {
             var recentData = await _dataObjectRepository.GetRecentObjectData(number);
-            if (recentData == null) return NotFound(new ApiResponse<DataObjectDataDto>()
+            if (recentData == null) return Ok(new ApiResponse<DataObjectDataDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -68,7 +68,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectData(string sdOid)
         {
             var dataObject = await _dataObjectRepository.GetDataObjectData(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<DataObjectDataDto>()
+            if (dataObject == null) return Ok(new ApiResponse<DataObjectDataDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -92,7 +92,7 @@ namespace MdmService.Controllers.v1.Object
         {
             var dataObj = await _dataObjectRepository.CreateDataObjectData(dataObjectDataDto);
             if (dataObj == null)
-                return BadRequest(new ApiResponse<DataObjectDataDto>()
+                return Ok(new ApiResponse<DataObjectDataDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -115,7 +115,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> UpdateObjectData(string sdOid, [FromBody] DataObjectDataDto dataObjectDataDto)
         {
             var dataObject = await _dataObjectRepository.GetDataObjectData(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<DataObjectDataDto>()
+            if (dataObject == null) return Ok(new ApiResponse<DataObjectDataDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -125,7 +125,7 @@ namespace MdmService.Controllers.v1.Object
 
             var updatedDataObject = await _dataObjectRepository.UpdateDataObjectData(dataObjectDataDto);
             if (updatedDataObject == null)
-                return BadRequest(new ApiResponse<DataObjectDataDto>()
+                return Ok(new ApiResponse<DataObjectDataDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,

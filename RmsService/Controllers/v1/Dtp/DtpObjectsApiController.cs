@@ -25,7 +25,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDtpObjectList(int dtpId)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -34,7 +34,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
 
             var dtpObjects = await _dtpRepository.GetAllDtpObjects(dtpId);
-            if (dtpObjects == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtpObjects == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -56,7 +56,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDtpObject(int dtpId, int id)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -65,7 +65,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
 
             var dtpObj = await _dtpRepository.GetDtpObject(id);
-            if (dtpObj == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtpObj == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -88,7 +88,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> CreateDtpObject(int dtpId, [FromBody] DtpObjectDto dtpObjectDto)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -98,7 +98,7 @@ namespace RmsService.Controllers.v1.Dtp
 
             var dtpObj = await _dtpRepository.CreateDtpObject(dtpId, dtpObjectDto.ObjectId, dtpObjectDto);
             if (dtpObj == null)
-                return BadRequest(new ApiResponse<DtpObjectDto>()
+                return Ok(new ApiResponse<DtpObjectDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -121,7 +121,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> UpdateDtpObject(int dtpId, int id, [FromBody] DtpObjectDto dtpObjectDto)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -130,7 +130,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
             
             var dtpObj = await _dtpRepository.GetDtpObject(id);
-            if (dtpObj == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtpObj == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -140,7 +140,7 @@ namespace RmsService.Controllers.v1.Dtp
 
             var updatedDtpObj = await _dtpRepository.UpdateDtpObject(dtpObjectDto);
             if (updatedDtpObj == null)
-                return BadRequest(new ApiResponse<DtpObjectDto>()
+                return Ok(new ApiResponse<DtpObjectDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -163,7 +163,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> DeleteDtpObject(int dtpId, int id)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -172,7 +172,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
             
             var dtpObj = await _dtpRepository.GetDtpObject(id);
-            if (dtpObj == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtpObj == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -195,7 +195,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> DeleteAllDtpObjects(int dtpId)
         {
             var dtp = await _dtpRepository.GetDtp(dtpId);
-            if (dtp == null) return NotFound(new ApiResponse<DtpObjectDto>()
+            if (dtp == null) return Ok(new ApiResponse<DtpObjectDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

@@ -29,7 +29,7 @@ namespace IdentityClient.Controllers.TSD
                 Address = ElixirIdentityConfigs.UserInfoUrl,
                 Token = accessToken
             });
-            if (response.IsError) return BadRequest(new ApiResponse<UserInfoResponse>
+            if (response.IsError) return Ok(new ApiResponse<UserInfoResponse>
             {
                 Total = 0,
                 Messages = new List<string>{response.Error},

@@ -18,6 +18,7 @@ namespace MdrService.Extensions
                 options.UseNpgsql(config.GetConnectionString("MdrDbConnectionString"));
             });
             
+            services.AddScoped<IElasticsearchService, ElasticsearchService>();
             services.AddScoped<IContextService, ContextService>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IRawSqlSearchService, RawSqlSearchService>();

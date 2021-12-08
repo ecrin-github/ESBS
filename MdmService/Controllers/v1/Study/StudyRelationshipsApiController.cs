@@ -24,7 +24,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyRelationships(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (study == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -34,7 +34,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyRelationships = await _studyRepository.GetStudyRelationships(sdSid);
             if (studyRelationships == null)
-                return NotFound(new ApiResponse<StudyRelationshipDto>()
+                return Ok(new ApiResponse<StudyRelationshipDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -56,7 +56,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyRelationship(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (study == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -65,7 +65,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyRel = await _studyRepository.GetStudyRelationship(id);
-            if (studyRel == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (studyRel == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -89,7 +89,7 @@ namespace MdmService.Controllers.v1.Study
             [FromBody] StudyRelationshipDto studyRelationshipDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (study == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyRel = await _studyRepository.CreateStudyRelationship(sdSid, studyRelationshipDto);
             if (studyRel == null)
-                return BadRequest(new ApiResponse<StudyRelationshipDto>()
+                return Ok(new ApiResponse<StudyRelationshipDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> UpdateStudyRelationship(string sdSid, int id, [FromBody] StudyRelationshipDto studyRelationshipDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (study == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -131,7 +131,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyRel = await _studyRepository.GetStudyRelationship(id);
-            if (studyRel == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (studyRel == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -141,7 +141,7 @@ namespace MdmService.Controllers.v1.Study
 
             var updatedStudyRel = await _studyRepository.UpdateStudyRelationship(studyRelationshipDto);
             if (updatedStudyRel == null)
-                return BadRequest(new ApiResponse<StudyRelationshipDto>()
+                return Ok(new ApiResponse<StudyRelationshipDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -164,7 +164,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteStudyRelationship(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (study == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -173,7 +173,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyRel = await _studyRepository.GetStudyRelationship(id);
-            if (studyRel == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (studyRel == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -196,7 +196,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteAllStudyRelationships(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyRelationshipDto>()
+            if (study == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

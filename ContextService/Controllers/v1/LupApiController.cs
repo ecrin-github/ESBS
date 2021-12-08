@@ -23,7 +23,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetContributionTypes()
         {
             var data = await _lupRepository.GetContributionTypes();
-            if (data == null) return NotFound(new ApiResponse<ContributionType>()
+            if (data == null) return Ok(new ApiResponse<ContributionType>()
             {
                 Total = 0,
                 Data = null,
@@ -44,7 +44,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetContributionType(int id)
         {
             var data = await _lupRepository.GetContributionType(id);
-            if (data == null) return NotFound(new ApiResponse<ContributionType>()
+            if (data == null) return Ok(new ApiResponse<ContributionType>()
             {
                 Total = 0,
                 Data = null,
@@ -65,7 +65,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDatasetConsentTypes()
         {
             var data = await _lupRepository.GetDatasetConsentTypes();
-            if (data == null) return NotFound(new ApiResponse<DatasetConsentType>()
+            if (data == null) return Ok(new ApiResponse<DatasetConsentType>()
             {
                 Total = 0,
                 Data = null,
@@ -86,7 +86,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDatasetConsentType(int id)
         {
             var data = await _lupRepository.GetDatasetConsentType(id);
-            if (data == null) return NotFound(new ApiResponse<DatasetConsentType>()
+            if (data == null) return Ok(new ApiResponse<DatasetConsentType>()
             {
                 Total = 0,
                 Data = null,
@@ -107,7 +107,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDatasetDeidentTypes()
         {
             var data = await _lupRepository.GetDatasetDeidentLevels();
-            if (data == null) return NotFound(new ApiResponse<DatasetDeidentificationLevel>()
+            if (data == null) return Ok(new ApiResponse<DatasetDeidentificationLevel>()
             {
                 Total = 0,
                 Data = null,
@@ -128,7 +128,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDatasetDeidentType(int id)
         {
             var data = await _lupRepository.GetDatasetDeidentLevel(id);
-            if (data == null) return NotFound(new ApiResponse<DatasetDeidentificationLevel>()
+            if (data == null) return Ok(new ApiResponse<DatasetDeidentificationLevel>()
             {
                 Total = 0,
                 Data = null,
@@ -149,7 +149,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDatasetRecordkeyTypes()
         {
             var data = await _lupRepository.GetDatasetRecordkeyTypes();
-            if (data == null) return NotFound(new ApiResponse<DatasetRecordkeyType>()
+            if (data == null) return Ok(new ApiResponse<DatasetRecordkeyType>()
             {
                 Total = 0,
                 Data = null,
@@ -170,7 +170,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDatasetRecordkeyType(int id)
         {
             var data = await _lupRepository.GetDatasetRecordkeyType(id);
-            if (data == null) return NotFound(new ApiResponse<DatasetRecordkeyType>()
+            if (data == null) return Ok(new ApiResponse<DatasetRecordkeyType>()
             {
                 Total = 0,
                 Data = null,
@@ -191,7 +191,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDateTypes()
         {
             var data = await _lupRepository.GetDateTypes();
-            if (data == null) return NotFound(new ApiResponse<DateType>()
+            if (data == null) return Ok(new ApiResponse<DateType>()
             {
                 Total = 0,
                 Data = null,
@@ -212,7 +212,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDateType(int id)
         {
             var data = await _lupRepository.GetDateType(id);
-            if (data == null) return NotFound(new ApiResponse<DateType>()
+            if (data == null) return Ok(new ApiResponse<DateType>()
             {
                 Total = 0,
                 Data = null,
@@ -233,7 +233,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDescriptionTypes()
         {
             var data = await _lupRepository.GetDescriptionTypes();
-            if (data == null) return NotFound(new ApiResponse<DescriptionType>()
+            if (data == null) return Ok(new ApiResponse<DescriptionType>()
             {
                 Total = 0,
                 Data = null,
@@ -254,7 +254,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDescriptionType(int id)
         {
             var data = await _lupRepository.GetDescriptionType(id);
-            if (data == null) return NotFound(new ApiResponse<DescriptionType>()
+            if (data == null) return Ok(new ApiResponse<DescriptionType>()
             {
                 Total = 0,
                 Data = null,
@@ -275,7 +275,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDoiStatusTypes()
         {
             var data = await _lupRepository.GetDoiStatusTypes();
-            if (data == null) return NotFound(new ApiResponse<DoiStatusType>()
+            if (data == null) return Ok(new ApiResponse<DoiStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -296,7 +296,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetDoiStatusType(int id)
         {
             var data = await _lupRepository.GetDoiStatusType(id);
-            if (data == null) return NotFound(new ApiResponse<DoiStatusType>()
+            if (data == null) return Ok(new ApiResponse<DoiStatusType>()
             {
                 Total = 0,
                 Data = null,
@@ -317,7 +317,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetGenderEligTypes()
         {
             var data = await _lupRepository.GetGenderEligTypes();
-            if (data == null) return NotFound(new ApiResponse<GenderEligibilityType>()
+            if (data == null) return Ok(new ApiResponse<GenderEligibilityType>()
             {
                 Total = 0,
                 Data = null,
@@ -338,7 +338,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetGenderEligType(int id)
         {
             var data = await _lupRepository.GetGenderEligType(id);
-            if (data == null) return NotFound(new ApiResponse<GenderEligibilityType>()
+            if (data == null) return Ok(new ApiResponse<GenderEligibilityType>()
             {
                 Total = 0,
                 Data = null,
@@ -359,7 +359,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetGeogEntityTypes()
         {
             var data = await _lupRepository.GetGeogEntityTypes();
-            if (data == null) return NotFound(new ApiResponse<GeogEntityType>()
+            if (data == null) return Ok(new ApiResponse<GeogEntityType>()
             {
                 Total = 0,
                 Data = null,
@@ -380,7 +380,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetGeogEntityType(int id)
         {
             var data = await _lupRepository.GetGeogEntityType(id);
-            if (data == null) return NotFound(new ApiResponse<GeogEntityType>()
+            if (data == null) return Ok(new ApiResponse<GeogEntityType>()
             {
                 Total = 0,
                 Data = null,
@@ -401,7 +401,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetIdentifierTypes()
         {
             var data = await _lupRepository.GetIdentifierTypes();
-            if (data == null) return NotFound(new ApiResponse<IdentifierType>()
+            if (data == null) return Ok(new ApiResponse<IdentifierType>()
             {
                 Total = 0,
                 Data = null,
@@ -422,7 +422,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetIdentifierType(int id)
         {
             var data = await _lupRepository.GetIdentifierType(id);
-            if (data == null) return NotFound(new ApiResponse<IdentifierType>()
+            if (data == null) return Ok(new ApiResponse<IdentifierType>()
             {
                 Total = 0,
                 Data = null,
@@ -443,7 +443,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetLangUsageTypes()
         {
             var data = await _lupRepository.GetLangUsageTypes();
-            if (data == null) return NotFound(new ApiResponse<LanguageUsageType>()
+            if (data == null) return Ok(new ApiResponse<LanguageUsageType>()
             {
                 Total = 0,
                 Data = null,
@@ -464,7 +464,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetLangUsageType(int id)
         {
             var data = await _lupRepository.GetLangUsageType(id);
-            if (data == null) return NotFound(new ApiResponse<LanguageUsageType>()
+            if (data == null) return Ok(new ApiResponse<LanguageUsageType>()
             {
                 Total = 0,
                 Data = null,
@@ -485,7 +485,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GeLinkTypes()
         {
             var data = await _lupRepository.GetLinkTypes();
-            if (data == null) return NotFound(new ApiResponse<LinkType>()
+            if (data == null) return Ok(new ApiResponse<LinkType>()
             {
                 Total = 0,
                 Data = null,
@@ -506,7 +506,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetLinkType(int id)
         {
             var data = await _lupRepository.GetLinkType(id);
-            if (data == null) return NotFound(new ApiResponse<LinkType>()
+            if (data == null) return Ok(new ApiResponse<LinkType>()
             {
                 Total = 0,
                 Data = null,
@@ -527,7 +527,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectAccessTypes()
         {
             var data = await _lupRepository.GetObjectAccessTypes();
-            if (data == null) return NotFound(new ApiResponse<ObjectAccessType>()
+            if (data == null) return Ok(new ApiResponse<ObjectAccessType>()
             {
                 Total = 0,
                 Data = null,
@@ -548,7 +548,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectAccessType(int id)
         {
             var data = await _lupRepository.GetObjectAccessType(id);
-            if (data == null) return NotFound(new ApiResponse<ObjectAccessType>()
+            if (data == null) return Ok(new ApiResponse<ObjectAccessType>()
             {
                 Total = 0,
                 Data = null,
@@ -569,7 +569,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectClasses()
         {
             var data = await _lupRepository.GetObjectClasses();
-            if (data == null) return NotFound(new ApiResponse<ObjectClass>()
+            if (data == null) return Ok(new ApiResponse<ObjectClass>()
             {
                 Total = 0,
                 Data = null,
@@ -590,7 +590,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectClass(int id)
         {
             var data = await _lupRepository.GetObjectClass(id);
-            if (data == null) return NotFound(new ApiResponse<ObjectClass>()
+            if (data == null) return Ok(new ApiResponse<ObjectClass>()
             {
                 Total = 0,
                 Data = null,
@@ -611,7 +611,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectFilterTypes()
         {
             var data = await _lupRepository.GetObjectFilterTypes();
-            if (data == null) return NotFound(new ApiResponse<ObjectFilterType>()
+            if (data == null) return Ok(new ApiResponse<ObjectFilterType>()
             {
                 Total = 0,
                 Data = null,
@@ -632,7 +632,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectFilterType(int id)
         {
             var data = await _lupRepository.GetObjectFilterType(id);
-            if (data == null) return NotFound(new ApiResponse<ObjectFilterType>()
+            if (data == null) return Ok(new ApiResponse<ObjectFilterType>()
             {
                 Total = 0,
                 Data = null,
@@ -653,7 +653,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectInstanceTypes()
         {
             var data = await _lupRepository.GetObjectInstanceTypes();
-            if (data == null) return NotFound(new ApiResponse<ObjectInstanceType>()
+            if (data == null) return Ok(new ApiResponse<ObjectInstanceType>()
             {
                 Total = 0,
                 Data = null,
@@ -674,7 +674,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectInstanceType(int id)
         {
             var data = await _lupRepository.GetObjectInstanceType(id);
-            if (data == null) return NotFound(new ApiResponse<ObjectInstanceType>()
+            if (data == null) return Ok(new ApiResponse<ObjectInstanceType>()
             {
                 Total = 0,
                 Data = null,
@@ -695,7 +695,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectRelationTypes()
         {
             var data = await _lupRepository.GetObjectRelationshipTypes();
-            if (data == null) return NotFound(new ApiResponse<ObjectRelationshipType>()
+            if (data == null) return Ok(new ApiResponse<ObjectRelationshipType>()
             {
                 Total = 0,
                 Data = null,
@@ -716,7 +716,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectRelationType(int id)
         {
             var data = await _lupRepository.GetObjectRelationshipType(id);
-            if (data == null) return NotFound(new ApiResponse<ObjectRelationshipType>()
+            if (data == null) return Ok(new ApiResponse<ObjectRelationshipType>()
             {
                 Total = 0,
                 Data = null,
@@ -737,7 +737,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectTypes()
         {
             var data = await _lupRepository.GetObjectTypes();
-            if (data == null) return NotFound(new ApiResponse<ObjectType>()
+            if (data == null) return Ok(new ApiResponse<ObjectType>()
             {
                 Total = 0,
                 Data = null,
@@ -758,7 +758,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetObjectType(int id)
         {
             var data = await _lupRepository.GetObjectType(id);
-            if (data == null) return NotFound(new ApiResponse<ObjectType>()
+            if (data == null) return Ok(new ApiResponse<ObjectType>()
             {
                 Total = 0,
                 Data = null,
@@ -779,7 +779,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetResourceTypes()
         {
             var data = await _lupRepository.GetResourceTypes();
-            if (data == null) return NotFound(new ApiResponse<ResourceType>()
+            if (data == null) return Ok(new ApiResponse<ResourceType>()
             {
                 Total = 0,
                 Data = null,
@@ -800,7 +800,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetResourceType(int id)
         {
             var data = await _lupRepository.GetResourceType(id);
-            if (data == null) return NotFound(new ApiResponse<ResourceType>()
+            if (data == null) return Ok(new ApiResponse<ResourceType>()
             {
                 Total = 0,
                 Data = null,
@@ -821,7 +821,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetRmsUserTypes()
         {
             var data = await _lupRepository.GetRmsUserTypes();
-            if (data == null) return NotFound(new ApiResponse<RmsUserType>()
+            if (data == null) return Ok(new ApiResponse<RmsUserType>()
             {
                 Total = 0,
                 Data = null,
@@ -842,7 +842,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetRmsUserType(int id)
         {
             var data = await _lupRepository.GetRmsUserType(id);
-            if (data == null) return NotFound(new ApiResponse<RmsUserType>()
+            if (data == null) return Ok(new ApiResponse<RmsUserType>()
             {
                 Total = 0,
                 Data = null,
@@ -863,7 +863,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetRoleTypes()
         {
             var data = await _lupRepository.GetRoleTypes();
-            if (data == null) return NotFound(new ApiResponse<RoleType>()
+            if (data == null) return Ok(new ApiResponse<RoleType>()
             {
                 Total = 0,
                 Data = null,
@@ -884,7 +884,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetRoleType(int id)
         {
             var data = await _lupRepository.GetRoleType(id);
-            if (data == null) return NotFound(new ApiResponse<RoleType>()
+            if (data == null) return Ok(new ApiResponse<RoleType>()
             {
                 Total = 0,
                 Data = null,
@@ -905,7 +905,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetSizeUnits()
         {
             var data = await _lupRepository.GetSizeUnits();
-            if (data == null) return NotFound(new ApiResponse<SizeUnit>()
+            if (data == null) return Ok(new ApiResponse<SizeUnit>()
             {
                 Total = 0,
                 Data = null,
@@ -926,7 +926,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetSizeUnit(int id)
         {
             var data = await _lupRepository.GetSizeUnit(id);
-            if (data == null) return NotFound(new ApiResponse<SizeUnit>()
+            if (data == null) return Ok(new ApiResponse<SizeUnit>()
             {
                 Total = 0,
                 Data = null,
@@ -947,7 +947,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyFeatureCategories()
         {
             var data = await _lupRepository.GetStudyFeatureCategories();
-            if (data == null) return NotFound(new ApiResponse<StudyFeatureCategory>()
+            if (data == null) return Ok(new ApiResponse<StudyFeatureCategory>()
             {
                 Total = 0,
                 Data = null,
@@ -968,7 +968,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyFeatureCategory(int id)
         {
             var data = await _lupRepository.GetStudyFeatureCategory(id);
-            if (data == null) return NotFound(new ApiResponse<StudyFeatureCategory>()
+            if (data == null) return Ok(new ApiResponse<StudyFeatureCategory>()
             {
                 Total = 0,
                 Data = null,
@@ -989,7 +989,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyFeatureTypes()
         {
             var data = await _lupRepository.GetStudyFeatureTypes();
-            if (data == null) return NotFound(new ApiResponse<StudyFeatureType>()
+            if (data == null) return Ok(new ApiResponse<StudyFeatureType>()
             {
                 Total = 0,
                 Data = null,
@@ -1010,7 +1010,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyFeatureType(int id)
         {
             var data = await _lupRepository.GetStudyFeatureType(id);
-            if (data == null) return NotFound(new ApiResponse<StudyFeatureType>()
+            if (data == null) return Ok(new ApiResponse<StudyFeatureType>()
             {
                 Total = 0,
                 Data = null,
@@ -1031,7 +1031,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyRelationTypes()
         {
             var data = await _lupRepository.GetStudyRelationshipTypes();
-            if (data == null) return NotFound(new ApiResponse<StudyRelationshipType>()
+            if (data == null) return Ok(new ApiResponse<StudyRelationshipType>()
             {
                 Total = 0,
                 Data = null,
@@ -1052,7 +1052,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyRelationType(int id)
         {
             var data = await _lupRepository.GetStudyRelationshipType(id);
-            if (data == null) return NotFound(new ApiResponse<StudyRelationshipType>()
+            if (data == null) return Ok(new ApiResponse<StudyRelationshipType>()
             {
                 Total = 0,
                 Data = null,
@@ -1073,7 +1073,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyStatuses()
         {
             var data = await _lupRepository.GetStudyStatuses();
-            if (data == null) return NotFound(new ApiResponse<StudyStatus>()
+            if (data == null) return Ok(new ApiResponse<StudyStatus>()
             {
                 Total = 0,
                 Data = null,
@@ -1094,7 +1094,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyStatus(int id)
         {
             var data = await _lupRepository.GetStudyStatus(id);
-            if (data == null) return NotFound(new ApiResponse<StudyStatus>()
+            if (data == null) return Ok(new ApiResponse<StudyStatus>()
             {
                 Total = 0,
                 Data = null,
@@ -1115,7 +1115,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyTypes()
         {
             var data = await _lupRepository.GetStudyTypes();
-            if (data == null) return NotFound(new ApiResponse<StudyType>()
+            if (data == null) return Ok(new ApiResponse<StudyType>()
             {
                 Total = 0,
                 Data = null,
@@ -1136,7 +1136,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetStudyType(int id)
         {
             var data = await _lupRepository.GetStudyType(id);
-            if (data == null) return NotFound(new ApiResponse<StudyType>()
+            if (data == null) return Ok(new ApiResponse<StudyType>()
             {
                 Total = 0,
                 Data = null,
@@ -1157,7 +1157,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetTimeUnits()
         {
             var data = await _lupRepository.GetTimeUnits();
-            if (data == null) return NotFound(new ApiResponse<TimeUnit>()
+            if (data == null) return Ok(new ApiResponse<TimeUnit>()
             {
                 Total = 0,
                 Data = null,
@@ -1178,7 +1178,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetTimeUnit(int id)
         {
             var data = await _lupRepository.GetTimeUnit(id);
-            if (data == null) return NotFound(new ApiResponse<TimeUnit>()
+            if (data == null) return Ok(new ApiResponse<TimeUnit>()
             {
                 Total = 0,
                 Data = null,
@@ -1199,7 +1199,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetTitleTypes()
         {
             var data = await _lupRepository.GetTitlesTypes();
-            if (data == null) return NotFound(new ApiResponse<TitleType>()
+            if (data == null) return Ok(new ApiResponse<TitleType>()
             {
                 Total = 0,
                 Data = null,
@@ -1220,7 +1220,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetTitleType(int id)
         {
             var data = await _lupRepository.GetTitleType(id);
-            if (data == null) return NotFound(new ApiResponse<TitleType>()
+            if (data == null) return Ok(new ApiResponse<TitleType>()
             {
                 Total = 0,
                 Data = null,
@@ -1241,7 +1241,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetTopicTypes()
         {
             var data = await _lupRepository.GetTopicTypes();
-            if (data == null) return NotFound(new ApiResponse<TopicType>()
+            if (data == null) return Ok(new ApiResponse<TopicType>()
             {
                 Total = 0,
                 Data = null,
@@ -1262,7 +1262,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetTopicType(int id)
         {
             var data = await _lupRepository.GetTopicType(id);
-            if (data == null) return NotFound(new ApiResponse<TopicType>()
+            if (data == null) return Ok(new ApiResponse<TopicType>()
             {
                 Total = 0,
                 Data = null,
@@ -1283,7 +1283,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetLangCodes()
         {
             var data = await _lupRepository.GetLanguageCodes();
-            if (data == null) return NotFound(new ApiResponse<LanguageCode>()
+            if (data == null) return Ok(new ApiResponse<LanguageCode>()
             {
                 Total = 0,
                 Data = null,
@@ -1304,7 +1304,7 @@ namespace ContextService.Controllers.v1
         public async Task<IActionResult> GetLangCode(string code)
         {
             var data = await _lupRepository.GetLanguageCode(code);
-            if (data == null) return NotFound(new ApiResponse<LanguageCode>()
+            if (data == null) return Ok(new ApiResponse<LanguageCode>()
             {
                 Total = 0,
                 Data = null,

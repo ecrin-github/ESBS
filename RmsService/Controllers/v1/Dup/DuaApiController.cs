@@ -25,7 +25,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetDuaList(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dup == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var duaList = await _dupRepository.GetAllDua(dupId);
             if (duaList == null)
-                return NotFound(new ApiResponse<DuaDto>()
+                return Ok(new ApiResponse<DuaDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -57,7 +57,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetDua(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dup == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -66,7 +66,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var dua = await _dupRepository.GetDua(id);
-            if (dua == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dua == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -88,7 +88,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> CreateDua(int dupId, [FromBody] DuaDto duaDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dup == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -97,7 +97,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var dua = await _dupRepository.CreateDua(dupId, duaDto);
-            if (dua == null) return BadRequest(new ApiResponse<DuaDto>()
+            if (dua == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -120,7 +120,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> UpdateDua(int dupId, int id, [FromBody] DuaDto duaDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dup == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -129,7 +129,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var dua = await _dupRepository.GetDua(id);
-            if (dua == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dua == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -139,7 +139,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var updatedDua = await _dupRepository.UpdateDua(duaDto);
             if (updatedDua == null)
-                return BadRequest(new ApiResponse<DuaDto>()
+                return Ok(new ApiResponse<DuaDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -162,7 +162,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteDua(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dup == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -171,7 +171,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var dua = await _dupRepository.GetDua(id);
-            if (dua == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dua == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -194,7 +194,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteAllDua(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DuaDto>()
+            if (dup == null) return Ok(new ApiResponse<DuaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

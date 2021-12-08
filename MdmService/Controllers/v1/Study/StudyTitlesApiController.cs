@@ -23,7 +23,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyTitles(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (study == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -33,7 +33,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyTitles = await _studyRepository.GetStudyTitles(sdSid);
             if (studyTitles == null)
-                return NotFound(new ApiResponse<StudyTitleDto>()
+                return Ok(new ApiResponse<StudyTitleDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -55,7 +55,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyTitle(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (study == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -64,7 +64,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyTitle = await _studyRepository.GetStudyTitle(id);
-            if (studyTitle == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (studyTitle == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -87,7 +87,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> CreateStudyTitle(string sdSid, [FromBody] StudyTitleDto studyTitleDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (study == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -96,7 +96,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyTitle = await _studyRepository.CreateStudyTitle(sdSid, studyTitleDto);
-            if (studyTitle == null) return BadRequest(new ApiResponse<StudyTitleDto>()
+            if (studyTitle == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -119,7 +119,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> UpdateStudyTitle(string sdSid, int id, [FromBody] StudyTitleDto studyTitleDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (study == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -128,7 +128,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyTitle = await _studyRepository.GetStudyTitle(id);
-            if (studyTitle == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (studyTitle == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -138,7 +138,7 @@ namespace MdmService.Controllers.v1.Study
 
             var updatedStudyTitle = await _studyRepository.UpdateStudyTitle(studyTitleDto);
             if (updatedStudyTitle == null)
-                return BadRequest(new ApiResponse<StudyTitleDto>()
+                return Ok(new ApiResponse<StudyTitleDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -161,7 +161,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteStudyTitle(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (study == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -170,7 +170,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyTitle = await _studyRepository.GetStudyTitle(id);
-            if (studyTitle == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (studyTitle == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -193,7 +193,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteAllStudyTitles(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyTitleDto>()
+            if (study == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

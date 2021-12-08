@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using MdrService.Configs;
-using MdrService.Contracts.Requests.v1;
+using MdrService.Contracts.Requests.v1.DbSearch;
 using MdrService.Contracts.Responses.v1.SearchServiceResponse;
 using MdrService.Interfaces;
 using Npgsql;

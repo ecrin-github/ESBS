@@ -25,7 +25,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDtaList(int dtpId)
         {
             var dt = await _dtpRepository.GetDtp(dtpId);
-            if (dt == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dt == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -49,7 +49,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDta(int dtpId, int id)
         {
             var dt = await _dtpRepository.GetDtp(dtpId);
-            if (dt == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dt == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -58,7 +58,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
 
             var dta = await _dtpRepository.GetDta(id);
-            if (dta == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dta == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -82,7 +82,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> CreateDta(int dtpId, [FromBody] DtaDto dtaDto)
         {
             var dt = await _dtpRepository.GetDtp(dtpId);
-            if (dt == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dt == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -92,7 +92,7 @@ namespace RmsService.Controllers.v1.Dtp
 
             var dta = await _dtpRepository.CreateDta(dtpId, dtaDto);
             if (dta == null)
-                return BadRequest(new ApiResponse<DtaDto>()
+                return Ok(new ApiResponse<DtaDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -102,13 +102,13 @@ namespace RmsService.Controllers.v1.Dtp
 
             var dtaList = new List<DtaDto>() { dta };
             
-            return Ok(NotFound(new ApiResponse<DtaDto>()
+            return Ok(new ApiResponse<DtaDto>()
             {
                 Total = dtaList.Count,
                 StatusCode = Ok().StatusCode,
                 Messages = null,
                 Data = dtaList
-            }));
+            });
         }
 
         [HttpPut("data-transfers/{dtpId:int}/accesses/{id:int}")]
@@ -116,7 +116,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> UpdateDta(int dtpId, int id, [FromBody] DtaDto dtaDto)
         {
             var dt = await _dtpRepository.GetDtp(dtpId);
-            if (dt == null) return NotFound(
+            if (dt == null) return Ok(
                 new ApiResponse<DtaDto>()
                 {
                     Total = 0,
@@ -126,7 +126,7 @@ namespace RmsService.Controllers.v1.Dtp
                 });
 
             var dta = await _dtpRepository.GetDta(id);
-            if (dta == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dta == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -135,7 +135,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
 
             var updatedDta = await _dtpRepository.UpdateDta(dtaDto);
-            if (updatedDta == null) return BadRequest(new ApiResponse<DtaDto>()
+            if (updatedDta == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -159,7 +159,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> DeleteDta(int dtpId, int id)
         {
             var dt = await _dtpRepository.GetDtp(dtpId);
-            if (dt == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dt == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -168,7 +168,7 @@ namespace RmsService.Controllers.v1.Dtp
             });
 
             var dta = await _dtpRepository.GetDta(id);
-            if (dta == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dta == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -191,7 +191,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> DeleteAllDta(int dtpId)
         {
             var dt = await _dtpRepository.GetDtp(dtpId);
-            if (dt == null) return NotFound(new ApiResponse<DtaDto>()
+            if (dt == null) return Ok(new ApiResponse<DtaDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

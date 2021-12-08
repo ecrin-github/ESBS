@@ -25,7 +25,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetDupPrereqList(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dup == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var dupPrereqs = await _dupRepository.GetDupPrereqs(dupId);
             if (dupPrereqs == null)
-                return NotFound(new ApiResponse<DupPrereqDto>()
+                return Ok(new ApiResponse<DupPrereqDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -57,7 +57,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetDupPrereq(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dup == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -66,7 +66,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var dupPrereq = await _dupRepository.GetDupPrereq(id);
-            if (dupPrereq == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dupPrereq == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -89,7 +89,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> CreateDupPrereq(int dupId, [FromBody] DupPrereqDto dupPrereqDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dup == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var dupPrereq = await _dupRepository.CreateDupPrereq(dupId, dupPrereqDto);
             if (dupPrereq == null)
-                return BadRequest(new ApiResponse<DupPrereqDto>()
+                return Ok(new ApiResponse<DupPrereqDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> UpdateDupPrereq(int dupId, int id, [FromBody] DupPrereqDto dupPrereqDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dup == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -131,7 +131,7 @@ namespace RmsService.Controllers.v1.Dup
             });
             
             var dupPrereq = await _dupRepository.GetDupPrereq(id);
-            if (dupPrereq == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dupPrereq == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -140,7 +140,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var updatedDupPrereq = await _dupRepository.UpdateDupPrereq(dupPrereqDto);
-            if (updatedDupPrereq == null) return BadRequest(new ApiResponse<DupPrereqDto>()
+            if (updatedDupPrereq == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -163,7 +163,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteDupPrereq(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dup == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -172,7 +172,7 @@ namespace RmsService.Controllers.v1.Dup
             });
             
             var dupPrereq = await _dupRepository.GetDupPrereq(id);
-            if (dupPrereq == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dupPrereq == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -195,7 +195,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteAllDupPrereqs(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupPrereqDto>()
+            if (dup == null) return Ok(new ApiResponse<DupPrereqDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

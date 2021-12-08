@@ -25,7 +25,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetSecondaryUseList(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (dup == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var secUses = await _dupRepository.GetSecondaryUses(dupId);
             if (secUses == null)
-                return NotFound(new ApiResponse<SecondaryUseDto>()
+                return Ok(new ApiResponse<SecondaryUseDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -57,7 +57,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetSecondaryUse(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (dup == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -66,7 +66,7 @@ namespace RmsService.Controllers.v1.Dup
             });
 
             var secUse = await _dupRepository.GetSecondaryUse(id);
-            if (secUse == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (secUse == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -89,7 +89,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> CreateSecondaryUse(int dupId, [FromBody] SecondaryUseDto secondaryUseDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (dup == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var secUse = await _dupRepository.CreateSecondaryUse(dupId, secondaryUseDto);
             if (secUse == null)
-                return BadRequest(new ApiResponse<SecondaryUseDto>()
+                return Ok(new ApiResponse<SecondaryUseDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> UpdateSecondaryUse(int dupId, int id, [FromBody] SecondaryUseDto secondaryUseDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (dup == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -131,7 +131,7 @@ namespace RmsService.Controllers.v1.Dup
             });
             
             var secUse = await _dupRepository.GetSecondaryUse(id);
-            if (secUse == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (secUse == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -141,7 +141,7 @@ namespace RmsService.Controllers.v1.Dup
 
             var updateSecUse = await _dupRepository.UpdateSecondaryUse(secondaryUseDto);
             if (updateSecUse == null)
-                return BadRequest(new ApiResponse<SecondaryUseDto>()
+                return Ok(new ApiResponse<SecondaryUseDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -164,7 +164,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteSecondaryUse(int dupId, int id)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (dup == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -173,7 +173,7 @@ namespace RmsService.Controllers.v1.Dup
             });
             
             var secUse = await _dupRepository.GetSecondaryUse(id);
-            if (secUse == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (secUse == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -196,7 +196,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteAllSecondaryUses(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<SecondaryUseDto>()
+            if (dup == null) return Ok(new ApiResponse<SecondaryUseDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

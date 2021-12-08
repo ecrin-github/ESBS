@@ -19,7 +19,7 @@ namespace IdentityClient.Controllers.Elixir.v1
         public async Task<IActionResult> CallbackEndpoint()
         {
             var code = HttpContext.Request.Query["code"].ToString();
-            if (string.IsNullOrEmpty(code)) return BadRequest();
+            if (string.IsNullOrEmpty(code)) return Ok("No code received.");
 
             var client = new HttpClient();
             
@@ -32,7 +32,7 @@ namespace IdentityClient.Controllers.Elixir.v1
                 RedirectUri = ElixirIdentityConfigs.RedirectUrlToIdentityCallbackApiGateway,
             });
 
-            if (response.IsError) return BadRequest(response);
+            if (response.IsError) return Ok(response);
             return Ok(new ApiResponse<JsonElement>()
             {
                 StatusCode = 200,
@@ -81,7 +81,7 @@ namespace IdentityClient.Controllers.Elixir.v1
                 GrantType = "refresh_token"
             });
             
-            if (response.IsError) return BadRequest(response);
+            if (response.IsError) return Ok(response);
             
             return Ok(new ApiResponse<JsonElement>()
             {

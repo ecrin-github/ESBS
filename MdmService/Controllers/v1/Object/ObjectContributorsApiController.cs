@@ -25,7 +25,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectContributors(string sdOid)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -34,7 +34,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objectContributors = await _dataObjectRepository.GetObjectContributors(sdOid);
-            if (objectContributors == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (objectContributors == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -56,7 +56,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectContributor(string sdOid, int id)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -65,7 +65,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objContrib = await _dataObjectRepository.GetObjectContributor(id);
-            if (objContrib == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (objContrib == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -89,7 +89,7 @@ namespace MdmService.Controllers.v1.Object
             [FromBody] ObjectContributorDto objectContributorDto)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objContrib = await _dataObjectRepository.CreateObjectContributor(sdOid, objectContributorDto);
             if (objContrib == null)
-                return BadRequest(new ApiResponse<ObjectContributorDto>()
+                return Ok(new ApiResponse<ObjectContributorDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> UpdateObjectContributor(string sdOid, int id, [FromBody] ObjectContributorDto objectContributorDto)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -131,7 +131,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objectContrib = await _dataObjectRepository.GetObjectContributor(id);
-            if (objectContrib == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (objectContrib == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -141,7 +141,7 @@ namespace MdmService.Controllers.v1.Object
 
             var updatedObjContrib = await _dataObjectRepository.UpdateObjectContributor(objectContributorDto);
             if (updatedObjContrib == null)
-                return BadRequest(new ApiResponse<ObjectContributorDto>()
+                return Ok(new ApiResponse<ObjectContributorDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -164,7 +164,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteObjectContributor(string sdOid, int id)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -173,7 +173,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objectContrib = await _dataObjectRepository.GetObjectContributor(id);
-            if (objectContrib == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (objectContrib == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -196,7 +196,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteAllObjectContributors(string sdOid)
         {
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObject == null) return NotFound(new ApiResponse<ObjectContributorDto>()
+            if (dataObject == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

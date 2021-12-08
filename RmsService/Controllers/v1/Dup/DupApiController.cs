@@ -26,7 +26,7 @@ namespace RmsService.Controllers.v1.Dup
         {
             var dupList = await _dupRepository.GetAllDup();
             if (dupList == null)
-                return NotFound(new ApiResponse<DupDto>()
+                return Ok(new ApiResponse<DupDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -47,7 +47,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetRecentDup(int number)
         {
             var recentData = await _dupRepository.GetRecentDup(number);
-            if (recentData == null) return NotFound(new ApiResponse<DupDto>()
+            if (recentData == null) return Ok(new ApiResponse<DupDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -68,7 +68,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> GetDup(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupDto>()
+            if (dup == null) return Ok(new ApiResponse<DupDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -91,7 +91,7 @@ namespace RmsService.Controllers.v1.Dup
         {
             var dup = await _dupRepository.CreateDup(dupDto);
             if (dup == null)
-                return BadRequest(new ApiResponse<DupDto>()
+                return Ok(new ApiResponse<DupDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -113,7 +113,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> UpdateDup(int dupId, [FromBody] DupDto dupDto)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupDto>()
+            if (dup == null) return Ok(new ApiResponse<DupDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -121,7 +121,7 @@ namespace RmsService.Controllers.v1.Dup
                 Data = null
             });
             var updatedDup = await _dupRepository.UpdateDup(dupDto);
-            if (updatedDup == null) return BadRequest(new ApiResponse<DupDto>()
+            if (updatedDup == null) return Ok(new ApiResponse<DupDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -143,7 +143,7 @@ namespace RmsService.Controllers.v1.Dup
         public async Task<IActionResult> DeleteDup(int dupId)
         {
             var dup = await _dupRepository.GetDup(dupId);
-            if (dup == null) return NotFound(new ApiResponse<DupDto>()
+            if (dup == null) return Ok(new ApiResponse<DupDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

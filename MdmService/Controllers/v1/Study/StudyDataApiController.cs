@@ -24,7 +24,7 @@ namespace MdmService.Controllers.v1.Study
         {
             var studyData = await _studyRepository.GetStudiesData();
             if (studyData == null)
-                return NotFound(new ApiResponse<StudyDataDto>()
+                return Ok(new ApiResponse<StudyDataDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -45,7 +45,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyData(string sdSid)
         {
             var study = await _studyRepository.GetStudyData(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyDataDto>()
+            if (study == null) return Ok(new ApiResponse<StudyDataDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -68,7 +68,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetRecentStudyData(int number)
         {
             var recentData = await _studyRepository.GetRecentStudyData(number);
-            if (recentData == null) return NotFound(new ApiResponse<StudyDataDto>()
+            if (recentData == null) return Ok(new ApiResponse<StudyDataDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -90,7 +90,7 @@ namespace MdmService.Controllers.v1.Study
         {
             var studyData = await _studyRepository.CreateStudyData(studyDataDto);
             if (studyData == null)
-                return BadRequest(new ApiResponse<StudyDataDto>()
+                return Ok(new ApiResponse<StudyDataDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -113,7 +113,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> UpdateStudyData(string sdSid, [FromBody] StudyDataDto studyDataDto)
         {
             var study = await _studyRepository.GetStudyData(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyDataDto>()
+            if (study == null) return Ok(new ApiResponse<StudyDataDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -123,7 +123,7 @@ namespace MdmService.Controllers.v1.Study
 
             var updatedStudy = await _studyRepository.UpdateStudyData(studyDataDto);
             if (updatedStudy == null)
-                return BadRequest(new ApiResponse<StudyDataDto>()
+                return Ok(new ApiResponse<StudyDataDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,

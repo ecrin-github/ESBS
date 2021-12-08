@@ -25,7 +25,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyIdentifiers(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (study == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyIdents = await _studyRepository.GetStudyIdentifiers(sdSid);
             if (studyIdents == null)
-                return NotFound(new ApiResponse<StudyIdentifierDto>()
+                return Ok(new ApiResponse<StudyIdentifierDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -57,7 +57,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> GetStudyIdentifier(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (study == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -66,7 +66,7 @@ namespace MdmService.Controllers.v1.Study
             });
 
             var studyIdent = await _studyRepository.GetStudyIdentifier(id);
-            if (studyIdent == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (studyIdent == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -89,7 +89,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> CreateStudyIdentifier(string sdSid, [FromBody] StudyIdentifierDto studyIdentifierDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (study == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace MdmService.Controllers.v1.Study
 
             var studyIdent = await _studyRepository.CreateStudyIdentifier(sdSid, studyIdentifierDto);
             if (studyIdent == null)
-                return BadRequest(new ApiResponse<StudyIdentifierDto>()
+                return Ok(new ApiResponse<StudyIdentifierDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> UpdateStudyIdentifier(string sdSid, int id, [FromBody] StudyIdentifierDto studyIdentifierDto)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (study == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -131,7 +131,7 @@ namespace MdmService.Controllers.v1.Study
             });
             
             var studyIdent = await _studyRepository.GetStudyIdentifier(id);
-            if (studyIdent == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (studyIdent == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -141,7 +141,7 @@ namespace MdmService.Controllers.v1.Study
 
             var updatedStudyIdent = await _studyRepository.UpdateStudyIdentifier(studyIdentifierDto);
             if (updatedStudyIdent == null)
-                return BadRequest(new ApiResponse<StudyIdentifierDto>()
+                return Ok(new ApiResponse<StudyIdentifierDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -164,7 +164,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteStudyIdentifier(string sdSid, int id)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (study == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -173,7 +173,7 @@ namespace MdmService.Controllers.v1.Study
             });
             
             var studyIdent = await _studyRepository.GetStudyIdentifier(id);
-            if (studyIdent == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (studyIdent == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -196,7 +196,7 @@ namespace MdmService.Controllers.v1.Study
         public async Task<IActionResult> DeleteAllStudyIdentifiers(string sdSid)
         {
             var study = await _studyRepository.GetStudyById(sdSid);
-            if (study == null) return NotFound(new ApiResponse<StudyIdentifierDto>()
+            if (study == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

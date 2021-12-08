@@ -25,7 +25,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectInstances(string sdOid)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -35,7 +35,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objInstances = await _dataObjectRepository.GetObjectInstances(sdOid);
             if (objInstances == null)
-                return NotFound(new ApiResponse<ObjectInstanceDto>()
+                return Ok(new ApiResponse<ObjectInstanceDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -57,7 +57,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectInstance(string sdOid, int id)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -66,7 +66,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objInstance = await _dataObjectRepository.GetObjectInstance(id);
-            if (objInstance == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (objInstance == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -90,7 +90,7 @@ namespace MdmService.Controllers.v1.Object
             [FromBody] ObjectInstanceDto objectInstanceDto)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -99,7 +99,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objInstance = await _dataObjectRepository.CreateObjectInstance(sdOid, objectInstanceDto);
-            if (objInstance == null) return BadRequest(new ApiResponse<ObjectInstanceDto>()
+            if (objInstance == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> UpdateObjectInstance(string sdOid, int id, [FromBody] ObjectInstanceDto objectInstanceDto)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -131,7 +131,7 @@ namespace MdmService.Controllers.v1.Object
             });
             
             var objInstance = await _dataObjectRepository.GetObjectInstance(id);
-            if (objInstance == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (objInstance == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -141,7 +141,7 @@ namespace MdmService.Controllers.v1.Object
 
             var updatedObjInst = await _dataObjectRepository.UpdateObjectInstance(objectInstanceDto);
             if (updatedObjInst == null)
-                return BadRequest(new ApiResponse<ObjectInstanceDto>()
+                return Ok(new ApiResponse<ObjectInstanceDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -164,7 +164,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteObjectInstance(string sdOid, int id)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -173,7 +173,7 @@ namespace MdmService.Controllers.v1.Object
             });
             
             var objInstance = await _dataObjectRepository.GetObjectInstance(id);
-            if (objInstance == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (objInstance == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -196,7 +196,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteAllObjectInstances(string sdOid)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectInstanceDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

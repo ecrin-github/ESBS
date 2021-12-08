@@ -36,7 +36,7 @@ namespace IdentityClient.Controllers.ESBS.v1
                 Address = disco.UserInfoEndpoint,
                 Token = accessToken
             });
-            if (response.IsError) return BadRequest(new ApiResponse<UserInfoResponse>
+            if (response.IsError) return Ok(new ApiResponse<UserInfoResponse>
             {
                 Total = 0,
                 Messages = new List<string>{response.Error},

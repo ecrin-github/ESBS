@@ -24,7 +24,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDtpDatasetList()
         {
             var dataset = await _dtpRepository.GetAllDtpDatasets();
-            if (dataset == null) return NotFound(new ApiResponse<DtpDatasetDto>()
+            if (dataset == null) return Ok(new ApiResponse<DtpDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -45,7 +45,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> GetDtpDataset(int id)
         {
             var dtpDataset = await _dtpRepository.GetDtpDataset(id);
-            if (dtpDataset == null) return NotFound(new ApiResponse<DtpDatasetDto>()
+            if (dtpDataset == null) return Ok(new ApiResponse<DtpDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -68,7 +68,7 @@ namespace RmsService.Controllers.v1.Dtp
         {
             var dataset = await _dtpRepository.CreateDtpDataset(objectId, dtpDatasetDto);
             if (dataset == null)
-                return BadRequest(new ApiResponse<DtpDatasetDto>()
+                return Ok(new ApiResponse<DtpDatasetDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -90,7 +90,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> UpdateDtpDataset(int id, [FromBody] DtpDatasetDto dtpDatasetDto)
         {
             var dtpDataset = await _dtpRepository.GetDtpDataset(id);
-            if (dtpDataset == null) return NotFound(new ApiResponse<DtpDatasetDto>()
+            if (dtpDataset == null) return Ok(new ApiResponse<DtpDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -100,7 +100,7 @@ namespace RmsService.Controllers.v1.Dtp
 
             var updatedDataset = await _dtpRepository.UpdateDtpDataset(dtpDatasetDto);
             if (updatedDataset == null)
-                return BadRequest(new ApiResponse<DtpDatasetDto>()
+                return Ok(new ApiResponse<DtpDatasetDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -122,7 +122,7 @@ namespace RmsService.Controllers.v1.Dtp
         public async Task<IActionResult> DeleteDtpDataset(int id)
         {
             var dtpDataset = await _dtpRepository.GetDtpDataset(id);
-            if (dtpDataset == null) return NotFound(new ApiResponse<DtpDatasetDto>()
+            if (dtpDataset == null) return Ok(new ApiResponse<DtpDatasetDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

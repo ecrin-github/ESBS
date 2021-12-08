@@ -1,4 +1,4 @@
-namespace MdrService.Contracts.Requests.v1
+namespace MdrService.Contracts.Requests.v1.Elasticsearch
 {
     public class StudyIdRequest
     {

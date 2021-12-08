@@ -23,7 +23,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectDates(string sdOid)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -33,7 +33,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objDates = await _dataObjectRepository.GetObjectDates(sdOid);
             if (objDates == null)
-                return NotFound(new ApiResponse<ObjectDateDto>()
+                return Ok(new ApiResponse<ObjectDateDto>()
                 {
                     Total = 0,
                     StatusCode = NotFound().StatusCode,
@@ -55,7 +55,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> GetObjectDate(string sdOid, int id)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -64,7 +64,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objDate = await _dataObjectRepository.GetObjectDate(id);
-            if (objDate == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (objDate == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -88,7 +88,7 @@ namespace MdmService.Controllers.v1.Object
             [FromBody] ObjectDateDto objectDateDto)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -98,7 +98,7 @@ namespace MdmService.Controllers.v1.Object
 
             var objDate = await _dataObjectRepository.CreateObjectDate(sdOid, objectDateDto);
             if (objDate == null)
-                return BadRequest(new ApiResponse<ObjectDateDto>()
+                return Ok(new ApiResponse<ObjectDateDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -121,7 +121,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> UpdateObjectDate(string sdOid, int id, [FromBody] ObjectDateDto objectDateDto)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -130,7 +130,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objDate = await _dataObjectRepository.GetObjectDate(id);
-            if (objDate == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (objDate == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -140,7 +140,7 @@ namespace MdmService.Controllers.v1.Object
 
             var updatedObjDate = await _dataObjectRepository.UpdateObjectDate(objectDateDto);
             if (updatedObjDate == null)
-                return BadRequest(new ApiResponse<ObjectDateDto>()
+                return Ok(new ApiResponse<ObjectDateDto>()
                 {
                     Total = 0,
                     StatusCode = BadRequest().StatusCode,
@@ -163,7 +163,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteObjectDate(string sdOid, int id)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -172,7 +172,7 @@ namespace MdmService.Controllers.v1.Object
             });
 
             var objDate = await _dataObjectRepository.GetObjectDate(id);
-            if (objDate == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (objDate == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -195,7 +195,7 @@ namespace MdmService.Controllers.v1.Object
         public async Task<IActionResult> DeleteAllObjectDates(string sdOid)
         {
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
-            if (dataObj == null) return NotFound(new ApiResponse<ObjectDateDto>()
+            if (dataObj == null) return Ok(new ApiResponse<ObjectDateDto>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,

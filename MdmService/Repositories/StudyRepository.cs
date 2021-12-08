@@ -586,6 +586,62 @@ namespace MdmService.Repositories
 
             await _dbConnection.Studies.AddAsync(study);
             await _dbConnection.SaveChangesAsync();
+
+            if (studyDto.StudyContributors is { Count: > 0 })
+            {
+                foreach (var stc in studyDto.StudyContributors)
+                {
+                    await CreateStudyContributor(studyId.ToString(), stc);
+                }
+            }
+            
+            if (studyDto.StudyFeatures is { Count: > 0 })
+            {
+                foreach (var stf in studyDto.StudyFeatures)
+                {
+                    await CreateStudyFeature(studyId.ToString(), stf);
+                }
+            }
+            
+            if (studyDto.StudyIdentifiers is { Count: > 0 })
+            {
+                foreach (var sti in studyDto.StudyIdentifiers)
+                {
+                    await CreateStudyIdentifier(studyId.ToString(), sti);
+                }
+            }
+            
+            if (studyDto.StudyReferences is { Count: > 0 })
+            {
+                foreach (var str in studyDto.StudyReferences)
+                {
+                    await CreateStudyReference(studyId.ToString(), str);
+                }
+            }
+            
+            if (studyDto.StudyRelationships is { Count: > 0 })
+            {
+                foreach (var str in studyDto.StudyRelationships)
+                {
+                    await CreateStudyRelationship(studyId.ToString(), str);
+                }
+            }
+            
+            if (studyDto.StudyTitles is { Count: > 0 })
+            {
+                foreach (var stt in studyDto.StudyTitles)
+                {
+                    await CreateStudyTitle(studyId.ToString(), stt);
+                }
+            }
+            
+            if (studyDto.StudyTopics is { Count: > 0 })
+            {
+                foreach (var stt in studyDto.StudyTopics)
+                {
+                    await CreateStudyTopic(studyId.ToString(), stt);
+                }
+            }
             
             return await StudyBuilder(study);
         }
