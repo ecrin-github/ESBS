@@ -21,6 +21,12 @@ namespace MdrService.Models.Elasticsearch.Object
         
         [Text(Name = "mesh_value")]
         public string? MeshValue { get; set; }
+        
+        [Number(Name = "original_ct_id")]
+        public int? OriginalCtId { get; set; }
+        
+        [Text(Name = "original_ct_code")]
+        public string? OriginalCtCode { get; set; }
 
         [Text(Name = "original_value")]
         public string? OriginalValue { get; set; }

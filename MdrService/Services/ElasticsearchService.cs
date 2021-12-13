@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using MdrService.Configs;
 using MdrService.Contracts.Requests.v1.Elasticsearch;
+using MdrService.Contracts.Responses.v1.SearchResponse;
 using MdrService.Interfaces;
 using MdrService.Models.Elasticsearch.Study;
 using Nest;
@@ -13,6 +14,13 @@ namespace MdrService.Services
 {
     public class ElasticsearchService : IElasticsearchService
     {
+        private readonly IElasticsearchBuilderService _elasticsearchBuilderService;
+
+        public ElasticsearchService(IElasticsearchBuilderService elasticsearchBuilderService)
+        {
+            _elasticsearchBuilderService = elasticsearchBuilderService ?? throw new ArgumentNullException(nameof(elasticsearchBuilderService));
+        }
+
         private static int? CalculateStartFrom(int? page, int? pageSize)
         {
             if (page == null && pageSize == null) return null;
@@ -37,7 +45,7 @@ namespace MdrService.Services
         }
 
 
-        public async Task<ICollection<Study>> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
+        public async Task<ElasticsearchServiceResponse> GetSpecificStudy(SpecificStudyEsRequest specificStudyRequest)
         {
             var startFrom = CalculateStartFrom(specificStudyRequest.Page, specificStudyRequest.Size);
 
@@ -46,17 +54,13 @@ namespace MdrService.Services
             List<QueryContainer> filters = null;
             if (HasProperty(specificStudyRequest, "Filters") && specificStudyRequest.Filters != null)
             {
-                if (HasProperty(specificStudyRequest.Filters, "StudyFilters"))
-                {
-                    filters = specificStudyRequest.Filters!.StudyFilters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
-                }
+                filters = specificStudyRequest.Filters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
             }
             
             var queryClause = new List<QueryContainer>
             {
                 new NestedQuery()
                 {
-                    Name = "",
                     Path = new Field("study_identifiers"),
                     Query = new TermQuery()
                             {
@@ -103,22 +107,22 @@ namespace MdrService.Services
             }
             
             var results = await GetConnection().SearchAsync<Study>(searchRequest);
-            return results.Documents.ToArray();
-
+            
+            return new ElasticsearchServiceResponse()
+            {
+                Total = (int)results.Total,
+                Studies = _elasticsearchBuilderService.BuildElasticsearchStudyListResponse(results.Documents.ToList())
+            };
         }
 
-        public async Task<ICollection<Study>> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
+        public async Task<ElasticsearchServiceResponse> GetByStudyCharacteristics(StudyCharacteristicsEsRequest studyCharacteristicsRequest)
         {
             var startFrom = CalculateStartFrom(studyCharacteristicsRequest.Page, studyCharacteristicsRequest.Size);
 
             List<QueryContainer> filters = null;
             if (HasProperty(studyCharacteristicsRequest, "Filters") && studyCharacteristicsRequest.Filters != null)
             {
-                var filtersListRequest = studyCharacteristicsRequest.Filters;
-                if (HasProperty(studyCharacteristicsRequest.Filters, "StudyFilters"))
-                {
-                    filters = filtersListRequest.StudyFilters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
-                }
+                filters = studyCharacteristicsRequest.Filters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
             }
 
             var queryClauses = new List<QueryContainer>();
@@ -199,24 +203,24 @@ namespace MdrService.Services
                 };
             }
             
+            
+            var results = await GetConnection().SearchAsync<Study>(searchRequest);
+            
+            return new ElasticsearchServiceResponse()
             {
-                var results = await GetConnection().SearchAsync<Study>(searchRequest);
-                return results.Documents.ToArray();
-            }
+                Total = (int)results.Total,
+                Studies = _elasticsearchBuilderService.BuildElasticsearchStudyListResponse(results.Documents.ToList())
+            };
         }
 
-        public async Task<ICollection<Study>> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
+        public async Task<ElasticsearchServiceResponse> GetViaPublishedPaper(ViaPublishedPaperEsRequest viaPublishedPaperRequest)
         {
             var startFrom = CalculateStartFrom(viaPublishedPaperRequest.Page, viaPublishedPaperRequest.Size);
 
             List<QueryContainer> filters = null;
             if (HasProperty(viaPublishedPaperRequest, "Filters") && viaPublishedPaperRequest.Filters != null)
             {
-                var filtersListRequest = viaPublishedPaperRequest.Filters;
-                if (HasProperty(viaPublishedPaperRequest.Filters, "ObjectFilters"))
-                {
-                    filters = filtersListRequest.ObjectFilters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
-                }
+                filters = viaPublishedPaperRequest.Filters.Select(param => new RawQuery(JsonSerializer.Serialize(param))).Select(dummy => (QueryContainer)dummy).ToList();
             }
             
             var mustQuery = new List<QueryContainer>();
@@ -231,17 +235,19 @@ namespace MdrService.Services
             }
             else
             {
-                var shouldClauses = new List<QueryContainer>();
-                shouldClauses.Add(new NestedQuery()
+                var shouldClauses = new List<QueryContainer>
                 {
-                    Path = Infer.Field<Study>(p => p.LinkedDataObjects.First().ObjectTitles.First().TitleText),
-                    Query = new SimpleQueryStringQuery()
+                    new NestedQuery()
                     {
-                        Query = viaPublishedPaperRequest.SearchValue,
-                        Fields = Infer.Field<Study>(p => p.LinkedDataObjects.First().ObjectTitles.First().TitleText),
-                        DefaultOperator = Operator.And
+                        Path = Infer.Field<Study>(p => p.LinkedDataObjects.First().ObjectTitles.First().TitleText),
+                        Query = new SimpleQueryStringQuery()
+                        {
+                            Query = viaPublishedPaperRequest.SearchValue,
+                            Fields = Infer.Field<Study>(p => p.LinkedDataObjects.First().ObjectTitles.First().TitleText),
+                            DefaultOperator = Operator.And
+                        }
                     }
-                });
+                };
                 mustQuery.Add(new BoolQuery()
                 {
                     Should = shouldClauses
@@ -279,13 +285,16 @@ namespace MdrService.Services
                 };
             }
             
+            var results = await GetConnection().SearchAsync<Study>(searchRequest);
+            
+            return new ElasticsearchServiceResponse()
             {
-                var results = await GetConnection().SearchAsync<Study>(searchRequest);
-                return results.Documents.ToArray();
-            }
+                Total = (int)results.Total,
+                Studies = _elasticsearchBuilderService.BuildElasticsearchStudyListResponse(results.Documents.ToList())
+            };
         }
 
-        public async Task<IEnumerable<Study>> GetByStudyId(StudyIdRequest studyIdRequest)
+        public async Task<ElasticsearchServiceResponse> GetByStudyId(StudyIdEsRequest studyIdRequest)
         {
             var results = await GetConnection().SearchAsync<Study>(s => s
                 .Index(ElasticsearchConfig.IndexName)
@@ -298,7 +307,11 @@ namespace MdrService.Services
                     )
                 )
             );
-            return results.Documents.ToArray();
+            return new ElasticsearchServiceResponse()
+            {
+                Total = (int)results.Total,
+                Studies = _elasticsearchBuilderService.BuildElasticsearchStudyListResponse(results.Documents.ToList())
+            };
         }
     }
 }

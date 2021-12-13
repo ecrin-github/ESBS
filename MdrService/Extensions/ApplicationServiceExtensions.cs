@@ -18,11 +18,15 @@ namespace MdrService.Extensions
                 options.UseNpgsql(config.GetConnectionString("MdrDbConnectionString"));
             });
             
-            services.AddScoped<IElasticsearchService, ElasticsearchService>();
             services.AddScoped<IContextService, ContextService>();
+            
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IRawSqlSearchService, RawSqlSearchService>();
+            
             services.AddScoped<IBuilderService, BuilderService>();
+            
+            services.AddScoped<IElasticsearchService, ElasticsearchService>();
+            services.AddScoped<IElasticsearchBuilderService, ElasticsearchBuilderService>();
             
             services.AddScoped<IStudyRepository, StudyRepository>();
             services.AddScoped<IObjectRepository, ObjectRepository>();
@@ -30,6 +34,7 @@ namespace MdrService.Extensions
             services.AddScoped<ILinksRepository, LinksRepository>();
             
             services.AddScoped<IDataMapper, DataMapper>();
+            services.AddScoped<IElasticsearchDataMapper, ElasticsearchDataMapper>();
 
             return services;
         }

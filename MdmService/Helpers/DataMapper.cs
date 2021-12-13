@@ -101,7 +101,8 @@ namespace MdmService.Helpers
                 IdentifierOrgId = studyIdentifier.IdentifierOrgId,
                 IdentifierOrg = studyIdentifier.IdentifierOrg,
                 IdentifierOrgRorId = studyIdentifier.IdentifierOrgRorId,
-                IdentifierDate = studyIdentifier.IdentifierDate
+                IdentifierDate = studyIdentifier.IdentifierDate,
+                IdentifierLink = studyIdentifier.IdentifierLink
             };
 
             return studyIdentifierDto;

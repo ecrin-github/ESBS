@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Dapper;
 using MdrService.Configs;
 using MdrService.Contracts.Requests.v1.DbSearch;
-using MdrService.Contracts.Responses.v1.SearchServiceResponse;
+using MdrService.Contracts.Responses.v1.SearchResponse;
 using MdrService.Interfaces;
 using Npgsql;
 
@@ -44,7 +44,7 @@ namespace MdrService.Services
         }
 
 
-        private static StringBuilder FiltersBuilder(FiltersRequest filtersRequest)
+        private static StringBuilder FiltersBuilder(FiltersDbRequest filtersRequest)
         {
             if (filtersRequest == null) return null;
 
@@ -80,7 +80,7 @@ namespace MdrService.Services
         
         
         
-        public async Task<RawSqlSearchServiceResponse> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
+        public async Task<SearchServiceResponse> GetSpecificStudy(SpecificStudyDbRequest specificStudyRequest)
         {
             var skip = CalculateSkip(page: specificStudyRequest.Page, size: specificStudyRequest.Size);
 
@@ -133,14 +133,14 @@ namespace MdrService.Services
 
             var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
             
-            return new RawSqlSearchServiceResponse()
+            return new SearchServiceResponse()
             {
                 Total = totalRecords.count,
                 StudyIds = ids
             };
         }
 
-        public async Task<RawSqlSearchServiceResponse> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
+        public async Task<SearchServiceResponse> GetByStudyCharacteristics(StudyCharacteristicsDbRequest studyCharacteristicsRequest)
         {
             var skip = CalculateSkip(page: studyCharacteristicsRequest.Page, size: studyCharacteristicsRequest.Size);
 
@@ -203,14 +203,14 @@ namespace MdrService.Services
             
             var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
 
-            return new RawSqlSearchServiceResponse()
+            return new SearchServiceResponse()
             {
                 Total = totalRecords.count,
                 StudyIds = ids
             };
         }
 
-        public async Task<RawSqlSearchServiceResponse> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
+        public async Task<SearchServiceResponse> GetViaPublishedPaper(ViaPublishedPaperDbRequest viaPublishedPaperRequest)
         {
             var skip = CalculateSkip(page: viaPublishedPaperRequest.Page, size: viaPublishedPaperRequest.Size);
 
@@ -277,7 +277,7 @@ namespace MdrService.Services
 
             var totalRecords = await connection.QueryFirstAsync(totalQueryString.ToString());
             
-            return new RawSqlSearchServiceResponse()
+            return new SearchServiceResponse()
             {
                 Total = totalRecords.count,
                 StudyIds = ids

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MdrService.Contracts.Responses.v1.Common;
-using MdrService.Contracts.Responses.v1.ObjectListResponse;
-using MdrService.Contracts.Responses.v1.StudyListResponse;
+using MdrService.Contracts.Responses.v1.ApiResponse.ObjectListResponse;
+using MdrService.Contracts.Responses.v1.ApiResponse.StudyListResponse;
 using MdrService.Models.Object;
 using MdrService.Models.Study;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1.DbSearch;
 using MdrService.Contracts.Responses.v1;
-using MdrService.Contracts.Responses.v1.StudyListResponse;
+using MdrService.Contracts.Responses.v1.ApiResponse.StudyListResponse;
 using MdrService.Contracts.Routes.ApiRoutes.v1;
 using MdrService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +29,10 @@ namespace MdrService.Controllers.v1
         
         [HttpPost(ApiRoutes.Query.GetSpecificStudy)]
         [SwaggerOperation(Tags = new[] { "Search specific study" })]
-        public async Task<IActionResult> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
+        public async Task<IActionResult> GetSpecificStudy(SpecificStudyDbRequest specificStudyRequest)
         {
             var ids = await _searchService.GetSpecificStudy(specificStudyRequest);
-            if (ids.StudyIds.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
+            if (ids.StudyIds.Count <= 0) return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -41,7 +41,7 @@ namespace MdrService.Controllers.v1
             });
 
             var studies = await _studyRepository.GetStudies(ids.StudyIds);
-            if (studies.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
+            if (studies.Count <= 0) return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -50,7 +50,7 @@ namespace MdrService.Controllers.v1
             });
 
             var outputResult = await _builderService.BuildStudyResponse(studies);
-            return Ok(new ApiResponse<StudyListResponse>()
+            return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = ids.Total,
                 Data = outputResult,
@@ -63,10 +63,10 @@ namespace MdrService.Controllers.v1
         
         [HttpPost(ApiRoutes.Query.GetByStudyCharacteristics)]
         [SwaggerOperation(Tags = new[] { "Search by study characteristics" })]
-        public async Task<object> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
+        public async Task<object> GetByStudyCharacteristics(StudyCharacteristicsDbRequest studyCharacteristicsRequest)
         {
             var ids = await _searchService.GetByStudyCharacteristics(studyCharacteristicsRequest);
-            if (ids.StudyIds.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
+            if (ids.StudyIds.Count <= 0) return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -75,7 +75,7 @@ namespace MdrService.Controllers.v1
             });
 
             var studies = await _studyRepository.GetStudies(ids.StudyIds);
-            if (studies.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
+            if (studies.Count <= 0) return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -84,7 +84,7 @@ namespace MdrService.Controllers.v1
             });
 
             var outputResult = await _builderService.BuildStudyResponse(studies);
-            return Ok(new ApiResponse<StudyListResponse>()
+            return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = ids.Total,
                 Data = outputResult,
@@ -97,10 +97,10 @@ namespace MdrService.Controllers.v1
         
         [HttpPost(ApiRoutes.Query.GetViaPublishedPaper)]
         [SwaggerOperation(Tags = new[] { "Search via published paper" })]
-        public async Task<IActionResult> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
+        public async Task<IActionResult> GetViaPublishedPaper(ViaPublishedPaperDbRequest viaPublishedPaperRequest)
         {
             var ids = await _searchService.GetViaPublishedPaper(viaPublishedPaperRequest);
-            if (ids.StudyIds.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
+            if (ids.StudyIds.Count <= 0) return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -109,7 +109,7 @@ namespace MdrService.Controllers.v1
             });
 
             var studies = await _studyRepository.GetStudies(ids.StudyIds);
-            if (studies.Count <= 0) return Ok(new ApiResponse<StudyListResponse>()
+            if (studies.Count <= 0) return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 0,
                 StatusCode = NotFound().StatusCode,
@@ -118,7 +118,7 @@ namespace MdrService.Controllers.v1
             });
 
             var outputResult = await _builderService.BuildStudyResponse(studies);
-            return Ok(new ApiResponse<StudyListResponse>()
+            return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = ids.Total,
                 Data = outputResult,
@@ -131,11 +131,11 @@ namespace MdrService.Controllers.v1
         
         [HttpPost(ApiRoutes.Query.GetByStudyId)]
         [SwaggerOperation(Tags = new[] { "Search by study ID" })]
-        public async Task<IActionResult> GetByStudyId(StudyIdRequest studyIdRequest)
+        public async Task<IActionResult> GetByStudyId(StudyIdDbRequest studyIdRequest)
         {
             var studyId = await _searchService.GetByStudyId(studyIdRequest);
             if (studyId == null)
-                return Ok(new ApiResponse<StudyListResponse>()
+                return Ok(new BaseResponse<StudyListResponse>()
                 {
                     Total = 0,
                     Messages = new List<string>(){"Study hasn't been found."},
@@ -143,7 +143,7 @@ namespace MdrService.Controllers.v1
                     Data = new List<StudyListResponse>()
                 });
             var study = await _studyRepository.GetStudyById(studyId);
-            if (study == null) return Ok(new ApiResponse<StudyListResponse>()
+            if (study == null) return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 0,
                 Messages = new List<string>(){"Study hasn't been found."},
@@ -152,7 +152,7 @@ namespace MdrService.Controllers.v1
             });
 
             var outputRes = await _builderService.BuildSingleStudyResponse(study);
-            return Ok(new ApiResponse<StudyListResponse>()
+            return Ok(new BaseResponse<StudyListResponse>()
             {
                 Total = 1,
                 Data = new List<StudyListResponse>(){outputRes},

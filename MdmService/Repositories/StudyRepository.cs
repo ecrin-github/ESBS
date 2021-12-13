@@ -181,6 +181,7 @@ namespace MdmService.Repositories
                 IdentifierValue = studyIdentifierDto.IdentifierValue,
                 IdentifierOrgId = studyIdentifierDto.IdentifierOrgId,
                 IdentifierOrg = studyIdentifierDto.IdentifierOrg,
+                IdentifierLink = studyIdentifierDto.IdentifierLink,
                 IdentifierOrgRorId = studyIdentifierDto.IdentifierOrgRorId,
                 IdentifierDate = studyIdentifierDto.IdentifierDate
             };
@@ -204,6 +205,7 @@ namespace MdmService.Repositories
             dbStudyIdentifier.IdentifierOrg = studyIdentifierDto.IdentifierOrg;
             dbStudyIdentifier.IdentifierOrgRorId = studyIdentifierDto.IdentifierOrgRorId;
             dbStudyIdentifier.IdentifierDate = studyIdentifierDto.IdentifierDate;
+            dbStudyIdentifier.IdentifierLink = studyIdentifierDto.IdentifierLink;
 
             await _dbConnection.SaveChangesAsync();
             

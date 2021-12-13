@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MdrService.Contracts.Requests.v1.DbSearch;
-using MdrService.Contracts.Responses.v1.SearchServiceResponse;
+using MdrService.Contracts.Responses.v1.SearchResponse;
 using MdrService.Interfaces;
 using MdrService.Models.DbConnection;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +31,7 @@ namespace MdrService.Services
         }
 
 
-        public async Task<SearchServiceResponse> GetSpecificStudy(SpecificStudyRequest specificStudyRequest)
+        public async Task<SearchServiceResponse> GetSpecificStudy(SpecificStudyDbRequest specificStudyRequest)
         {
             var skip = CalculateSkip(page:specificStudyRequest.Page, size:specificStudyRequest.Size);
 
@@ -77,7 +77,7 @@ namespace MdrService.Services
             };
         }
 
-        public async Task<SearchServiceResponse> GetByStudyCharacteristics(StudyCharacteristicsRequest studyCharacteristicsRequest)
+        public async Task<SearchServiceResponse> GetByStudyCharacteristics(StudyCharacteristicsDbRequest studyCharacteristicsRequest)
         {
             // Get skip
             var skip = CalculateSkip(page:studyCharacteristicsRequest.Page, size:studyCharacteristicsRequest.Size);
@@ -184,7 +184,7 @@ namespace MdrService.Services
             }
         }
 
-        public async Task<SearchServiceResponse> GetViaPublishedPaper(ViaPublishedPaperRequest viaPublishedPaperRequest)
+        public async Task<SearchServiceResponse> GetViaPublishedPaper(ViaPublishedPaperDbRequest viaPublishedPaperRequest)
         {
 
             var skip = CalculateSkip(page:viaPublishedPaperRequest.Page, size:viaPublishedPaperRequest.Size);
@@ -254,7 +254,7 @@ namespace MdrService.Services
             }
         }
 
-        public async Task<int?> GetByStudyId(StudyIdRequest studyIdRequest)
+        public async Task<int?> GetByStudyId(StudyIdDbRequest studyIdRequest)
         {
             var res = await _dbConnection.Studies.AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id.Equals(studyIdRequest.StudyId));
