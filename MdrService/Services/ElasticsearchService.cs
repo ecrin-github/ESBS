@@ -5,8 +5,11 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using MdrService.Configs;
 using MdrService.Contracts.Requests.v1.Elasticsearch;
+using MdrService.Contracts.Responses.v1.ApiResponse.ObjectListResponse;
+using MdrService.Contracts.Responses.v1.ApiResponse.StudyListResponse;
 using MdrService.Contracts.Responses.v1.SearchResponse;
 using MdrService.Interfaces;
+using MdrService.Models.Elasticsearch.Object;
 using MdrService.Models.Elasticsearch.Study;
 using Nest;
 
@@ -37,7 +40,7 @@ namespace MdrService.Services
             var settings = new ConnectionSettings(new Uri(ElasticsearchConfig.Url));
             return new ElasticClient(settings);
         }
-        
+
         private static bool HasProperty(object obj, string propertyName)
         {
             if (obj == null) return false;
@@ -77,10 +80,7 @@ namespace MdrService.Services
 
             if (filters is { Count: > 0 })
             {
-                queryClause.Add(new BoolQuery()
-                {
-                    Should = filters
-                });
+                queryClause.AddRange(filters);
             }
 
             var boolQuery = new BoolQuery()
@@ -108,10 +108,38 @@ namespace MdrService.Services
             
             var results = await GetConnection().SearchAsync<Study>(searchRequest);
             
+            var studyListResponse = new List<StudyListResponse>();
+            
+            foreach (var hit in results.Hits)
+            {
+                var mappedStudy = _elasticsearchBuilderService.BuildElasticsearchStudyResponse(hit.Source);
+
+                var objectListResponse = new List<ObjectListResponse>();
+                if (hit.InnerHits.ContainsKey("linked_data_objects"))
+                {
+                    var dataObjects = hit.InnerHits["linked_data_objects"].Documents<DataObject>();
+                    if (dataObjects != null)
+                    {
+                        objectListResponse.AddRange(dataObjects.Select(dataObject => _elasticsearchBuilderService.BuildElasticsearchObjectResponse(dataObject)));
+                    }
+                }
+                else
+                {
+                    if (hit.Source.LinkedDataObjects is { Count: > 0 })
+                    {
+                        objectListResponse.AddRange(hit.Source.LinkedDataObjects.Select(dataObject => _elasticsearchBuilderService.BuildElasticsearchObjectResponse(dataObject)));
+                    }
+                }
+                
+                mappedStudy.LinkedDataObjects = objectListResponse;
+                
+                studyListResponse.Add(mappedStudy);
+            }
+            
             return new ElasticsearchServiceResponse()
             {
                 Total = (int)results.Total,
-                Studies = _elasticsearchBuilderService.BuildElasticsearchStudyListResponse(results.Documents.ToList())
+                Studies = studyListResponse
             };
         }
 
@@ -157,10 +185,7 @@ namespace MdrService.Services
 
             if (filters is { Count: > 0 })
             {
-                queryClauses.Add(new BoolQuery()
-                {
-                    Should = filters
-                });
+                queryClauses.AddRange(filters);
             }
 
             var logicalOperator = studyCharacteristicsRequest.LogicalOperator;
@@ -202,14 +227,41 @@ namespace MdrService.Services
                     Query = boolQuery
                 };
             }
-            
-            
+
             var results = await GetConnection().SearchAsync<Study>(searchRequest);
+            
+            var studyListResponse = new List<StudyListResponse>();
+            
+            foreach (var hit in results.Hits)
+            {
+                var mappedStudy = _elasticsearchBuilderService.BuildElasticsearchStudyResponse(hit.Source);
+
+                var objectListResponse = new List<ObjectListResponse>();
+                if (hit.InnerHits.ContainsKey("linked_data_objects"))
+                {
+                    var dataObjects = hit.InnerHits["linked_data_objects"].Documents<DataObject>();
+                    if (dataObjects != null)
+                    {
+                        objectListResponse.AddRange(dataObjects.Select(dataObject => _elasticsearchBuilderService.BuildElasticsearchObjectResponse(dataObject)));
+                    }
+                }
+                else
+                {
+                    if (hit.Source.LinkedDataObjects is { Count: > 0 })
+                    {
+                        objectListResponse.AddRange(hit.Source.LinkedDataObjects.Select(dataObject => _elasticsearchBuilderService.BuildElasticsearchObjectResponse(dataObject)));
+                    }
+                }
+                
+                mappedStudy.LinkedDataObjects = objectListResponse;
+                
+                studyListResponse.Add(mappedStudy);
+            }
             
             return new ElasticsearchServiceResponse()
             {
                 Total = (int)results.Total,
-                Studies = _elasticsearchBuilderService.BuildElasticsearchStudyListResponse(results.Documents.ToList())
+                Studies = studyListResponse
             };
         }
 
@@ -256,10 +308,7 @@ namespace MdrService.Services
             
             if (filters is { Count: > 0 })
             {
-                mustQuery.Add(new BoolQuery()
-                {
-                    Should = filters
-                });
+                mustQuery.AddRange(filters);
             }
 
             var boolQuery = new BoolQuery()
@@ -287,10 +336,38 @@ namespace MdrService.Services
             
             var results = await GetConnection().SearchAsync<Study>(searchRequest);
             
+            var studyListResponse = new List<StudyListResponse>();
+            
+            foreach (var hit in results.Hits)
+            {
+                var mappedStudy = _elasticsearchBuilderService.BuildElasticsearchStudyResponse(hit.Source);
+
+                var objectListResponse = new List<ObjectListResponse>();
+                if (hit.InnerHits.ContainsKey("linked_data_objects"))
+                {
+                    var dataObjects = hit.InnerHits["linked_data_objects"].Documents<DataObject>();
+                    if (dataObjects != null)
+                    {
+                        objectListResponse.AddRange(dataObjects.Select(dataObject => _elasticsearchBuilderService.BuildElasticsearchObjectResponse(dataObject)));
+                    }
+                }
+                else
+                {
+                    if (hit.Source.LinkedDataObjects is { Count: > 0 })
+                    {
+                        objectListResponse.AddRange(hit.Source.LinkedDataObjects.Select(dataObject => _elasticsearchBuilderService.BuildElasticsearchObjectResponse(dataObject)));
+                    }
+                }
+                
+                mappedStudy.LinkedDataObjects = objectListResponse;
+                
+                studyListResponse.Add(mappedStudy);
+            }
+            
             return new ElasticsearchServiceResponse()
             {
                 Total = (int)results.Total,
-                Studies = _elasticsearchBuilderService.BuildElasticsearchStudyListResponse(results.Documents.ToList())
+                Studies = studyListResponse
             };
         }
 

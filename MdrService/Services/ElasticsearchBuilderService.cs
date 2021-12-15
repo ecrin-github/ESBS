@@ -31,7 +31,7 @@ namespace MdrService.Services
             return objectUrlString;
         }
         
-        private static ObjectListResponse BuildElasticsearchObjectResponse(DataObject dataObject)
+        public ObjectListResponse BuildElasticsearchObjectResponse(DataObject dataObject)
         {
             if (dataObject == null) return null;
             return new ObjectListResponse()
@@ -76,13 +76,14 @@ namespace MdrService.Services
             };
         }
         
-        private static IEnumerable<ObjectListResponse> BuildElasticsearchObjectListResponse(
-            ICollection<DataObject> dataObjects)
+        public IEnumerable<ObjectListResponse> BuildElasticsearchObjectListResponse(IEnumerable<DataObject> dataObjects)
         {
-            return dataObjects is { Count: <= 0 } ? null : dataObjects.Select(BuildElasticsearchObjectResponse).ToList();
+            if (dataObjects == null) return null;
+            var enumerable = dataObjects as DataObject[] ?? dataObjects.ToArray();
+            return enumerable.Any() ? null : enumerable.Select(BuildElasticsearchObjectResponse).ToList();
         }
 
-        private static StudyListResponse BuildElasticsearchStudyResponse(Study study)
+        public StudyListResponse BuildElasticsearchStudyResponse(Study study)
         {
             if (study == null) return null;
             return new StudyListResponse()
@@ -109,7 +110,6 @@ namespace MdrService.Services
                 StudyRelationships = _elasticsearchDataMapper.MapStudyRelationships(study.StudyRelationships),
                 StudyTitles = _elasticsearchDataMapper.MapStudyTitles(study.StudyTitles),
                 StudyTopics = _elasticsearchDataMapper.MapStudyTopics(study.StudyTopics),
-                LinkedDataObjects = BuildElasticsearchObjectListResponse(study.LinkedDataObjects),
                 ProvenanceString = study.ProvenanceString
             };
         }
