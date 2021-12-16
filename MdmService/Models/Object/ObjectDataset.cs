@@ -33,7 +33,7 @@ namespace MdmService.Models.Object
         [Column("deident_dates")]
         public bool? DeidentDates { get; set; }
         
-        [Column("deident_noarr")]
+        [Column("deident_nonarr")]
         public bool? DeidentNonarr { get; set; }
         
         [Column("deident_kanon")]
@@ -63,7 +63,7 @@ namespace MdmService.Models.Object
         [Column("consent_details")]
         public string? ConsentDetails { get; set; }
         
-        [Column("created_od")]
+        [Column("created_on")]
         public DateTime? CreatedOn { get; set; }
 
     }
