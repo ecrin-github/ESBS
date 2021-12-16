@@ -52,7 +52,7 @@ namespace MdmService.DTO.Object
         
         public ICollection<ObjectContributorDto>? ObjectContributors { get; set; }
         
-        public ICollection<ObjectDatasetDto>? ObjectDatasets { get; set; }
+        public ObjectDatasetDto? ObjectDatasets { get; set; }
         
         public ICollection<ObjectDateDto>? ObjectDates { get; set; }
         

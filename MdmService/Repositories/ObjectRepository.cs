@@ -114,6 +114,12 @@ namespace MdmService.Repositories
             var data = _dbConnection.ObjectDatasets.Where(p => p.SdOid == sdOid);
             return data.Any() ? _dataMapper.ObjectDatasetDtoBuilder(await data.ToArrayAsync()) : null;
         }
+        
+        public async Task<ObjectDatasetDto> GetDataObjectDataset(string sdOid)
+        {
+            var data = await _dbConnection.ObjectDatasets.FirstOrDefaultAsync(p => p.SdOid == sdOid);
+            return data != null ? _dataMapper.ObjectDatasetDtoMapper(data) : null;
+        }
 
         public async Task<ObjectDatasetDto> GetObjectDataset(int id)
         {
@@ -872,12 +878,9 @@ namespace MdmService.Repositories
                 }
             }
             
-            if (dataObjectDto.ObjectDatasets is { Count: > 0 })
+            if (dataObjectDto.ObjectDatasets != null)
             {
-                foreach (var od in dataObjectDto.ObjectDatasets)
-                {
-                    await CreateObjectDataset(objId.ToString(), od);
-                }
+                await CreateObjectDataset(objId.ToString(), dataObjectDto.ObjectDatasets);
             }
             
             if (dataObjectDto.ObjectDates is { Count: > 0 })
@@ -969,6 +972,153 @@ namespace MdmService.Repositories
             dbDataObject.UrlLastChecked = dataObjectDto.UrlLastChecked;
             dbDataObject.EoscCategory = dataObjectDto.EoscCategory;
             dbDataObject.AddStudyContribs = dataObjectDto.AddStudyContribs;
+            
+            if (dataObjectDto.ObjectContributors is { Count: > 0 })
+            {
+                foreach (var oc in dataObjectDto.ObjectContributors)
+                {
+                    if (oc.Id == null)
+                    {
+                        await CreateObjectContributor(oc.SdOid, oc);
+                    }
+                    else
+                    {
+                        await UpdateObjectContributor(oc);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectDatasets != null)
+            {
+                if (dataObjectDto.ObjectDatasets.Id == null)
+                {
+                    await CreateObjectDataset(dataObjectDto.ObjectDatasets.SdOid, dataObjectDto.ObjectDatasets);
+                }
+                else
+                {
+                    await UpdateObjectDataset(dataObjectDto.ObjectDatasets);
+                }
+            }
+            
+            if (dataObjectDto.ObjectDates is { Count: > 0 })
+            {
+                foreach (var od in dataObjectDto.ObjectDates)
+                {
+                    if (od.Id == null)
+                    {
+                        await CreateObjectDate(od.SdOid, od);
+                    }
+                    else
+                    {
+                        await UpdateObjectDate(od);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectDescriptions is { Count: > 0 })
+            {
+                foreach (var od in dataObjectDto.ObjectDescriptions)
+                {
+                    if (od.Id == null)
+                    {
+                        await CreateObjectDescription(od.SdOid, od);
+                    }
+                    else
+                    {
+                        await UpdateObjectDescription(od);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectIdentifiers is { Count: > 0 })
+            {
+                foreach (var oi in dataObjectDto.ObjectIdentifiers)
+                {
+                    if (oi.Id == null)
+                    {
+                        await CreateObjectIdentifier(oi.SdOid, oi);
+                    }
+                    else
+                    {
+                        await UpdateObjectIdentifier(oi);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectInstances is { Count: > 0 })
+            {
+                foreach (var oi in dataObjectDto.ObjectInstances)
+                {
+                    if (oi.Id == null)
+                    {
+                        await CreateObjectInstance(oi.SdOid, oi);
+                    }
+                    else
+                    {
+                        await UpdateObjectInstance(oi);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectRelationships is { Count: > 0 })
+            {
+                foreach (var or in dataObjectDto.ObjectRelationships)
+                {
+                    if (or.Id == null)
+                    {
+                        await CreateObjectRelationship(or.SdOid, or);
+                    }
+                    else
+                    {
+                        await UpdateObjectRelationship(or);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectRights is { Count: > 0 })
+            {
+                foreach (var or in dataObjectDto.ObjectRights)
+                {
+                    if (or.Id == null)
+                    {
+                        await CreateObjectRight(or.SdOid, or);
+                    }
+                    else
+                    {
+                        await UpdateObjectRight(or);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectTitles is { Count: > 0 })
+            {
+                foreach (var ot in dataObjectDto.ObjectTitles)
+                {
+                    if (ot.Id == null)
+                    {
+                        await CreateObjectTitle(ot.SdOid, ot);
+                    }
+                    else
+                    {
+                        await UpdateObjectTitle(ot);
+                    }
+                }
+            }
+            
+            if (dataObjectDto.ObjectTopics is { Count: > 0 })
+            {
+                foreach (var ot in dataObjectDto.ObjectTopics)
+                {
+                    if (ot.Id == null)
+                    {
+                        await CreateObjectTopic(ot.SdOid, ot);
+                    }
+                    else
+                    {
+                        await UpdateObjectTopic(ot);
+                    }
+                }
+            }
                 
             await _dbConnection.SaveChangesAsync();
             return await DataObjectBuilder(dbDataObject);
@@ -1100,7 +1250,7 @@ namespace MdmService.Repositories
                 AddStudyTopics = dataObject.AddStudyTopics,
                 CreatedOn = dataObject.CreatedOn,
                 ObjectContributors = await GetObjectContributors(dataObject.SdOid),
-                ObjectDatasets = await GetObjectDatasets(dataObject.SdOid),
+                ObjectDatasets = await GetDataObjectDataset(dataObject.SdOid),
                 ObjectDates = await GetObjectDates(dataObject.SdOid),
                 ObjectDescriptions = await GetObjectDescriptions(dataObject.SdOid),
                 ObjectIdentifiers = await GetObjectIdentifiers(dataObject.SdOid),

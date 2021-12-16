@@ -196,7 +196,7 @@ namespace MdmService.Repositories
         {
             var dbStudyIdentifier =
                 await _dbConnection.StudyIdentifiers.FirstOrDefaultAsync(p => p.Id == studyIdentifierDto.Id);
-
+            
             if (dbStudyIdentifier == null) return null;
             
             dbStudyIdentifier.IdentifierTypeId = studyIdentifierDto.IdentifierTypeId;
@@ -667,6 +667,96 @@ namespace MdmService.Repositories
             dbStudy.MinAgeUnitsId = studyDto.MinAgeUnitsId;
             dbStudy.MaxAge = studyDto.MaxAge;
             dbStudy.MaxAgeUnitsId = studyDto.MaxAgeUnitsId;
+            
+            if (studyDto.StudyFeatures is { Count: > 0 })
+            {
+                foreach (var stf in studyDto.StudyFeatures)
+                {
+                    if (stf.Id == null)
+                    {
+                        await CreateStudyFeature(stf.SdSid, stf);
+                    }
+                    else
+                    {
+                        await UpdateStudyFeature(stf);
+                    }
+                }
+            }
+            
+            if (studyDto.StudyIdentifiers is { Count: > 0 })
+            {
+                foreach (var sti in studyDto.StudyIdentifiers)
+                {
+                    if (sti.Id == null)
+                    {
+                        await CreateStudyIdentifier(sti.SdSid, sti);
+                    }
+                    else
+                    {
+                        await UpdateStudyIdentifier(sti);
+                    }
+                }
+            }
+            
+            if (studyDto.StudyReferences is { Count: > 0 })
+            {
+                foreach (var str in studyDto.StudyReferences)
+                {
+                    if (str.Id == null)
+                    {
+                        await CreateStudyReference(str.SdSid, str);
+                    }
+                    else
+                    {
+                        await UpdateStudyReference(str);
+                    }
+                }
+            }
+            
+            if (studyDto.StudyRelationships is { Count: > 0 })
+            {
+                foreach (var str in studyDto.StudyRelationships)
+                {
+                    if (str.Id == null)
+                    {
+                        await CreateStudyRelationship(str.SdSid, str);
+                    }
+                    else
+                    {
+                        await UpdateStudyRelationship(str);
+                    }
+                }
+            }
+            
+            if (studyDto.StudyTitles is { Count: > 0 })
+            {
+                foreach (var stt in studyDto.StudyTitles)
+                {
+                    if (stt.Id == null)
+                    {
+                        await CreateStudyTitle(stt.SdSid, stt);
+                    }
+                    else
+                    {
+                        await UpdateStudyTitle(stt);
+                    }
+                }
+            }
+            
+            if (studyDto.StudyTopics is { Count: > 0 })
+            {
+                foreach (var stt in studyDto.StudyTopics)
+                {
+                    if (stt.Id == null)
+                    {
+                        await CreateStudyTopic(stt.SdSid, stt);
+                    }
+                    else
+                    {
+                        await UpdateStudyTopic(stt);
+                    }
+                }
+            }
 
             await _dbConnection.SaveChangesAsync();
             

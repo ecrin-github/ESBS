@@ -35,6 +35,7 @@ namespace MdmService.Interfaces
         // Object datasets
         IQueryable<ObjectDataset> GetQueryableObjectDatasets();
         Task<ICollection<ObjectDatasetDto>> GetObjectDatasets(string sdOid);
+        Task<ObjectDatasetDto> GetDataObjectDataset(string sdOid);
         Task<ObjectDatasetDto> GetObjectDataset(int id);
         Task<ObjectDatasetDto> CreateObjectDataset(string sdOid, ObjectDatasetDto objectDatasetDto);
         Task<ObjectDatasetDto> UpdateObjectDataset(ObjectDatasetDto objectDatasetDto);
