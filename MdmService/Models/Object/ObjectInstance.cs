@@ -27,7 +27,7 @@ namespace MdmService.Models.Object
         [Column("url")]
         public string? Url { get; set; }
         
-        [Column("UrlAccessible")]
+        [Column("url_accessible")]
         public bool? UrlAccessible { get; set; }
         
         [Column("url_last_checked", TypeName = "Date")]
