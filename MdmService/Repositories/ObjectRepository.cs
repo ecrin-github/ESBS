@@ -927,7 +927,7 @@ namespace MdmService.Repositories
             {
                 foreach (var oc in dataObjectDto.ObjectContributors)
                 {
-                    if (oc.Id == null)
+                    if (oc.Id is null or 0)
                     {
                         oc.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectContributor(oc);
@@ -941,7 +941,7 @@ namespace MdmService.Repositories
             
             if (dataObjectDto.ObjectDatasets != null)
             {
-                if (dataObjectDto.ObjectDatasets.Id == null)
+                if (dataObjectDto.ObjectDatasets.Id is null or 0)
                 {
                     dataObjectDto.ObjectDatasets.SdOid ??= dataObjectDto.SdOid;
                     await CreateObjectDataset(dataObjectDto.ObjectDatasets);
@@ -956,7 +956,7 @@ namespace MdmService.Repositories
             {
                 foreach (var od in dataObjectDto.ObjectDates)
                 {
-                    if (od.Id == null)
+                    if (od.Id is null or 0)
                     {
                         od.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectDate(od);
@@ -972,7 +972,7 @@ namespace MdmService.Repositories
             {
                 foreach (var od in dataObjectDto.ObjectDescriptions)
                 {
-                    if (od.Id == null)
+                    if (od.Id is null or 0)
                     {
                         od.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectDescription(od);
@@ -988,7 +988,7 @@ namespace MdmService.Repositories
             {
                 foreach (var oi in dataObjectDto.ObjectIdentifiers)
                 {
-                    if (oi.Id == null)
+                    if (oi.Id is null or 0)
                     {
                         oi.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectIdentifier(oi);
@@ -1004,7 +1004,7 @@ namespace MdmService.Repositories
             {
                 foreach (var oi in dataObjectDto.ObjectInstances)
                 {
-                    if (oi.Id == null)
+                    if (oi.Id is null or 0)
                     {
                         oi.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectInstance(oi);
@@ -1020,7 +1020,7 @@ namespace MdmService.Repositories
             {
                 foreach (var or in dataObjectDto.ObjectRelationships)
                 {
-                    if (or.Id == null)
+                    if (or.Id is null or 0)
                     {
                         or.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectRelationship(or);
@@ -1036,7 +1036,7 @@ namespace MdmService.Repositories
             {
                 foreach (var or in dataObjectDto.ObjectRights)
                 {
-                    if (or.Id == null)
+                    if (or.Id is null or 0)
                     {
                         or.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectRight(or);
@@ -1052,7 +1052,7 @@ namespace MdmService.Repositories
             {
                 foreach (var ot in dataObjectDto.ObjectTitles)
                 {
-                    if (ot.Id == null)
+                    if (ot.Id is null or 0)
                     {
                         ot.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectTitle(ot);
@@ -1068,7 +1068,7 @@ namespace MdmService.Repositories
             {
                 foreach (var ot in dataObjectDto.ObjectTopics)
                 {
-                    if (ot.Id == null)
+                    if (ot.Id is null or 0)
                     {
                         ot.SdOid ??= dataObjectDto.SdOid;
                         await CreateObjectTopic(ot);

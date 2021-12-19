@@ -639,7 +639,7 @@ namespace MdmService.Repositories
             {
                 foreach (var stf in studyDto.StudyFeatures)
                 {
-                    if (stf.Id == null)
+                    if (stf.Id is null or 0)
                     {
                         stf.SdSid ??= studyDto.SdSid;
                         await CreateStudyFeature(stf);
@@ -655,7 +655,7 @@ namespace MdmService.Repositories
             {
                 foreach (var sti in studyDto.StudyIdentifiers)
                 {
-                    if (sti.Id == null)
+                    if (sti.Id is null or 0)
                     {
                         sti.SdSid ??= studyDto.SdSid;
                         await CreateStudyIdentifier(sti);
@@ -671,7 +671,7 @@ namespace MdmService.Repositories
             {
                 foreach (var str in studyDto.StudyReferences)
                 {
-                    if (str.Id == null)
+                    if (str.Id is null or 0)
                     {
                         str.SdSid ??= studyDto.SdSid;
                         await CreateStudyReference(str);
@@ -687,7 +687,7 @@ namespace MdmService.Repositories
             {
                 foreach (var str in studyDto.StudyRelationships)
                 {
-                    if (str.Id == null)
+                    if (str.Id is null or 0)
                     {
                         str.SdSid ??= studyDto.SdSid;
                         await CreateStudyRelationship(str);
@@ -703,7 +703,7 @@ namespace MdmService.Repositories
             {
                 foreach (var stt in studyDto.StudyTitles)
                 {
-                    if (stt.Id == null)
+                    if (stt.Id is null or 0)
                     {
                         stt.SdSid ??= studyDto.SdSid;
                         await CreateStudyTitle(stt);
@@ -719,7 +719,7 @@ namespace MdmService.Repositories
             {
                 foreach (var stt in studyDto.StudyTopics)
                 {
-                    if (stt.Id == null)
+                    if (stt.Id is null or 0)
                     {
                         stt.SdSid ??= studyDto.SdSid;
                         await CreateStudyTopic(stt);
