@@ -97,7 +97,8 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var studyRel = await _studyRepository.CreateStudyRelationship(sdSid, studyRelationshipDto);
+            studyRelationshipDto.SdSid ??= sdSid;
+            var studyRel = await _studyRepository.CreateStudyRelationship(studyRelationshipDto);
             if (studyRel == null)
                 return Ok(new ApiResponse<StudyRelationshipDto>()
                 {
@@ -121,6 +122,9 @@ namespace MdmService.Controllers.v1.Study
         [SwaggerOperation(Tags = new []{"Study relationships endpoint"})]
         public async Task<IActionResult> UpdateStudyRelationship(string sdSid, int id, [FromBody] StudyRelationshipDto studyRelationshipDto)
         {
+            studyRelationshipDto.Id ??= id;
+            studyRelationshipDto.SdSid ??= sdSid;
+            
             var study = await _studyRepository.GetStudyById(sdSid);
             if (study == null) return Ok(new ApiResponse<StudyRelationshipDto>()
             {

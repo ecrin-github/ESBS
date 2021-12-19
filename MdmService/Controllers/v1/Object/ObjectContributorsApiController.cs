@@ -97,7 +97,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objContrib = await _dataObjectRepository.CreateObjectContributor(sdOid, objectContributorDto);
+            objectContributorDto.SdOid ??= sdOid;
+            var objContrib = await _dataObjectRepository.CreateObjectContributor(objectContributorDto);
             if (objContrib == null)
                 return Ok(new ApiResponse<ObjectContributorDto>()
                 {
@@ -117,11 +118,14 @@ namespace MdmService.Controllers.v1.Object
             });
         }
 
-        [HttpPut("data-objects/{sdOid}/contributors/{id}")]
+        [HttpPut("data-objects/{sdOid}/contributors/{id:int}")]
         [SwaggerOperation(Tags = new []{"Object contributors endpoint"})]
         public async Task<IActionResult> UpdateObjectContributor(string sdOid, int id, [FromBody] ObjectContributorDto objectContributorDto)
         {
-            var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
+            objectContributorDto.Id ??= id;
+            objectContributorDto.SdOid ??= sdOid;
+            
+            var dataObject = await _dataObjectRepository.GetObjectById(objectContributorDto.SdOid);
             if (dataObject == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,
@@ -130,7 +134,7 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objectContrib = await _dataObjectRepository.GetObjectContributor(id);
+            var objectContrib = await _dataObjectRepository.GetObjectContributor(objectContributorDto.Id);
             if (objectContrib == null) return Ok(new ApiResponse<ObjectContributorDto>()
             {
                 Total = 0,

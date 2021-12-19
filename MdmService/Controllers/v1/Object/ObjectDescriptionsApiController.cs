@@ -96,7 +96,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objDesc = await _dataObjectRepository.CreateObjectDescription(sdOid, objectDescriptionDto);
+            objectDescriptionDto.SdOid ??= sdOid;
+            var objDesc = await _dataObjectRepository.CreateObjectDescription(objectDescriptionDto);
             if (objDesc == null) return Ok(new ApiResponse<ObjectDescriptionDto>()
             {
                 Total = 0,
@@ -119,6 +120,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object descriptions endpoint"})]
         public async Task<IActionResult> UpdateObjectDescription(string sdOid, int id, [FromBody] ObjectDescriptionDto objectDescriptionDto)
         {
+            objectDescriptionDto.Id ??= id;
+            objectDescriptionDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectDescriptionDto>()
             {

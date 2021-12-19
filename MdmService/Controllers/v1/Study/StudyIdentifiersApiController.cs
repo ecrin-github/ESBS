@@ -97,7 +97,8 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var studyIdent = await _studyRepository.CreateStudyIdentifier(sdSid, studyIdentifierDto);
+            studyIdentifierDto.SdSid ??= sdSid;
+            var studyIdent = await _studyRepository.CreateStudyIdentifier(studyIdentifierDto);
             if (studyIdent == null)
                 return Ok(new ApiResponse<StudyIdentifierDto>()
                 {
@@ -121,6 +122,9 @@ namespace MdmService.Controllers.v1.Study
         [SwaggerOperation(Tags = new []{"Study identifiers endpoint"})]
         public async Task<IActionResult> UpdateStudyIdentifier(string sdSid, int id, [FromBody] StudyIdentifierDto studyIdentifierDto)
         {
+            studyIdentifierDto.Id ??= id;
+            studyIdentifierDto.SdSid ??= sdSid;
+            
             var study = await _studyRepository.GetStudyById(sdSid);
             if (study == null) return Ok(new ApiResponse<StudyIdentifierDto>()
             {

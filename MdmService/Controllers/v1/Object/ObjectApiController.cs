@@ -92,7 +92,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Data objects endpoint"})]
         public async Task<IActionResult> UpdateDataObject(string sdOid, [FromBody] DataObjectDto dataObjectDto)
         {
-            var dataObject = await _objectRepository.GetObjectById(sdOid);
+            dataObjectDto.SdOid ??= sdOid;
+            
+            var dataObject = await _objectRepository.GetObjectById(dataObjectDto.SdOid);
             if (dataObject == null) return Ok(new ApiResponse<DataObjectDto>()
             {
                 Total = 0,

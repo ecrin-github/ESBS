@@ -96,7 +96,8 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var studyFeature = await _studyRepository.CreateStudyFeature(sdSid, studyFeatureDto);
+            studyFeatureDto.SdSid ??= sdSid;
+            var studyFeature = await _studyRepository.CreateStudyFeature(studyFeatureDto);
             if (studyFeature == null)
                 return Ok(new ApiResponse<StudyFeatureDto>()
                 {
@@ -120,6 +121,9 @@ namespace MdmService.Controllers.v1.Study
         [SwaggerOperation(Tags = new []{"Study features endpoint"})]
         public async Task<IActionResult> UpdateStudyFeature(string sdSid, int id, [FromBody] StudyFeatureDto studyFeatureDto)
         {
+            studyFeatureDto.Id ??= id;
+            studyFeatureDto.SdSid ??= sdSid;
+            
             var study = await _studyRepository.GetStudyById(sdSid);
             if (study == null) return Ok(new ApiResponse<StudyFeatureDto>()
             {

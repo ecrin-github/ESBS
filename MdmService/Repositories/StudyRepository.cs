@@ -22,11 +22,6 @@ namespace MdmService.Repositories
         }
         
         
-        public IQueryable<StudyContributor> GetQueryableStudyContributors()
-        {
-            return _dbConnection.StudyContributors;
-        }
-
         public async Task<ICollection<StudyContributorDto>> GetStudyContributors(string sdSid)
         {
             var data = _dbConnection.StudyContributors.Where(p => p.SdSid == sdSid);
@@ -39,11 +34,11 @@ namespace MdmService.Repositories
             return studyContributor != null ? _dataMapper.StudyContributorDtoMapper(studyContributor) : null;
         }
 
-        public async Task<StudyContributorDto> CreateStudyContributor(string sdSid, StudyContributorDto studyContributorDto)
+        public async Task<StudyContributorDto> CreateStudyContributor(StudyContributorDto studyContributorDto)
         {
             var studyContributor = new StudyContributor
             {
-                SdSid = sdSid,
+                SdSid = studyContributorDto.SdSid,
                 CreatedOn = DateTime.Now
             };
             await _dbConnection.StudyContributors.AddAsync(studyContributor);
@@ -85,29 +80,24 @@ namespace MdmService.Repositories
             await _dbConnection.SaveChangesAsync();
             return count;
         }
-
-        public IQueryable<StudyFeature> GetQueryableStudyFeatures()
-        {
-            return _dbConnection.StudyFeatures;
-        }
-
+        
         public async Task<ICollection<StudyFeatureDto>> GetStudyFeatures(string sdSid)
         {
             var data = _dbConnection.StudyFeatures.Where(p => p.SdSid == sdSid);
             return data.Any() ? _dataMapper.StudyFeatureDtoBuilder(await data.ToArrayAsync()) : null;
         }
 
-        public async Task<StudyFeatureDto> GetStudyFeature(int id)
+        public async Task<StudyFeatureDto> GetStudyFeature(int? id)
         {
             var studyFeature = await _dbConnection.StudyFeatures.FirstOrDefaultAsync(p => p.Id == id);
             return studyFeature != null ? _dataMapper.StudyFeatureDtoMapper(studyFeature) : null;
         }
 
-        public async Task<StudyFeatureDto> CreateStudyFeature(string sdSid, StudyFeatureDto studyFeatureDto)
+        public async Task<StudyFeatureDto> CreateStudyFeature(StudyFeatureDto studyFeatureDto)
         {
             var studyFeature = new StudyFeature
             {
-                SdSid = sdSid,
+                SdSid = studyFeatureDto.SdSid,
                 FeatureTypeId = studyFeatureDto.FeatureTypeId,
                 FeatureValueId = studyFeatureDto.FeatureValueId,
                 CreatedOn = DateTime.Now
@@ -153,29 +143,24 @@ namespace MdmService.Repositories
             await _dbConnection.SaveChangesAsync();
             return count;
         }
-
-        public IQueryable<StudyIdentifier> GetQueryableStudyIdentifiers()
-        {
-            return _dbConnection.StudyIdentifiers;
-        }
-
+        
         public async Task<ICollection<StudyIdentifierDto>> GetStudyIdentifiers(string sdSid)
         {
             var data = _dbConnection.StudyIdentifiers.Where(p => p.SdSid == sdSid);
             return data.Any() ? _dataMapper.StudyIdentifierDtoBuilder(await data.ToArrayAsync()) : null;
         }
 
-        public async Task<StudyIdentifierDto> GetStudyIdentifier(int id)
+        public async Task<StudyIdentifierDto> GetStudyIdentifier(int? id)
         {
             var studyIdentifier = await _dbConnection.StudyIdentifiers.FirstOrDefaultAsync(p => p.Id == id);
             return studyIdentifier != null ? _dataMapper.StudyIdentifierDtoMapper(studyIdentifier) : null;
         }
 
-        public async Task<StudyIdentifierDto> CreateStudyIdentifier(string sdSid, StudyIdentifierDto studyIdentifierDto)
+        public async Task<StudyIdentifierDto> CreateStudyIdentifier(StudyIdentifierDto studyIdentifierDto)
         {
             var studyIdentifier = new StudyIdentifier
             {
-                SdSid = sdSid,
+                SdSid = studyIdentifierDto.SdSid,
                 CreatedOn = DateTime.Now,
                 IdentifierTypeId = studyIdentifierDto.IdentifierTypeId,
                 IdentifierValue = studyIdentifierDto.IdentifierValue,
@@ -231,29 +216,24 @@ namespace MdmService.Repositories
             await _dbConnection.SaveChangesAsync();
             return count;
         }
-
-        public IQueryable<StudyReference> GetQueryableStudyReferences()
-        {
-            return _dbConnection.StudyReferences;
-        }
-
+        
         public async Task<ICollection<StudyReferenceDto>> GetStudyReferences(string sdSid)
         {
             var data = _dbConnection.StudyReferences.Where(p => p.SdSid == sdSid);
             return data.Any() ? _dataMapper.StudyReferenceDtoBuilder(await data.ToArrayAsync()) : null;
         }
 
-        public async Task<StudyReferenceDto> GetStudyReference(int id)
+        public async Task<StudyReferenceDto> GetStudyReference(int? id)
         {
             var studyReference = await _dbConnection.StudyReferences.FirstOrDefaultAsync(p => p.Id == id);
             return studyReference != null ? _dataMapper.StudyReferenceDtoMapper(studyReference) : null;
         }
 
-        public async Task<StudyReferenceDto> CreateStudyReference(string sdSid, StudyReferenceDto studyReferenceDto)
+        public async Task<StudyReferenceDto> CreateStudyReference(StudyReferenceDto studyReferenceDto)
         {
             var studyReference = new StudyReference
             {
-                SdSid = sdSid,
+                SdSid = studyReferenceDto.SdSid,
                 CreatedOn = DateTime.Now,
                 Pmid = studyReferenceDto.Pmid,
                 Doi = studyReferenceDto.Doi,
@@ -304,28 +284,23 @@ namespace MdmService.Repositories
             return count;
         }
 
-        public IQueryable<StudyRelationship> GetQueryableStudyRelationships()
-        {
-            return _dbConnection.StudyRelationships;
-        }
-
         public async Task<ICollection<StudyRelationshipDto>> GetStudyRelationships(string sdSid)
         {
             var data = _dbConnection.StudyRelationships.Where(p => p.SdSid == sdSid);
             return data.Any() ? _dataMapper.StudyRelationshipDtoBuilder(await data.ToArrayAsync()) : null;
         }
 
-        public async Task<StudyRelationshipDto> GetStudyRelationship(int id)
+        public async Task<StudyRelationshipDto> GetStudyRelationship(int? id)
         {
             var studyRelationship = await _dbConnection.StudyRelationships.FirstOrDefaultAsync(p => p.Id == id);
             return studyRelationship != null ? _dataMapper.StudyRelationshipDtoMapper(studyRelationship) : null;
         }
 
-        public async Task<StudyRelationshipDto> CreateStudyRelationship(string sdSid, StudyRelationshipDto studyRelationshipDto)
+        public async Task<StudyRelationshipDto> CreateStudyRelationship(StudyRelationshipDto studyRelationshipDto)
         {
             var studyRelationship = new StudyRelationship
             {
-                SdSid = sdSid,
+                SdSid = studyRelationshipDto.SdSid,
                 CreatedOn = DateTime.Now,
                 RelationshipTypeId = studyRelationshipDto.RelationshipTypeId,
                 TargetSdSid = studyRelationshipDto.TargetSdSid
@@ -368,29 +343,24 @@ namespace MdmService.Repositories
             await _dbConnection.SaveChangesAsync();
             return count;
         }
-
-        public IQueryable<StudyTitle> GetQueryableStudyTitles()
-        {
-            return _dbConnection.StudyTitles;
-        }
-
+        
         public async Task<ICollection<StudyTitleDto>> GetStudyTitles(string sdSid)
         {
             var data = _dbConnection.StudyTitles.Where(p => p.SdSid == sdSid);
             return data.Any() ? _dataMapper.StudyTitleDtoBuilder(await data.ToArrayAsync()) : null;
         }
 
-        public async Task<StudyTitleDto> GetStudyTitle(int id)
+        public async Task<StudyTitleDto> GetStudyTitle(int? id)
         {
             var studyTitle = await _dbConnection.StudyTitles.FirstOrDefaultAsync(p => p.Id == id);
             return studyTitle != null ? _dataMapper.StudyTitleDtoMapper(studyTitle) : null;
         }
 
-        public async Task<StudyTitleDto> CreateStudyTitle(string sdSid, StudyTitleDto studyTitleDto)
+        public async Task<StudyTitleDto> CreateStudyTitle(StudyTitleDto studyTitleDto)
         {
             var studyTitle = new StudyTitle
             {
-                SdSid = sdSid,
+                SdSid = studyTitleDto.SdSid,
                 CreatedOn = DateTime.Now,
                 IsDefault = studyTitleDto.IsDefault,
                 LangCode = studyTitleDto.LangCode,
@@ -442,29 +412,24 @@ namespace MdmService.Repositories
             await _dbConnection.SaveChangesAsync();
             return count;
         }
-
-        public IQueryable<StudyTopic> GetQueryableStudyTopics()
-        {
-            return _dbConnection.StudyTopics;
-        }
-
+        
         public async Task<ICollection<StudyTopicDto>> GetStudyTopics(string sdSid)
         {
             var data = _dbConnection.StudyTopics.Where(p => p.SdSid == sdSid);
             return data.Any() ? _dataMapper.StudyTopicDtoBuilder(await data.ToArrayAsync()) : null;
         }
 
-        public async Task<StudyTopicDto> GetStudyTopic(int id)
+        public async Task<StudyTopicDto> GetStudyTopic(int? id)
         {
             var studyTopic = await _dbConnection.StudyTopics.FirstOrDefaultAsync(p => p.Id == id);
             return studyTopic != null ? _dataMapper.StudyTopicDtoMapper(studyTopic) : null;
         }
 
-        public async Task<StudyTopicDto> CreateStudyTopic(string sdSid, StudyTopicDto studyTopicDto)
+        public async Task<StudyTopicDto> CreateStudyTopic(StudyTopicDto studyTopicDto)
         {
             var studyTopic = new StudyTopic
             {
-                SdSid = sdSid,
+                SdSid = studyTopicDto.SdSid,
                 CreatedOn = DateTime.Now,
                 TopicTypeId = studyTopicDto.TopicTypeId,
                 MeshCoded = studyTopicDto.MeshCoded,
@@ -528,11 +493,6 @@ namespace MdmService.Repositories
 
 
         // STUDY
-        public IQueryable<Study> GetQueryableStudies()
-        {
-            return _dbConnection.Studies;
-        }
-        
         public async Task<ICollection<StudyDto>> GetAllStudies()
         {
             if (!_dbConnection.Studies.Any()) return null;
@@ -593,7 +553,8 @@ namespace MdmService.Repositories
             {
                 foreach (var stc in studyDto.StudyContributors)
                 {
-                    await CreateStudyContributor(studyId.ToString(), stc);
+                    stc.SdSid ??= studyId.ToString();
+                    await CreateStudyContributor(stc);
                 }
             }
             
@@ -601,7 +562,8 @@ namespace MdmService.Repositories
             {
                 foreach (var stf in studyDto.StudyFeatures)
                 {
-                    await CreateStudyFeature(studyId.ToString(), stf);
+                    stf.SdSid ??= studyId.ToString();
+                    await CreateStudyFeature(stf);
                 }
             }
             
@@ -609,7 +571,8 @@ namespace MdmService.Repositories
             {
                 foreach (var sti in studyDto.StudyIdentifiers)
                 {
-                    await CreateStudyIdentifier(studyId.ToString(), sti);
+                    sti.SdSid ??= studyId.ToString();
+                    await CreateStudyIdentifier(sti);
                 }
             }
             
@@ -617,7 +580,8 @@ namespace MdmService.Repositories
             {
                 foreach (var str in studyDto.StudyReferences)
                 {
-                    await CreateStudyReference(studyId.ToString(), str);
+                    str.SdSid ??= studyId.ToString();
+                    await CreateStudyReference(str);
                 }
             }
             
@@ -625,7 +589,8 @@ namespace MdmService.Repositories
             {
                 foreach (var str in studyDto.StudyRelationships)
                 {
-                    await CreateStudyRelationship(studyId.ToString(), str);
+                    str.SdSid ??= studyId.ToString();
+                    await CreateStudyRelationship(str);
                 }
             }
             
@@ -633,7 +598,8 @@ namespace MdmService.Repositories
             {
                 foreach (var stt in studyDto.StudyTitles)
                 {
-                    await CreateStudyTitle(studyId.ToString(), stt);
+                    stt.SdSid ??= studyId.ToString();
+                    await CreateStudyTitle(stt);
                 }
             }
             
@@ -641,7 +607,8 @@ namespace MdmService.Repositories
             {
                 foreach (var stt in studyDto.StudyTopics)
                 {
-                    await CreateStudyTopic(studyId.ToString(), stt);
+                    stt.SdSid ??= studyId.ToString();
+                    await CreateStudyTopic(stt);
                 }
             }
             
@@ -674,7 +641,8 @@ namespace MdmService.Repositories
                 {
                     if (stf.Id == null)
                     {
-                        await CreateStudyFeature(stf.SdSid, stf);
+                        stf.SdSid ??= studyDto.SdSid;
+                        await CreateStudyFeature(stf);
                     }
                     else
                     {
@@ -689,7 +657,8 @@ namespace MdmService.Repositories
                 {
                     if (sti.Id == null)
                     {
-                        await CreateStudyIdentifier(sti.SdSid, sti);
+                        sti.SdSid ??= studyDto.SdSid;
+                        await CreateStudyIdentifier(sti);
                     }
                     else
                     {
@@ -704,7 +673,8 @@ namespace MdmService.Repositories
                 {
                     if (str.Id == null)
                     {
-                        await CreateStudyReference(str.SdSid, str);
+                        str.SdSid ??= studyDto.SdSid;
+                        await CreateStudyReference(str);
                     }
                     else
                     {
@@ -719,7 +689,8 @@ namespace MdmService.Repositories
                 {
                     if (str.Id == null)
                     {
-                        await CreateStudyRelationship(str.SdSid, str);
+                        str.SdSid ??= studyDto.SdSid;
+                        await CreateStudyRelationship(str);
                     }
                     else
                     {
@@ -734,7 +705,8 @@ namespace MdmService.Repositories
                 {
                     if (stt.Id == null)
                     {
-                        await CreateStudyTitle(stt.SdSid, stt);
+                        stt.SdSid ??= studyDto.SdSid;
+                        await CreateStudyTitle(stt);
                     }
                     else
                     {
@@ -749,7 +721,8 @@ namespace MdmService.Repositories
                 {
                     if (stt.Id == null)
                     {
-                        await CreateStudyTopic(stt.SdSid, stt);
+                        stt.SdSid ??= studyDto.SdSid;
+                        await CreateStudyTopic(stt);
                     }
                     else
                     {
@@ -851,14 +824,14 @@ namespace MdmService.Repositories
             if (dbStudy == null) return null;
             
             dbStudy.DisplayTitle = studyData.DisplayTitle;
-            dbStudy.TitleLangCode = studyData.TitleLangCode; // ?
+            dbStudy.TitleLangCode = studyData.TitleLangCode;
             dbStudy.BriefDescription = studyData.BriefDescription;
             dbStudy.DataSharingStatement = studyData.DataSharingStatement;
-            dbStudy.StudyStartYear = studyData.StudyStartYear; // ?
-            dbStudy.StudyStartMonth = studyData.StudyStartMonth; // ?
+            dbStudy.StudyStartYear = studyData.StudyStartYear;
+            dbStudy.StudyStartMonth = studyData.StudyStartMonth;
             dbStudy.StudyTypeId = studyData.StudyTypeId;
             dbStudy.StudyStatusId = studyData.StudyStatusId;
-            dbStudy.StudyEnrolment = studyData.StudyEnrolment; // ?
+            dbStudy.StudyEnrolment = studyData.StudyEnrolment;
             dbStudy.StudyGenderEligId = studyData.StudyGenderEligId;
             dbStudy.MinAge = studyData.MinAge;
             dbStudy.MinAgeUnitsId = studyData.MinAgeUnitsId;

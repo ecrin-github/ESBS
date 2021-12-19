@@ -98,7 +98,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objRel = await _dataObjectRepository.CreateObjectRelationship(sdOid, objectRelationshipDto);
+            objectRelationshipDto.SdOid ??= sdOid;
+            var objRel = await _dataObjectRepository.CreateObjectRelationship(objectRelationshipDto);
             if (objRel == null)
                 return Ok(new ApiResponse<ObjectRelationshipDto>()
                 {
@@ -122,6 +123,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object relationships endpoint"})]
         public async Task<IActionResult> UpdateObjectRelationship(string sdOid, int id, [FromBody] ObjectRelationshipDto objectRelationshipDto)
         {
+            objectRelationshipDto.Id ??= id;
+            objectRelationshipDto.SdOid ??= sdOid;
+            
             var dataObject = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObject == null) return Ok(new ApiResponse<ObjectRelationshipDto>()
             {

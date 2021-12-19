@@ -98,7 +98,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objInstance = await _dataObjectRepository.CreateObjectInstance(sdOid, objectInstanceDto);
+            objectInstanceDto.SdOid ??= sdOid;
+            var objInstance = await _dataObjectRepository.CreateObjectInstance(objectInstanceDto);
             if (objInstance == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {
                 Total = 0,
@@ -121,6 +122,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object instances endpoint"})]
         public async Task<IActionResult> UpdateObjectInstance(string sdOid, int id, [FromBody] ObjectInstanceDto objectInstanceDto)
         {
+            objectInstanceDto.Id ??= id;
+            objectInstanceDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectInstanceDto>()
             {

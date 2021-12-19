@@ -98,7 +98,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objTopic = await _dataObjectRepository.CreateObjectTopic(sdOid, objectTopicDto);
+            objectTopicDto.SdOid ??= sdOid;
+            var objTopic = await _dataObjectRepository.CreateObjectTopic(objectTopicDto);
             if (objTopic == null) return Ok(new ApiResponse<ObjectTopicDto>()
             {
                 Total = 0,
@@ -121,6 +122,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object topics endpoint"})]
         public async Task<IActionResult> UpdateObjectTopic(string sdOid, int id, [FromBody] ObjectTopicDto objectTopicDto)
         {
+            objectTopicDto.Id ??= id;
+            objectTopicDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectTopicDto>()
             {

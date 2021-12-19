@@ -97,7 +97,8 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var studyRef = await _studyRepository.CreateStudyReference(sdSid, studyReferenceDto);
+            studyReferenceDto.SdSid ??= sdSid;
+            var studyRef = await _studyRepository.CreateStudyReference(studyReferenceDto);
             if (studyRef == null)
                 return Ok(new ApiResponse<StudyReferenceDto>()
                 {
@@ -121,6 +122,9 @@ namespace MdmService.Controllers.v1.Study
         [SwaggerOperation(Tags = new []{"Study references endpoint"})]
         public async Task<IActionResult> UpdateStudyReference(string sdSid, int id, [FromBody] StudyReferenceDto studyReferenceDto)
         {
+            studyReferenceDto.Id ??= id;
+            studyReferenceDto.SdSid ??= sdSid;
+            
             var study = await _studyRepository.GetStudyById(sdSid);
             if (study == null) return Ok(new ApiResponse<StudyReferenceDto>()
             {

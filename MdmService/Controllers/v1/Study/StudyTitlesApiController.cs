@@ -95,7 +95,8 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var studyTitle = await _studyRepository.CreateStudyTitle(sdSid, studyTitleDto);
+            studyTitleDto.SdSid ??= sdSid;
+            var studyTitle = await _studyRepository.CreateStudyTitle(studyTitleDto);
             if (studyTitle == null) return Ok(new ApiResponse<StudyTitleDto>()
             {
                 Total = 0,
@@ -118,6 +119,9 @@ namespace MdmService.Controllers.v1.Study
         [SwaggerOperation(Tags = new []{"Study titles endpoint"})]
         public async Task<IActionResult> UpdateStudyTitle(string sdSid, int id, [FromBody] StudyTitleDto studyTitleDto)
         {
+            studyTitleDto.Id ??= id;
+            studyTitleDto.SdSid ??= sdSid;
+            
             var study = await _studyRepository.GetStudyById(sdSid);
             if (study == null) return Ok(new ApiResponse<StudyTitleDto>()
             {

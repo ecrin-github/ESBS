@@ -32,7 +32,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Contracts\Requests" />
       <Folder Include="DTO" />
       <Folder Include="HttpHandlers" />
       <Folder Include="Migrations" />

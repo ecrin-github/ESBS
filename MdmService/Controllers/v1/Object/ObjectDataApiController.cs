@@ -114,6 +114,8 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object data endpoint"})]
         public async Task<IActionResult> UpdateObjectData(string sdOid, [FromBody] DataObjectDataDto dataObjectDataDto)
         {
+            dataObjectDataDto.SdOid ??= sdOid;
+            
             var dataObject = await _dataObjectRepository.GetDataObjectData(sdOid);
             if (dataObject == null) return Ok(new ApiResponse<DataObjectDataDto>()
             {

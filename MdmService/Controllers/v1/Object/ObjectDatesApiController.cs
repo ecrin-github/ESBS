@@ -95,8 +95,9 @@ namespace MdmService.Controllers.v1.Object
                 Messages = new List<string>() { "No data objects have been found." },
                 Data = null
             });
-
-            var objDate = await _dataObjectRepository.CreateObjectDate(sdOid, objectDateDto);
+            
+            objectDateDto.SdOid ??= sdOid;
+            var objDate = await _dataObjectRepository.CreateObjectDate(objectDateDto);
             if (objDate == null)
                 return Ok(new ApiResponse<ObjectDateDto>()
                 {
@@ -120,6 +121,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object dates endpoint"})]
         public async Task<IActionResult> UpdateObjectDate(string sdOid, int id, [FromBody] ObjectDateDto objectDateDto)
         {
+            objectDateDto.Id ??= id;
+            objectDateDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectDateDto>()
             {

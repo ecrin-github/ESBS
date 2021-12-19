@@ -97,7 +97,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objRight = await _dataObjectRepository.CreateObjectRight(sdOid, objectRightDto);
+            objectRightDto.SdOid ??= sdOid;
+            var objRight = await _dataObjectRepository.CreateObjectRight(objectRightDto);
             if (objRight == null) return Ok(new ApiResponse<ObjectRightDto>()
             {
                 Total = 0,
@@ -120,6 +121,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object rights endpoint"})]
         public async Task<IActionResult> UpdateObjectRight(string sdOid, int id, [FromBody] ObjectRightDto objectRightDto)
         {
+            objectRightDto.Id ??= id;
+            objectRightDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectRightDto>()
             {

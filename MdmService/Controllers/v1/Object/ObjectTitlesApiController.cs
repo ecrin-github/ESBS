@@ -98,7 +98,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objTitle = await _dataObjectRepository.CreateObjectTitle(sdOid, objectTitleDto);
+            objectTitleDto.SdOid ??= sdOid;
+            var objTitle = await _dataObjectRepository.CreateObjectTitle(objectTitleDto);
             if (objTitle == null)
                 return Ok(new ApiResponse<ObjectTitleDto>()
                 {
@@ -122,6 +123,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object titles endpoint"})]
         public async Task<IActionResult> UpdateObjectTitle(string sdOid, int id, [FromBody] ObjectTitleDto objectTitleDto)
         {
+            objectTitleDto.Id ??= id;
+            objectTitleDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectTitleDto>()
             {

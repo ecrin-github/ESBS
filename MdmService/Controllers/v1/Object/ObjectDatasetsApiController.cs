@@ -45,10 +45,10 @@ namespace MdmService.Controllers.v1.Object
             
             return Ok(new ApiResponse<ObjectDatasetDto>()
             {
-                Total = objDatasets.Count,
+                Total = 1,
                 StatusCode = Ok().StatusCode,
                 Messages = null,
-                Data = objDatasets
+                Data = new List<ObjectDatasetDto>(){objDatasets}
             });
         }
         
@@ -99,8 +99,9 @@ namespace MdmService.Controllers.v1.Object
                 Messages = new List<string>() { "No data objects have been found." },
                 Data = null
             });
-
-            var objDataset = await _dataObjectRepository.CreateObjectDataset(sdOid, objectDatasetDto);
+            
+            objectDatasetDto.SdOid ??= sdOid;
+            var objDataset = await _dataObjectRepository.CreateObjectDataset(objectDatasetDto);
             if (objDataset == null)
                 return Ok(new ApiResponse<ObjectDatasetDto>()
                 {
@@ -124,6 +125,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object datasets endpoint"})]
         public async Task<IActionResult> UpdateObjectDataset(string sdOid, int id, [FromBody] ObjectDatasetDto objectDatasetDto)
         {
+            objectDatasetDto.Id ??= id;
+            objectDatasetDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectDatasetDto>()
             {

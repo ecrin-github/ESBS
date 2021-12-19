@@ -91,6 +91,8 @@ namespace MdmService.Controllers.v1.Study
         [SwaggerOperation(Tags = new []{"Study endpoint"})]
         public async Task<IActionResult> UpdateStudy(string sdSid, [FromBody] StudyDto studyDto)
         {
+            studyDto.SdSid ??= sdSid;
+            
             var study = await _studyRepository.GetStudyById(sdSid);
             if (study == null)
                 return Ok(new ApiResponse<StudyDto>()

@@ -98,7 +98,8 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var objIdent = await _dataObjectRepository.CreateObjectIdentifier(sdOid, objectIdentifierDto);
+            objectIdentifierDto.SdOid ??= sdOid;
+            var objIdent = await _dataObjectRepository.CreateObjectIdentifier(objectIdentifierDto);
             if (objIdent == null) return Ok(new ApiResponse<ObjectIdentifierDto>()
             {
                 Total = 0,
@@ -121,6 +122,9 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object identifiers endpoint"})]
         public async Task<IActionResult> UpdateObjectIdentifier(string sdOid, int id, [FromBody] ObjectIdentifierDto objectIdentifierDto)
         {
+            objectIdentifierDto.Id ??= id;
+            objectIdentifierDto.SdOid ??= sdOid;
+            
             var dataObj = await _dataObjectRepository.GetObjectById(sdOid);
             if (dataObj == null) return Ok(new ApiResponse<ObjectIdentifierDto>()
             {

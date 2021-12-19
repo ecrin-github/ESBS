@@ -94,7 +94,8 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var studyContrib = await _studyRepository.CreateStudyContributor(sdSid, studyContributorDto);
+            studyContributorDto.SdSid ??= sdSid;
+            var studyContrib = await _studyRepository.CreateStudyContributor(studyContributorDto);
             if (studyContrib == null)
                 return Ok(new ApiResponse<StudyContributorDto>()
                 {
@@ -115,10 +116,13 @@ namespace MdmService.Controllers.v1.Study
             });
         }
 
-        [HttpPut("studies/{sdSid}/contributors")]
+        [HttpPut("studies/{sdSid}/contributors/{id:int}")]
         [SwaggerOperation(Tags = new []{"Study contributors endpoint"})]
-        public async Task<IActionResult> UpdateStudyContributor(string sdSid, [FromBody] StudyContributorDto studyContributorDto)
+        public async Task<IActionResult> UpdateStudyContributor(string sdSid, int id, [FromBody] StudyContributorDto studyContributorDto)
         {
+            studyContributorDto.Id ??= id;
+            studyContributorDto.SdSid ??= sdSid;
+            
             var study = await _studyRepository.GetStudyById(sdSid);
             if (study == null)
                 return Ok(new ApiResponse<StudyContributorDto>()
