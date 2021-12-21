@@ -15,7 +15,7 @@ namespace MdmService.DTO.Object
         
         public string? LangCode { get; set; }
         
-        public int? LangUsageId { get; set; }
+        public int LangUsageId { get; set; }
         
         public bool? IsDefault { get; set; }
         

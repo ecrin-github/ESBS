@@ -25,7 +25,7 @@ namespace MdmService.Models.Object
         public string? LangCode { get; set; }
         
         [Column("lang_usage_id")]
-        public int? LangUsageId { get; set; }
+        public int LangUsageId { get; set; }
         
         [Column("is_default")]
         public bool? IsDefault { get; set; }
