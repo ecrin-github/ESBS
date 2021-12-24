@@ -30,17 +30,21 @@ namespace MdmService.Controllers.v1.Filtering
         public async Task<IActionResult> PaginateStudies(PaginationRequest paginationRequest)
         {
             var data = await _studyRepository.PaginateStudies(paginationRequest);
-            if (data is {Count: <= 0}) return Ok(new ApiResponse<StudyDto>
+            if (data.Total == 0) return Ok(new ApiResponse<StudyDto>
             {
                 Total = 0,
                 Data = null,
+                Page = paginationRequest.Page,
+                Size = paginationRequest.Size,
                 StatusCode = NotFound().StatusCode,
                 Messages = new List<string>() {"No studies have been found."}
             });
             return Ok(new ApiResponse<StudyDto>
             {
-                Total = data.Count,
-                Data = data,
+                Total = data.Total,
+                Data = data.Data,
+                Page = paginationRequest.Page,
+                Size = paginationRequest.Size,
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });
@@ -51,17 +55,21 @@ namespace MdmService.Controllers.v1.Filtering
         public async Task<IActionResult> PaginateObjects(PaginationRequest paginationRequest)
         {
             var data = await _objectRepository.PaginateDataObjects(paginationRequest);
-            if (data is {Count: <= 0}) return Ok(new ApiResponse<DataObjectDto>
+            if (data.Total == 0) return Ok(new ApiResponse<DataObjectDto>
             {
                 Total = 0,
                 Data = null,
+                Page = paginationRequest.Page,
+                Size = paginationRequest.Size,
                 StatusCode = NotFound().StatusCode,
                 Messages = new List<string>() {"No data objects have been found."}
             });
             return Ok(new ApiResponse<DataObjectDto>
             {
-                Total = data.Count,
-                Data = data,
+                Total = data.Total,
+                Data = data.Data,
+                Page = paginationRequest.Page,
+                Size = paginationRequest.Size,
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });
@@ -72,17 +80,21 @@ namespace MdmService.Controllers.v1.Filtering
         public async Task<IActionResult> FilterStudiesByTitle(FilteringByTitleRequest filteringByTitleRequest)
         {
             var data = await _studyRepository.FilterStudiesByTitle(filteringByTitleRequest);
-            if (data is {Count: <= 0}) return Ok(new ApiResponse<StudyDto>
+            if (data.Total == 0) return Ok(new ApiResponse<StudyDto>
             {
                 Total = 0,
                 Data = null,
+                Page = filteringByTitleRequest.Page,
+                Size = filteringByTitleRequest.Size,
                 StatusCode = NotFound().StatusCode,
                 Messages = new List<string>() {"No studies have been found."}
             });
             return Ok(new ApiResponse<StudyDto>
             {
-                Total = data.Count,
-                Data = data,
+                Total = data.Total,
+                Data = data.Data,
+                Page = filteringByTitleRequest.Page,
+                Size = filteringByTitleRequest.Size,
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });
@@ -93,17 +105,21 @@ namespace MdmService.Controllers.v1.Filtering
         public async Task<IActionResult> FilterObjectsByTitle(FilteringByTitleRequest filteringByTitleRequest)
         {
             var data = await _objectRepository.FilterDataObjectsByTitle(filteringByTitleRequest);
-            if (data is {Count: <= 0}) return Ok(new ApiResponse<DataObjectDto>
+            if (data.Total == 0) return Ok(new ApiResponse<DataObjectDto>
             {
                 Total = 0,
                 Data = null,
+                Page = filteringByTitleRequest.Page,
+                Size = filteringByTitleRequest.Size,
                 StatusCode = NotFound().StatusCode,
                 Messages = new List<string>() {"No data objects have been found."}
             });
             return Ok(new ApiResponse<DataObjectDto>
             {
-                Total = data.Count,
-                Data = data,
+                Total = data.Total,
+                Data = data.Data,
+                Page = filteringByTitleRequest.Page,
+                Size = filteringByTitleRequest.Size,
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MdmService.Contracts.Requests.Filtering;
+using MdmService.Contracts.Responses;
 using MdmService.DTO.Object;
 using MdmService.Interfaces;
 using MdmService.Models.DbConnection;
@@ -1234,16 +1235,17 @@ namespace MdmService.Repositories
             return skip;
         }
 
-        public async Task<ICollection<DataObjectDto>> PaginateDataObjects(PaginationRequest paginationRequest)
+        public async Task<PaginationResponse<DataObjectDto>> PaginateDataObjects(PaginationRequest paginationRequest)
         {
             var dataObjects = new List<DataObjectDto>();
 
             var skip = CalculateSkip(paginationRequest.Page, paginationRequest.Size);
             
-            var data = await _dbConnection.DataObjects
+            var query = _dbConnection.DataObjects
                 .AsNoTracking()
-                .OrderBy(arg => arg.Id)
-                .Skip(skip).Take(paginationRequest.Size).ToListAsync();
+                .OrderBy(arg => arg.Id);
+            
+            var data = await query.Skip(skip).Take(paginationRequest.Size).ToListAsync();
                         
             if (data is { Count: > 0 })
             {
@@ -1253,22 +1255,32 @@ namespace MdmService.Repositories
                 }
             }
 
-            return dataObjects;
+            var total = await query.CountAsync();
+
+            return new PaginationResponse<DataObjectDto>
+            {
+                Total = total,
+                Data = dataObjects
+            };
         }
 
-        public async Task<ICollection<DataObjectDto>> FilterDataObjectsByTitle(FilteringByTitleRequest filteringByTitleRequest)
+        public async Task<PaginationResponse<DataObjectDto>> FilterDataObjectsByTitle(FilteringByTitleRequest filteringByTitleRequest)
         {
             var dataObjects = new List<DataObjectDto>();
 
             var skip = CalculateSkip(filteringByTitleRequest.Page, filteringByTitleRequest.Size);
             
-            var data = await _dbConnection.DataObjects
+            var query = _dbConnection.DataObjects
                 .AsNoTracking()
                 .Where(p => p.DisplayTitle.ToLower().Contains(filteringByTitleRequest.Title.ToLower()))
-                .OrderBy(arg => arg.Id)
+                .OrderBy(arg => arg.Id);
+
+            var data = await query
                 .Skip(skip)
                 .Take(filteringByTitleRequest.Size)
                 .ToListAsync();
+
+            var total = await query.CountAsync();
                         
             if (data is { Count: > 0 })
             {
@@ -1278,7 +1290,11 @@ namespace MdmService.Repositories
                 }
             }
 
-            return dataObjects;
+            return new PaginationResponse<DataObjectDto>
+            {
+                Total = total,
+                Data = dataObjects
+            };
         }
 
         public async Task<int> GetTotalDataObjects()

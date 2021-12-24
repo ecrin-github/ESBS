@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MdmService.Contracts.Requests.Filtering;
+using MdmService.Contracts.Responses;
 using MdmService.DTO.Study;
 using MdmService.Interfaces;
 using MdmService.Models.DbConnection;
@@ -888,17 +889,23 @@ namespace MdmService.Repositories
             return skip;
         }
 
-        public async Task<ICollection<StudyDto>> PaginateStudies(PaginationRequest paginationRequest)
+        public async Task<PaginationResponse<StudyDto>> PaginateStudies(PaginationRequest paginationRequest)
         {
             var studies = new List<StudyDto>();
 
             var skip = CalculateSkip(paginationRequest.Page, paginationRequest.Size);
             
-            var data = await _dbConnection.Studies
+            var query = _dbConnection.Studies
                 .AsNoTracking()
-                .OrderBy(arg => arg.Id)
-                .Skip(skip).Take(paginationRequest.Size).ToListAsync();
+                .OrderBy(arg => arg.Id);
                         
+            var data = await query
+                .Skip(skip)
+                .Take(paginationRequest.Size)
+                .ToListAsync();
+
+            var total = await query.CountAsync();
+
             if (data is { Count: > 0 })
             {
                 foreach (var study in data)
@@ -907,22 +914,30 @@ namespace MdmService.Repositories
                 }
             }
 
-            return studies;
+            return new PaginationResponse<StudyDto>
+            {
+                Total = total,
+                Data = studies
+            };
         }
 
-        public async Task<ICollection<StudyDto>> FilterStudiesByTitle(FilteringByTitleRequest filteringByTitleRequest)
+        public async Task<PaginationResponse<StudyDto>> FilterStudiesByTitle(FilteringByTitleRequest filteringByTitleRequest)
         {
             var studies = new List<StudyDto>();
 
             var skip = CalculateSkip(filteringByTitleRequest.Page, filteringByTitleRequest.Size);
             
-            var data = await _dbConnection.Studies
+            var query = _dbConnection.Studies
                 .AsNoTracking()
                 .Where(p => p.DisplayTitle.ToLower().Contains(filteringByTitleRequest.Title.ToLower()))
-                .OrderBy(arg => arg.Id)
+                .OrderBy(arg => arg.Id);
+                
+            var data = await query
                 .Skip(skip)
                 .Take(filteringByTitleRequest.Size)
                 .ToListAsync();
+
+            var total = await query.CountAsync();
                         
             if (data is { Count: > 0 })
             {
@@ -932,7 +947,11 @@ namespace MdmService.Repositories
                 }
             }
 
-            return studies;
+            return new PaginationResponse<StudyDto>
+            {
+                Total = total,
+                Data = studies
+            };
         }
 
         public async Task<int> GetTotalStudies()

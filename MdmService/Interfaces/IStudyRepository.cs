@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MdmService.Contracts.Requests.Filtering;
+using MdmService.Contracts.Responses;
 using MdmService.DTO.Study;
 
 namespace MdmService.Interfaces
@@ -78,8 +79,8 @@ namespace MdmService.Interfaces
         Task<int> DeleteAllStudyTopics(string sdSid);
 
         // Extensions
-        Task<ICollection<StudyDto>> PaginateStudies(PaginationRequest paginationRequest);
-        Task<ICollection<StudyDto>> FilterStudiesByTitle(FilteringByTitleRequest filteringByTitleRequest);
+        Task<PaginationResponse<StudyDto>> PaginateStudies(PaginationRequest paginationRequest);
+        Task<PaginationResponse<StudyDto>> FilterStudiesByTitle(FilteringByTitleRequest filteringByTitleRequest);
         Task<int> GetTotalStudies();
     }
 }
