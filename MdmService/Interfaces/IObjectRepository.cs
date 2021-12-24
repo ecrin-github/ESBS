@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MdmService.Contracts.Requests.Filtering;
 using MdmService.DTO.Object;
 
 namespace MdmService.Interfaces
@@ -100,5 +101,10 @@ namespace MdmService.Interfaces
         Task<ObjectTopicDto> UpdateObjectTopic(ObjectTopicDto objectTopicDto);
         Task<int> DeleteObjectTopic(int id);
         Task<int> DeleteAllObjectTopics(string sdOid);
+
+        // Extensions
+        Task<ICollection<DataObjectDto>> PaginateDataObjects(PaginationRequest paginationRequest);
+        Task<ICollection<DataObjectDto>> FilterDataObjectsByTitle(FilteringByTitleRequest filteringByTitleRequest);
+        Task<int> GetTotalDataObjects();
     }
 }

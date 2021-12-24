@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MdmService.Contracts.Requests.Filtering;
 using MdmService.DTO.Object;
 using MdmService.Interfaces;
 using MdmService.Models.DbConnection;
@@ -1220,6 +1221,69 @@ namespace MdmService.Repositories
                 ObjectTitles = await GetObjectTitles(dataObject.SdOid),
                 ObjectTopics = await GetObjectTopics(dataObject.SdOid)
             };
+        }
+
+        private static int CalculateSkip(int page, int size)
+        {
+            var skip = 0;
+            if (page > 1)
+            {
+                skip = (page - 1) * size;
+            }
+
+            return skip;
+        }
+
+        public async Task<ICollection<DataObjectDto>> PaginateDataObjects(PaginationRequest paginationRequest)
+        {
+            var dataObjects = new List<DataObjectDto>();
+
+            var skip = CalculateSkip(paginationRequest.Page, paginationRequest.Size);
+            
+            var data = await _dbConnection.DataObjects
+                .AsNoTracking()
+                .OrderBy(arg => arg.Id)
+                .Skip(skip).Take(paginationRequest.Size).ToListAsync();
+                        
+            if (data is { Count: > 0 })
+            {
+                foreach (var dataObject in data)
+                {
+                    dataObjects.Add(await DataObjectBuilder(dataObject));
+                }
+            }
+
+            return dataObjects;
+        }
+
+        public async Task<ICollection<DataObjectDto>> FilterDataObjectsByTitle(FilteringByTitleRequest filteringByTitleRequest)
+        {
+            var dataObjects = new List<DataObjectDto>();
+
+            var skip = CalculateSkip(filteringByTitleRequest.Page, filteringByTitleRequest.Size);
+            
+            var data = await _dbConnection.DataObjects
+                .AsNoTracking()
+                .Where(p => p.DisplayTitle.ToLower().Contains(filteringByTitleRequest.Title.ToLower()))
+                .OrderBy(arg => arg.Id)
+                .Skip(skip)
+                .Take(filteringByTitleRequest.Size)
+                .ToListAsync();
+                        
+            if (data is { Count: > 0 })
+            {
+                foreach (var dataObject in data)
+                {
+                    dataObjects.Add(await DataObjectBuilder(dataObject));
+                }
+            }
+
+            return dataObjects;
+        }
+
+        public async Task<int> GetTotalDataObjects()
+        {
+            return await _dbConnection.DataObjects.AsNoTracking().CountAsync();
         }
     }
 }

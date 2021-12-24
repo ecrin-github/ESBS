@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MdmService.Contracts.Requests.Filtering;
 using MdmService.DTO.Study;
 using MdmService.Interfaces;
 using MdmService.Models.DbConnection;
@@ -20,7 +21,6 @@ namespace MdmService.Repositories
             _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
             _dataMapper = dataMapper ?? throw new ArgumentNullException(nameof(dataMapper));
         }
-        
         
         public async Task<ICollection<StudyContributorDto>> GetStudyContributors(string sdSid)
         {
@@ -875,6 +875,69 @@ namespace MdmService.Repositories
                 StudyTitles = await GetStudyTitles(study.SdSid),
                 StudyTopics = await GetStudyTopics(study.SdSid)
             };
+        }
+
+        private static int CalculateSkip(int page, int size)
+        {
+            var skip = 0;
+            if (page > 1)
+            {
+                skip = (page - 1) * size;
+            }
+
+            return skip;
+        }
+
+        public async Task<ICollection<StudyDto>> PaginateStudies(PaginationRequest paginationRequest)
+        {
+            var studies = new List<StudyDto>();
+
+            var skip = CalculateSkip(paginationRequest.Page, paginationRequest.Size);
+            
+            var data = await _dbConnection.Studies
+                .AsNoTracking()
+                .OrderBy(arg => arg.Id)
+                .Skip(skip).Take(paginationRequest.Size).ToListAsync();
+                        
+            if (data is { Count: > 0 })
+            {
+                foreach (var study in data)
+                {
+                    studies.Add(await StudyBuilder(study));
+                }
+            }
+
+            return studies;
+        }
+
+        public async Task<ICollection<StudyDto>> FilterStudiesByTitle(FilteringByTitleRequest filteringByTitleRequest)
+        {
+            var studies = new List<StudyDto>();
+
+            var skip = CalculateSkip(filteringByTitleRequest.Page, filteringByTitleRequest.Size);
+            
+            var data = await _dbConnection.Studies
+                .AsNoTracking()
+                .Where(p => p.DisplayTitle.ToLower().Contains(filteringByTitleRequest.Title.ToLower()))
+                .OrderBy(arg => arg.Id)
+                .Skip(skip)
+                .Take(filteringByTitleRequest.Size)
+                .ToListAsync();
+                        
+            if (data is { Count: > 0 })
+            {
+                foreach (var study in data)
+                {
+                    studies.Add(await StudyBuilder(study));
+                }
+            }
+
+            return studies;
+        }
+
+        public async Task<int> GetTotalStudies()
+        {
+            return await _dbConnection.Studies.AsNoTracking().CountAsync();
         }
     }
 }
