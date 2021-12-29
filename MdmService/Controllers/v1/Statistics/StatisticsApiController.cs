@@ -20,7 +20,7 @@ namespace MdmService.Controllers.v1.Statistics
             _studyRepository = studyRepository ?? throw new ArgumentNullException(nameof(studyRepository));
         }
 
-        [HttpGet("statistics/studies/total")]
+        [HttpGet("statistics/studies/statistics")]
         [SwaggerOperation(Tags = new []{"Statistics"})]
         public async Task<IActionResult> GetTotalStudies()
         {
@@ -30,7 +30,7 @@ namespace MdmService.Controllers.v1.Statistics
             });    
         }
 
-        [HttpGet("statistics/data-objects/total")]
+        [HttpGet("statistics/data-objects/statistics")]
         [SwaggerOperation(Tags = new []{"Statistics"})]
         public async Task<IActionResult> GetTotalDataObjects()
         {

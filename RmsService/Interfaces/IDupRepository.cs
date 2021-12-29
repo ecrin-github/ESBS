@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RmsService.Contracts.Requests.Filtering;
+using RmsService.Contracts.Responses;
 using RmsService.DTO;
 using RmsService.Models;
 
@@ -47,5 +49,12 @@ namespace RmsService.Interfaces
         Task<DuaDto> UpdateDua(DuaDto duaDto);
         Task<int> DeleteDua(int id);
         Task<int> DeleteAllDua(int dupId);
+
+
+        // Statistics
+        Task<PaginationResponse<DupDto>> PaginateDup(PaginationRequest paginationRequest);
+        Task<PaginationResponse<DupDto>> FilterDupByTitle(FilteringByTitleRequest filteringByTitleRequest);
+        Task<int> GetTotalDup();
+        Task<int> GetUncompletedDup();
     }
 }

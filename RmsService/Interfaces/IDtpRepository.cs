@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RmsService.Contracts.Requests.Filtering;
+using RmsService.Contracts.Responses;
 using RmsService.DTO;
 using RmsService.Models;
 
@@ -46,5 +48,12 @@ namespace RmsService.Interfaces
         Task<DtpStudyDto> UpdateDtpStudy(DtpStudyDto dtpStudyDto);
         Task<int> DeleteDtpStudy(int id);
         Task<int> DeleteAllDtpStudies(int dtpId);
+
+
+        // Statistics
+        Task<PaginationResponse<DtpDto>> PaginateDtp(PaginationRequest paginationRequest);
+        Task<PaginationResponse<DtpDto>> FilterDtpByTitle(FilteringByTitleRequest filteringByTitleRequest);
+        Task<int> GetTotalDtp();
+        Task<int> GetUncompletedDtp();
     }
 }

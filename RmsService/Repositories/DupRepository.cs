@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using RmsService.Contracts.Requests.Filtering;
+using RmsService.Contracts.Responses;
 using RmsService.DTO;
 using RmsService.Interfaces;
 using RmsService.Models;
@@ -397,6 +399,94 @@ namespace RmsService.Repositories
             await _dbConnection.SaveChangesAsync();
 
             return 1;
+        }
+
+
+
+        private static int CalculateSkip(int page, int size)
+        {
+            var skip = 0;
+            if (page > 1)
+            {
+                skip = (page - 1) * size;
+            }
+
+            return skip;
+        }
+
+        public async Task<PaginationResponse<DupDto>> PaginateDup(PaginationRequest paginationRequest)
+        {
+            var dup = new List<DupDto>();
+
+            var skip = CalculateSkip(paginationRequest.Page, paginationRequest.Size);
+
+            var query = _dbConnection.Dups
+                .AsNoTracking()
+                .OrderBy(arg => arg.Id);
+
+            var data = await query
+                .Skip(skip)
+                .Take(paginationRequest.Size)
+                .ToListAsync();
+            
+            var total = await query.CountAsync();
+
+            if (data is {Count: > 0})
+            {
+                foreach (var dupRecord in data)
+                {
+                    dup.Add(_dataMapper.DupDtoMapper(dupRecord));
+                }
+            }
+
+            return new PaginationResponse<DupDto>
+            {
+                Total = total,
+                Data = dup
+            };
+        }
+
+        public async Task<PaginationResponse<DupDto>> FilterDupByTitle(FilteringByTitleRequest filteringByTitleRequest)
+        {
+            var dup = new List<DupDto>();
+
+            var skip = CalculateSkip(filteringByTitleRequest.Page, filteringByTitleRequest.Size);
+
+            var query = _dbConnection.Dups
+                .AsNoTracking()
+                .Where(p => p.DisplayName.ToLower().Contains(filteringByTitleRequest.Title.ToLower()))
+                .OrderBy(arg => arg.Id);
+
+            var data = await query
+                .Skip(skip)
+                .Take(filteringByTitleRequest.Size)
+                .ToListAsync();
+            
+            var total = await query.CountAsync();
+
+            if (data is {Count: > 0})
+            {
+                foreach (var dupRecord in data)
+                {
+                    dup.Add(_dataMapper.DupDtoMapper(dupRecord));
+                }
+            }
+
+            return new PaginationResponse<DupDto>
+            {
+                Total = total,
+                Data = dup
+            };
+        }
+
+        public async Task<int> GetTotalDup()
+        {
+            return await _dbConnection.Dups.AsNoTracking().CountAsync();
+        }
+
+        public async Task<int> GetUncompletedDup()
+        {
+            return await _dbConnection.Dups.AsNoTracking().Where(p => p.StatusId == 16).CountAsync();
         }
     }
 }
