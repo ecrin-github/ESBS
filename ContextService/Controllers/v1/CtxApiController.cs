@@ -165,6 +165,28 @@ namespace ContextService.Controllers.v1
                 Messages = null
             });
         }
+
+
+        [HttpGet("organisations/{id:int}/memberships")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisations" })]
+        public async Task<IActionResult> GetOrgMemberships(int id)
+        {
+            var data = await _ctxRepository.GetOrgTypeMemberships(id);
+            if (data == null) return Ok(new ApiResponse<OrgTypeMembership>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgTypeMembership>()
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
         
         
         [HttpGet("people")]
@@ -252,19 +274,19 @@ namespace ContextService.Controllers.v1
         }
         
         
-        [HttpGet("publishers")]
-        [SwaggerOperation(Tags = new[] { "Context - Publishers" })]
-        public async Task<IActionResult> GetPublishers()
+        [HttpGet("geographical-entities")]
+        [SwaggerOperation(Tags = new[] { "Context - Geographical entities" })]
+        public async Task<IActionResult> GetGeogEntities(int id)
         {
-            var data = await _ctxRepository.GetPublishers();
-            if (data == null) return Ok(new ApiResponse<Publisher>()
+            var data = await _ctxRepository.GetGeogEntities();
+            if (data == null) return Ok(new ApiResponse<GeogEntity>()
             {
                 Total = 0,
                 Data = null,
-                StatusCode = NotFound().StatusCode,
-                Messages = new List<string>(){"There are no records."}
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
             });
-            return Ok(new ApiResponse<Publisher>
+            return Ok(new ApiResponse<GeogEntity>()
             {
                 Total = data.Count,
                 Data = data,
@@ -272,41 +294,43 @@ namespace ContextService.Controllers.v1
                 Messages = null
             });
         }
-        
-        [HttpGet("publishers/{id:int}")]
-        [SwaggerOperation(Tags = new[] { "Context - Publishers" })]
-        public async Task<IActionResult> GetPublisher(int id)
+
+
+        [HttpGet("geographical-entities/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Geographical entities" })]
+        public async Task<IActionResult> GetGeogEntity(int id)
         {
-            var data = await _ctxRepository.GetPublisher(id);
-            if (data == null) return Ok(new ApiResponse<Publisher>()
+            var data = await _ctxRepository.GetGeogEntity(id);
+            if (data == null) return Ok(new ApiResponse<GeogEntity>()
             {
                 Total = 0,
                 Data = null,
                 Messages = new List<string>(){"Not found."},
                 StatusCode = NotFound().StatusCode
             });
-            return Ok(new ApiResponse<Publisher>()
+            return Ok(new ApiResponse<GeogEntity>()
             {
                 Total = 1,
-                Data = new List<Publisher>(){data},
+                Data = new List<GeogEntity>(){data},
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });
         }
-        
-        [HttpGet("publishers/{id:int}/eissns")]
-        [SwaggerOperation(Tags = new[] { "Context - Publishers" })]
-        public async Task<IActionResult> GetPublisherEissns(int id)
+
+
+        [HttpGet("published-journals")]
+        [SwaggerOperation(Tags = new[] { "Context - Published journals" })]
+        public async Task<IActionResult> GetPublishedJournals(int id)
         {
-            var data = await _ctxRepository.GetPubEissns(id);
-            if (data == null) return Ok(new ApiResponse<PubEissn>()
+            var data = await _ctxRepository.GetPublishedJournals();
+            if (data == null) return Ok(new ApiResponse<PublishedJournal>()
             {
                 Total = 0,
                 Data = null,
                 Messages = new List<string>(){"Not found."},
                 StatusCode = NotFound().StatusCode
             });
-            return Ok(new ApiResponse<PubEissn>()
+            return Ok(new ApiResponse<PublishedJournal>()
             {
                 Total = data.Count,
                 Data = data,
@@ -314,44 +338,24 @@ namespace ContextService.Controllers.v1
                 Messages = null
             });
         }
-        
-        [HttpGet("publishers/{id:int}/journals")]
-        [SwaggerOperation(Tags = new[] { "Context - Publishers" })]
-        public async Task<IActionResult> GetPublisherJournals(int id)
+
+
+        [HttpGet("published-journals/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Published journals" })]
+        public async Task<IActionResult> GetPublishedJournal(int id)
         {
-            var data = await _ctxRepository.GetPubJournals(id);
-            if (data == null) return Ok(new ApiResponse<PubJournal>()
+            var data = await _ctxRepository.GetPublishedJournal(id);
+            if (data == null) return Ok(new ApiResponse<PublishedJournal>()
             {
                 Total = 0,
                 Data = null,
                 Messages = new List<string>(){"Not found."},
                 StatusCode = NotFound().StatusCode
             });
-            return Ok(new ApiResponse<PubJournal>()
+            return Ok(new ApiResponse<PublishedJournal>()
             {
-                Total = data.Count,
-                Data = data,
-                StatusCode = Ok().StatusCode,
-                Messages = null
-            });
-        }
-        
-        [HttpGet("publishers/{id:int}/pissns")]
-        [SwaggerOperation(Tags = new[] { "Context - Publishers" })]
-        public async Task<IActionResult> GetPublisherPissns(int id)
-        {
-            var data = await _ctxRepository.GetPubPissns(id);
-            if (data == null) return Ok(new ApiResponse<PubPissn>()
-            {
-                Total = 0,
-                Data = null,
-                Messages = new List<string>(){"Not found."},
-                StatusCode = NotFound().StatusCode
-            });
-            return Ok(new ApiResponse<PubPissn>()
-            {
-                Total = data.Count,
-                Data = data,
+                Total = 1,
+                Data = new List<PublishedJournal>(){data},
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });

@@ -95,39 +95,35 @@ namespace ContextService.Repositories
             return await _dbConnection.PeopleRoles.Where(p => p.PersonId == personId).ToArrayAsync();
         }
 
-        public async Task<ICollection<Publisher>> GetPublishers()
+        public async Task<ICollection<OrgTypeMembership>> GetOrgTypeMemberships(int orgId)
         {
-            var publishers = await _dbConnection.Publishers.AnyAsync();
-            if (!publishers) return null;
-            return await _dbConnection.Publishers.ToArrayAsync();
+            var orgTypeMemberships = await _dbConnection.OrgTypeMemberships.AnyAsync();
+            if (!orgTypeMemberships) return null;
+            return await _dbConnection.OrgTypeMemberships.Where(p => p.OrgId == orgId).ToArrayAsync();
         }
 
-        public async Task<Publisher> GetPublisher(int id)
+        public async Task<ICollection<GeogEntity>> GetGeogEntities()
         {
-            var publishers = await _dbConnection.Publishers.AnyAsync();
-            if (!publishers) return null;
-            return await _dbConnection.Publishers.FirstOrDefaultAsync(p => p.Id == id);
+            if (!_dbConnection.GeogEntities.Any()) return null;
+            return await _dbConnection.GeogEntities.ToArrayAsync();
         }
 
-        public async Task<ICollection<PubEissn>> GetPubEissns(int pubId)
+        public async Task<GeogEntity> GetGeogEntity(int id)
         {
-            var pubEissns = await _dbConnection.PubEissns.AnyAsync();
-            if (!pubEissns) return null;
-            return await _dbConnection.PubEissns.Where(p => p.PubId == pubId).ToArrayAsync();
+            if (!_dbConnection.GeogEntities.Any()) return null;
+            return await _dbConnection.GeogEntities.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<ICollection<PubJournal>> GetPubJournals(int pubId)
+        public async Task<ICollection<PublishedJournal>> GetPublishedJournals()
         {
-            var pubJournals = await _dbConnection.PubJournals.AnyAsync();
-            if (!pubJournals) return null;
-            return await _dbConnection.PubJournals.Where(p => p.PubId == pubId).ToArrayAsync();
+            if (!_dbConnection.PublishedJournals.Any()) return null;
+            return await _dbConnection.PublishedJournals.ToArrayAsync();
         }
 
-        public async Task<ICollection<PubPissn>> GetPubPissns(int pubId)
+        public async Task<PublishedJournal> GetPublishedJournal(int id)
         {
-            var pubPissns = await _dbConnection.PubPissns.AnyAsync();
-            if (!pubPissns) return null;
-            return await _dbConnection.PubPissns.Where(p => p.PubId == pubId).ToArrayAsync();
+            if (!_dbConnection.PublishedJournals.Any()) return null;
+            return await _dbConnection.PublishedJournals.FirstOrDefaultAsync(p => p.JournalId == id);
         }
     }
 }

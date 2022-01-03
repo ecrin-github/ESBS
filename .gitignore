@@ -9,7 +9,7 @@ ApiGateway/appsettings.json
 ApiGateway/Configs
 
 ContextService/appsettings.json
-ContextService/Models/DbConnection
+ContextService/Configs
 
 IdentityClient/Models
 IdentityClient/Configs

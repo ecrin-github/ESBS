@@ -17,6 +17,50 @@ namespace ContextService.Controllers.v1
         {
             _lupRepository = lupRepository ?? throw new ArgumentNullException(nameof(lupRepository));
         }
+
+
+        [HttpGet("composite-hash-types")]
+        [SwaggerOperation(Tags = new[] { "Context - Composite hash types" })]
+        public async Task<IActionResult> GetCompositeHashTypes()
+        {
+            var data = await _lupRepository.GetCompositeHashTypes();
+            if (data == null) return Ok(new ApiResponse<CompositeHashType>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<CompositeHashType>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("composite-hash-types/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Composite hash types" })]
+        public async Task<IActionResult> GetCompositeHashType(int id)
+        {
+            var data = await _lupRepository.GetCompositeHashType(id);
+            if (data == null) return Ok(new ApiResponse<CompositeHashType>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<CompositeHashType>()
+            {
+                Total = 1,
+                Data = new List<CompositeHashType>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
         
         [HttpGet("contribution-types")]
         [SwaggerOperation(Tags = new[] { "Context - Contribution types" })]
@@ -1315,6 +1359,344 @@ namespace ContextService.Controllers.v1
             {
                 Total = 1,
                 Data = new List<LanguageCode>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+
+        [HttpGet("organisation/attribute-datatypes")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgAttributeDatatypes()
+        {
+            var data = await _lupRepository.GetOrgAttributeDatatypes();
+            if (data == null) return Ok(new ApiResponse<OrgAttributeDatatype>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<OrgAttributeDatatype>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("organisation/attribute-datatypes/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgAttributeDatatype(int id)
+        {
+            var data = await _lupRepository.GetOrgAttributeDatatype(id);
+            if (data == null) return Ok(new ApiResponse<OrgAttributeDatatype>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgAttributeDatatype>()
+            {
+                Total = 1,
+                Data = new List<OrgAttributeDatatype>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+        [HttpGet("organisation/attribute-types")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgAttributeTypes()
+        {
+            var data = await _lupRepository.GetOrgAttributeTypes();
+            if (data == null) return Ok(new ApiResponse<OrgAttributeType>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<OrgAttributeType>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("organisation/attribute-types/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgAttributeType(int id)
+        {
+            var data = await _lupRepository.GetOrgAttributeType(id);
+            if (data == null) return Ok(new ApiResponse<OrgAttributeType>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgAttributeType>()
+            {
+                Total = 1,
+                Data = new List<OrgAttributeType>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+        [HttpGet("organisation/classes")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgClasses()
+        {
+            var data = await _lupRepository.GetOrgClasses();
+            if (data == null) return Ok(new ApiResponse<OrgClass>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<OrgClass>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("organisation/classes/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgClass(int id)
+        {
+            var data = await _lupRepository.GetOrgClass(id);
+            if (data == null) return Ok(new ApiResponse<OrgClass>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgClass>()
+            {
+                Total = 1,
+                Data = new List<OrgClass>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+        [HttpGet("organisation/link-types")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgLinkTypes()
+        {
+            var data = await _lupRepository.GetOrgLinkTypes();
+            if (data == null) return Ok(new ApiResponse<OrgLinkType>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<OrgLinkType>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("organisation/link-types/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgLinkType(int id)
+        {
+            var data = await _lupRepository.GetOrgLinkType(id);
+            if (data == null) return Ok(new ApiResponse<OrgLinkType>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgLinkType>()
+            {
+                Total = 1,
+                Data = new List<OrgLinkType>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+        [HttpGet("organisation/name-qualifier-types")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgNameQualifierTypes()
+        {
+            var data = await _lupRepository.GetOrgNameQualifierTypes();
+            if (data == null) return Ok(new ApiResponse<OrgNameQualifierType>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<OrgNameQualifierType>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("organisation/name-qualifier-types/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgNameQualifierType(int id)
+        {
+            var data = await _lupRepository.GetOrgNameQualifierType(id);
+            if (data == null) return Ok(new ApiResponse<OrgNameQualifierType>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgNameQualifierType>()
+            {
+                Total = 1,
+                Data = new List<OrgNameQualifierType>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+        [HttpGet("organisation/relationship-types")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgRelationshipTypes()
+        {
+            var data = await _lupRepository.GetOrgRelationshipTypes();
+            if (data == null) return Ok(new ApiResponse<OrgRelationshipType>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<OrgRelationshipType>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("organisation/relationship-types/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgRelationshipType(int id)
+        {
+            var data = await _lupRepository.GetOrgRelationshipType(id);
+            if (data == null) return Ok(new ApiResponse<OrgRelationshipType>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgRelationshipType>()
+            {
+                Total = 1,
+                Data = new List<OrgRelationshipType>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+        [HttpGet("organisation/types")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgTypes()
+        {
+            var data = await _lupRepository.GetOrgTypes();
+            if (data == null) return Ok(new ApiResponse<OrgType>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<OrgType>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("organisation/types/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisation related context" })]
+        public async Task<IActionResult> GetOrgType(int id)
+        {
+            var data = await _lupRepository.GetOrgType(id);
+            if (data == null) return Ok(new ApiResponse<OrgType>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<OrgType>()
+            {
+                Total = 1,
+                Data = new List<OrgType>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+
+        [HttpGet("topic-vocabularies")]
+        [SwaggerOperation(Tags = new[] { "Context - Topic vocabularies" })]
+        public async Task<IActionResult> GetTopicVocabularies()
+        {
+            var data = await _lupRepository.GetTopicVocabularies();
+            if (data == null) return Ok(new ApiResponse<TopicVocabulary>()
+            {
+                Total = 0,
+                Data = null,
+                StatusCode = NotFound().StatusCode,
+                Messages = new List<string>(){"There are no records."}
+            });
+            return Ok(new ApiResponse<TopicVocabulary>
+            {
+                Total = data.Count,
+                Data = data,
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+        
+        [HttpGet("topic-vocabularies/{id:int}")]
+        [SwaggerOperation(Tags = new[] { "Context - Topic vocabularies" })]
+        public async Task<IActionResult> GetTopicVocabulary(int id)
+        {
+            var data = await _lupRepository.GetTopicVocabulary(id);
+            if (data == null) return Ok(new ApiResponse<TopicVocabulary>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<TopicVocabulary>()
+            {
+                Total = 1,
+                Data = new List<TopicVocabulary>(){data},
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });

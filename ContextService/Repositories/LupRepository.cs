@@ -594,5 +594,113 @@ namespace ContextService.Repositories
             }
             return await _dbConnection.TopicTypes.FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        public async Task<ICollection<CompositeHashType>> GetCompositeHashTypes()
+        {
+            if (!_dbConnection.CompositeHashTypes.Any()) return null;
+            return await _dbConnection.CompositeHashTypes.ToArrayAsync();
+        }
+
+        public async Task<CompositeHashType> GetCompositeHashType(int id)
+        {
+            if (!_dbConnection.CompositeHashTypes.Any()) return null;
+            return await _dbConnection.CompositeHashTypes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<OrgAttributeDatatype>> GetOrgAttributeDatatypes()
+        {
+            if (!_dbConnection.OrgAttributeDatatypes.Any()) return null;
+            return await _dbConnection.OrgAttributeDatatypes.ToArrayAsync();
+        }
+
+        public async Task<OrgAttributeDatatype> GetOrgAttributeDatatype(int id)
+        {
+            if (!_dbConnection.OrgAttributeDatatypes.Any()) return null;
+            return await _dbConnection.OrgAttributeDatatypes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<OrgAttributeType>> GetOrgAttributeTypes()
+        {
+            if (!_dbConnection.OrgAttributeTypes.Any()) return null;
+            return await _dbConnection.OrgAttributeTypes.ToArrayAsync();
+        }
+
+        public async Task<OrgAttributeType> GetOrgAttributeType(int id)
+        {
+            if (!_dbConnection.OrgAttributeTypes.Any()) return null;
+            return await _dbConnection.OrgAttributeTypes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<OrgClass>> GetOrgClasses()
+        {
+            if (!_dbConnection.OrgClasses.Any()) return null;
+            return await _dbConnection.OrgClasses.ToArrayAsync();
+        }
+
+        public async Task<OrgClass> GetOrgClass(int id)
+        {
+            if (!_dbConnection.OrgClasses.Any()) return null;
+            return await _dbConnection.OrgClasses.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<OrgLinkType>> GetOrgLinkTypes()
+        {
+            if (!_dbConnection.OrgLinkTypes.Any()) return null;
+            return await _dbConnection.OrgLinkTypes.ToArrayAsync();
+        }
+
+        public async Task<OrgLinkType> GetOrgLinkType(int id)
+        {
+            if (!_dbConnection.OrgLinkTypes.Any()) return null;
+            return await _dbConnection.OrgLinkTypes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<OrgNameQualifierType>> GetOrgNameQualifierTypes()
+        {
+            if (!_dbConnection.OrgNameQualifierTypes.Any()) return null;
+            return await _dbConnection.OrgNameQualifierTypes.ToArrayAsync();
+        }
+
+        public async Task<OrgNameQualifierType> GetOrgNameQualifierType(int id)
+        {
+            if (!_dbConnection.OrgNameQualifierTypes.Any()) return null;
+            return await _dbConnection.OrgNameQualifierTypes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<OrgRelationshipType>> GetOrgRelationshipTypes()
+        {
+            if (!_dbConnection.OrgRelationshipTypes.Any()) return null;
+            return await _dbConnection.OrgRelationshipTypes.ToArrayAsync();
+        }
+
+        public async Task<OrgRelationshipType> GetOrgRelationshipType(int id)
+        {
+            if (!_dbConnection.OrgRelationshipTypes.Any()) return null;
+            return await _dbConnection.OrgRelationshipTypes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<OrgType>> GetOrgTypes()
+        {
+            if (!_dbConnection.OrgTypes.Any()) return null;
+            return await _dbConnection.OrgTypes.ToArrayAsync();
+        }
+
+        public async Task<OrgType> GetOrgType(int id)
+        {
+            if (!_dbConnection.OrgTypes.Any()) return null;
+            return await _dbConnection.OrgTypes.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<ICollection<TopicVocabulary>> GetTopicVocabularies()
+        {
+            if (!_dbConnection.TopicVocabularies.Any()) return null;
+            return await _dbConnection.TopicVocabularies.ToArrayAsync();
+        }
+
+        public async Task<TopicVocabulary> GetTopicVocabulary(int id)
+        {
+            if (!_dbConnection.TopicVocabularies.Any()) return null;
+            return await _dbConnection.TopicVocabularies.FirstOrDefaultAsync(p => p.Id == id);
+        }
     }
 }

@@ -6,6 +6,9 @@ namespace ContextService.Interfaces
 {
     public interface ILupRepository
     {
+        Task<ICollection<CompositeHashType>> GetCompositeHashTypes();
+        Task<CompositeHashType> GetCompositeHashType(int id);
+
         Task<ICollection<ContributionType>> GetContributionTypes();
         Task<ContributionType> GetContributionType(int id);
         
@@ -62,6 +65,27 @@ namespace ContextService.Interfaces
         
         Task<ICollection<ObjectType>> GetObjectTypes();
         Task<ObjectType> GetObjectType(int id);
+
+        Task<ICollection<OrgAttributeDatatype>> GetOrgAttributeDatatypes();
+        Task<OrgAttributeDatatype> GetOrgAttributeDatatype(int id);
+
+        Task<ICollection<OrgAttributeType>> GetOrgAttributeTypes();
+        Task<OrgAttributeType> GetOrgAttributeType(int id);
+
+        Task<ICollection<OrgClass>> GetOrgClasses();
+        Task<OrgClass> GetOrgClass(int id);
+
+        Task<ICollection<OrgLinkType>> GetOrgLinkTypes();
+        Task<OrgLinkType> GetOrgLinkType(int id);
+
+        Task<ICollection<OrgNameQualifierType>> GetOrgNameQualifierTypes();
+        Task<OrgNameQualifierType> GetOrgNameQualifierType(int id);
+
+        Task<ICollection<OrgRelationshipType>> GetOrgRelationshipTypes();
+        Task<OrgRelationshipType> GetOrgRelationshipType(int id);
+
+        Task<ICollection<OrgType>> GetOrgTypes();
+        Task<OrgType> GetOrgType(int id);
         
         Task<ICollection<ResourceType>> GetResourceTypes();
         Task<ResourceType> GetResourceType(int id);
@@ -101,5 +125,8 @@ namespace ContextService.Interfaces
         
         Task<ICollection<TopicType>> GetTopicTypes();
         Task<TopicType> GetTopicType(int id);
+
+        Task<ICollection<TopicVocabulary>> GetTopicVocabularies();
+        Task<TopicVocabulary> GetTopicVocabulary(int id);
     }
 }

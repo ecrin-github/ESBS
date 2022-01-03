@@ -14,16 +14,17 @@ namespace ContextService.Interfaces
         Task<ICollection<OrgLocation>> GetOrgLocations(int orgId);
         Task<ICollection<OrgName>> GetOrgNames(int orgId);
         Task<ICollection<OrgRelationship>> GetOrgRelationships(int orgId);
+        Task<ICollection<OrgTypeMembership>> GetOrgTypeMemberships(int orgId);
         
         Task<ICollection<People>> GetPeople();
         Task<People> GetPerson(int id);
         Task<ICollection<PeopleLink>> GetPersonLinks(int personId);
         Task<ICollection<PeopleRole>> GetPersonRoles(int personId);
         
-        Task<ICollection<Publisher>> GetPublishers();
-        Task<Publisher> GetPublisher(int id);
-        Task<ICollection<PubEissn>> GetPubEissns(int pubId);
-        Task<ICollection<PubJournal>> GetPubJournals(int pubId);
-        Task<ICollection<PubPissn>> GetPubPissns(int pubId); 
+        Task<ICollection<GeogEntity>> GetGeogEntities();
+        Task<GeogEntity> GetGeogEntity(int id);
+
+        Task<ICollection<PublishedJournal>> GetPublishedJournals();
+        Task<PublishedJournal> GetPublishedJournal(int id);
     }
 }
