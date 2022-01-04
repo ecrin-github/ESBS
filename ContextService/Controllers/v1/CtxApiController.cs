@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ContextService.Contracts.Requests.v1.OrganisationRequests;
 using ContextService.Contracts.Responses;
 using ContextService.Interfaces;
 using ContextService.Models.Ctx;
@@ -56,6 +57,27 @@ namespace ContextService.Controllers.v1
             {
                 Total = 1,
                 Data = new List<Organisation>(){data},
+                StatusCode = Ok().StatusCode,
+                Messages = null
+            });
+        }
+
+        [HttpPost("organisations/search/by-title")]
+        [SwaggerOperation(Tags = new[] { "Context - Organisations" })]
+        public async Task<IActionResult> GetOrganisationsByName(SearchByTitleRequest searchByTitleRequest)
+        {
+            var data = await _ctxRepository.GetOrganisationsByName(searchByTitleRequest.OrganisationName);
+            if (data == null) return Ok(new ApiResponse<Organisation>()
+            {
+                Total = 0,
+                Data = null,
+                Messages = new List<string>(){"Not found."},
+                StatusCode = NotFound().StatusCode
+            });
+            return Ok(new ApiResponse<Organisation>()
+            {
+                Total = data.Count,
+                Data = data,
                 StatusCode = Ok().StatusCode,
                 Messages = null
             });
@@ -276,7 +298,7 @@ namespace ContextService.Controllers.v1
         
         [HttpGet("geographical-entities")]
         [SwaggerOperation(Tags = new[] { "Context - Geographical entities" })]
-        public async Task<IActionResult> GetGeogEntities(int id)
+        public async Task<IActionResult> GetGeogEntities()
         {
             var data = await _ctxRepository.GetGeogEntities();
             if (data == null) return Ok(new ApiResponse<GeogEntity>()
@@ -320,7 +342,7 @@ namespace ContextService.Controllers.v1
 
         [HttpGet("published-journals")]
         [SwaggerOperation(Tags = new[] { "Context - Published journals" })]
-        public async Task<IActionResult> GetPublishedJournals(int id)
+        public async Task<IActionResult> GetPublishedJournals()
         {
             var data = await _ctxRepository.GetPublishedJournals();
             if (data == null) return Ok(new ApiResponse<PublishedJournal>()

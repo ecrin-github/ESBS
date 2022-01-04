@@ -8,6 +8,7 @@ namespace ContextService.Interfaces
     {
         Task<ICollection<Organisation>> GetOrganisations();
         Task<Organisation> GetOrganisation(int id);
+        Task<ICollection<Organisation>> GetOrganisationsByName(string name);
         
         Task<ICollection<OrgAttribute>> GetOrgAttributes(int orgId);
         Task<ICollection<OrgLink>> GetOrgLinks(int orgId);

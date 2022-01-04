@@ -9,6 +9,7 @@ namespace ContextService.Models.Ctx
     public class OrgLocation
     {
         [Key]
+        [Column("id")]
         public int Id { get; set; }
         
         [Column("org_id")]

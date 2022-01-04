@@ -125,5 +125,11 @@ namespace ContextService.Repositories
             if (!_dbConnection.PublishedJournals.Any()) return null;
             return await _dbConnection.PublishedJournals.FirstOrDefaultAsync(p => p.JournalId == id);
         }
+
+        public async Task<ICollection<Organisation>> GetOrganisationsByName(string name)
+        {
+            if (!_dbConnection.Organisations.Any()) return null;
+            return await _dbConnection.Organisations.Where(p => p.DefaultName.ToLower().Contains(name.ToLower())).ToArrayAsync();
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace ContextService.Models.Ctx
     public class Organisation
     {
         [Key]
+        [Column("id")]
         public int Id { get; set; }
         
         [Column("default_name")]

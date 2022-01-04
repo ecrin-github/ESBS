@@ -8,6 +8,7 @@ namespace ContextService.Models.Ctx
     public class People
     {
         [Key]
+        [Column("id")]
         public int Id { get; set; }
         
         [Column("prof_title")]

@@ -9,6 +9,7 @@ namespace ContextService.Models.Ctx
     public class PeopleRole
     {
         [Key]
+        [Column("id")]
         public int Id { get; set; }
         
         [Column("person_id")]

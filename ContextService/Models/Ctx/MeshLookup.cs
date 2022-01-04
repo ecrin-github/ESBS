@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable enable
 namespace ContextService.Models.Ctx
 {
     [Table("mesh_lookup", Schema = "ctx")]
+    [Keyless]
     public class MeshLookup
     {
         [Column("entry")]

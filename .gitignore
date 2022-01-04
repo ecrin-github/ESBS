@@ -4,33 +4,42 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea
+.vs
 
+ApiGateway/.vs
 ApiGateway/appsettings.json
 ApiGateway/Configs
 
+ContextService/.vs
 ContextService/appsettings.json
 ContextService/Configs
 
+IdentityClient/.vs
 IdentityClient/Models
 IdentityClient/Configs
 IdentityClient/appsettings.json
 
+IdentityServer/.vs
 IdentityServer/appsettings.json
 IdentityServer/Configs
 IdentityServer/Models/DbConnection
 
+MdmService/.vs
 MdmService/appsettings.json
 MdmService/Models/DbConnection
 MdmService/Configs
 
+MdrService/.vs
 MdrService/appsettings.json
 MdrService/Configs
 MdrService/Models/DbConnection
 
+RmsService/.vs
 RmsService/appsettings.json
 RmsService/Models/DbConnection
 RmsService/Configs
 
+UserService/.vs
 UserService/appsettings.json
 UserService/Models/DbConnection
 UserService/Configs

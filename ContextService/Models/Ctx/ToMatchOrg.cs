@@ -1,9 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable enable
 namespace ContextService.Models.Ctx
 {
     [Table("to_match_orgs", Schema = "ctx")]
+    [Keyless]
     public class ToMatchOrg
     {
         [Column("source_id")]
