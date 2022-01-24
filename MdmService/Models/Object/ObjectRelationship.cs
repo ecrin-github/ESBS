@@ -23,5 +23,8 @@ namespace MdmService.Models.Object
         
         [Column("created_on")]
         public DateTime? CreatedOn { get; set; }
+
+        [Column("last_edited_by")]
+        public string? LastEditedBy {get; set;}
     }
 }

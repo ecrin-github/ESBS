@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net;
 using IdentityServer.Configs.Seed;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -60,6 +61,7 @@ namespace IdentityServer
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://localhost:7000");
+                    webBuilder.UseKestrel(options => {options.Listen(IPAddress.Any, 80);});
                 });
     }
 }

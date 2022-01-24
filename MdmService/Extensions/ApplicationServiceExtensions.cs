@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using MdmService.Services;
 
 namespace MdmService.Extensions
 {
@@ -21,6 +22,9 @@ namespace MdmService.Extensions
 
             services.AddScoped<IStudyRepository, StudyRepository>();
             services.AddScoped<IObjectRepository, ObjectRepository>();
+
+            services.AddScoped<IAuditService, AuditService>();
+            services.AddScoped<IUserIdentityService, UserIdentityService>();
 
             services.AddScoped<IDataMapper, DataMapper>();
             
