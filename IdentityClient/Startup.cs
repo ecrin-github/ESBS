@@ -39,7 +39,7 @@ namespace IdentityClient
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "The ESBS REST API - Identity client Documentation", Version = "v1" });
                 c.EnableAnnotations();
-                /*
+                
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -59,7 +59,7 @@ namespace IdentityClient
                     { securitySchema, new[] { "Bearer" } }
                 };
                 c.AddSecurityRequirement(securityRequirement);
-                */
+                
             });
             
             services.AddCors(options =>
@@ -100,8 +100,8 @@ namespace IdentityClient
 
             app.UseRouting();
             
-            // app.UseAuthentication();
-            // app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
             
             app.UseCors("Open");
 

@@ -6,6 +6,7 @@ using MdmService.Contracts.Responses;
 using MdmService.DTO.Study;
 using MdmService.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MdmService.Controllers.v1.Study
 {
@@ -97,7 +98,11 @@ namespace MdmService.Controllers.v1.Study
             });
 
             studyTopicDto.SdSid ??= sdSid;
-            var studyTopic = await _studyRepository.CreateStudyTopic(studyTopicDto);
+
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
+            var studyTopic = await _studyRepository.CreateStudyTopic(studyTopicDto, accessToken);
             if (studyTopic == null) return Ok(new ApiResponse<StudyTopicDto>()
             {
                 Total = 0,
@@ -141,7 +146,10 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var updatedStudyTopic = await _studyRepository.UpdateStudyTopic(studyTopicDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var updatedStudyTopic = await _studyRepository.UpdateStudyTopic(studyTopicDto, accessToken);
             if (updatedStudyTopic == null)
                 return Ok(new ApiResponse<StudyTopicDto>()
                 {

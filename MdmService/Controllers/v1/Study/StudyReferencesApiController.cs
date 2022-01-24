@@ -6,6 +6,7 @@ using MdmService.Contracts.Responses;
 using MdmService.DTO.Study;
 using MdmService.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MdmService.Controllers.v1.Study
 {
@@ -98,7 +99,11 @@ namespace MdmService.Controllers.v1.Study
             });
 
             studyReferenceDto.SdSid ??= sdSid;
-            var studyRef = await _studyRepository.CreateStudyReference(studyReferenceDto);
+
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
+            var studyRef = await _studyRepository.CreateStudyReference(studyReferenceDto, accessToken);
             if (studyRef == null)
                 return Ok(new ApiResponse<StudyReferenceDto>()
                 {
@@ -142,7 +147,10 @@ namespace MdmService.Controllers.v1.Study
                 Data = null
             });
 
-            var updatedStudyRef = await _studyRepository.UpdateStudyReference(studyReferenceDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var updatedStudyRef = await _studyRepository.UpdateStudyReference(studyReferenceDto, accessToken);
             if (updatedStudyRef == null)
                 return Ok(new ApiResponse<StudyReferenceDto>()
                 {

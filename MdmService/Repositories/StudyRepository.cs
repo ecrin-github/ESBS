@@ -45,9 +45,9 @@ namespace MdmService.Repositories
             return studyContributor != null ? _dataMapper.StudyContributorDtoMapper(studyContributor) : null;
         }
 
-        public async Task<StudyContributorDto> CreateStudyContributor(StudyContributorDto studyContributorDto)
+        public async Task<StudyContributorDto> CreateStudyContributor(StudyContributorDto studyContributorDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
             var studyContributor = new StudyContributor
             {
                 SdSid = studyContributorDto.SdSid,
@@ -69,14 +69,14 @@ namespace MdmService.Repositories
             return _dataMapper.StudyContributorDtoMapper(studyContributor);
         }
 
-        public async Task<StudyContributorDto> UpdateStudyContributor(StudyContributorDto studyContributorDto)
+        public async Task<StudyContributorDto> UpdateStudyContributor(StudyContributorDto studyContributorDto, string accessToken)
         {
             var dbStudyContributor =
                 await _dbConnection.StudyContributors.FirstOrDefaultAsync(p => p.Id == studyContributorDto.Id);
 
             if (dbStudyContributor == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -129,9 +129,9 @@ namespace MdmService.Repositories
             return studyFeature != null ? _dataMapper.StudyFeatureDtoMapper(studyFeature) : null;
         }
 
-        public async Task<StudyFeatureDto> CreateStudyFeature(StudyFeatureDto studyFeatureDto)
+        public async Task<StudyFeatureDto> CreateStudyFeature(StudyFeatureDto studyFeatureDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
             var studyFeature = new StudyFeature
             {
                 SdSid = studyFeatureDto.SdSid,
@@ -158,14 +158,14 @@ namespace MdmService.Repositories
             return _dataMapper.StudyFeatureDtoMapper(studyFeature);
         }
 
-        public async Task<StudyFeatureDto> UpdateStudyFeature(StudyFeatureDto studyFeatureDto)
+        public async Task<StudyFeatureDto> UpdateStudyFeature(StudyFeatureDto studyFeatureDto, string accessToken)
         {
             var dbStudyFeature =
                 await _dbConnection.StudyFeatures.FirstOrDefaultAsync(p => p.Id == studyFeatureDto.Id);
 
             if (dbStudyFeature == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -219,9 +219,9 @@ namespace MdmService.Repositories
             return studyIdentifier != null ? _dataMapper.StudyIdentifierDtoMapper(studyIdentifier) : null;
         }
 
-        public async Task<StudyIdentifierDto> CreateStudyIdentifier(StudyIdentifierDto studyIdentifierDto)
+        public async Task<StudyIdentifierDto> CreateStudyIdentifier(StudyIdentifierDto studyIdentifierDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyIdentifier = new StudyIdentifier
             {
@@ -254,14 +254,14 @@ namespace MdmService.Repositories
             return _dataMapper.StudyIdentifierDtoMapper(studyIdentifier);
         }
 
-        public async Task<StudyIdentifierDto> UpdateStudyIdentifier(StudyIdentifierDto studyIdentifierDto)
+        public async Task<StudyIdentifierDto> UpdateStudyIdentifier(StudyIdentifierDto studyIdentifierDto, string accessToken)
         {
             var dbStudyIdentifier =
                 await _dbConnection.StudyIdentifiers.FirstOrDefaultAsync(p => p.Id == studyIdentifierDto.Id);
             
             if (dbStudyIdentifier == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -320,9 +320,9 @@ namespace MdmService.Repositories
             return studyReference != null ? _dataMapper.StudyReferenceDtoMapper(studyReference) : null;
         }
 
-        public async Task<StudyReferenceDto> CreateStudyReference(StudyReferenceDto studyReferenceDto)
+        public async Task<StudyReferenceDto> CreateStudyReference(StudyReferenceDto studyReferenceDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyReference = new StudyReference
             {
@@ -352,14 +352,14 @@ namespace MdmService.Repositories
             return _dataMapper.StudyReferenceDtoMapper(studyReference);
         }
 
-        public async Task<StudyReferenceDto> UpdateStudyReference(StudyReferenceDto studyReferenceDto)
+        public async Task<StudyReferenceDto> UpdateStudyReference(StudyReferenceDto studyReferenceDto, string accessToken)
         {
             var dbStudyReference =
                 await _dbConnection.StudyReferences.FirstOrDefaultAsync(p => p.Id == studyReferenceDto.Id);
 
             if (dbStudyReference == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -415,9 +415,9 @@ namespace MdmService.Repositories
             return studyRelationship != null ? _dataMapper.StudyRelationshipDtoMapper(studyRelationship) : null;
         }
 
-        public async Task<StudyRelationshipDto> CreateStudyRelationship(StudyRelationshipDto studyRelationshipDto)
+        public async Task<StudyRelationshipDto> CreateStudyRelationship(StudyRelationshipDto studyRelationshipDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyRelationship = new StudyRelationship
             {
@@ -445,12 +445,12 @@ namespace MdmService.Repositories
             return _dataMapper.StudyRelationshipDtoMapper(studyRelationship);
         }
 
-        public async Task<StudyRelationshipDto> UpdateStudyRelationship(StudyRelationshipDto studyRelationshipDto)
+        public async Task<StudyRelationshipDto> UpdateStudyRelationship(StudyRelationshipDto studyRelationshipDto, string accessToken)
         {
             var dbStudyRelationship = await _dbConnection.StudyRelationships.FirstOrDefaultAsync(p => p.Id == studyRelationshipDto.Id);
             if (dbStudyRelationship == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -503,9 +503,9 @@ namespace MdmService.Repositories
             return studyTitle != null ? _dataMapper.StudyTitleDtoMapper(studyTitle) : null;
         }
 
-        public async Task<StudyTitleDto> CreateStudyTitle(StudyTitleDto studyTitleDto)
+        public async Task<StudyTitleDto> CreateStudyTitle(StudyTitleDto studyTitleDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyTitle = new StudyTitle
             {
@@ -537,12 +537,12 @@ namespace MdmService.Repositories
             return _dataMapper.StudyTitleDtoMapper(studyTitle);
         }
 
-        public async Task<StudyTitleDto> UpdateStudyTitle(StudyTitleDto studyTitleDto)
+        public async Task<StudyTitleDto> UpdateStudyTitle(StudyTitleDto studyTitleDto, string accessToken)
         {
             var dbStudyTitle = await _dbConnection.StudyTitles.FirstOrDefaultAsync(p => p.Id == studyTitleDto.Id);
             if (dbStudyTitle == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -600,9 +600,9 @@ namespace MdmService.Repositories
             return studyTopic != null ? _dataMapper.StudyTopicDtoMapper(studyTopic) : null;
         }
 
-        public async Task<StudyTopicDto> CreateStudyTopic(StudyTopicDto studyTopicDto)
+        public async Task<StudyTopicDto> CreateStudyTopic(StudyTopicDto studyTopicDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyTopic = new StudyTopic
             {
@@ -638,13 +638,13 @@ namespace MdmService.Repositories
             return _dataMapper.StudyTopicDtoMapper(studyTopic);
         }
 
-        public async Task<StudyTopicDto> UpdateStudyTopic(StudyTopicDto studyTopicDto)
+        public async Task<StudyTopicDto> UpdateStudyTopic(StudyTopicDto studyTopicDto, string accessToken)
         {
             var dbStudyTopic =
                 await _dbConnection.StudyTopics.FirstOrDefaultAsync(p => p.Id == studyTopicDto.Id);
             if (dbStudyTopic == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -718,7 +718,7 @@ namespace MdmService.Repositories
             return await StudyBuilder(study);
         }
 
-        public async Task<StudyDto> CreateStudy(StudyDto studyDto)
+        public async Task<StudyDto> CreateStudy(StudyDto studyDto, string accessToken)
         {
             var study = new Study();
             var studyId = 10001;
@@ -729,7 +729,7 @@ namespace MdmService.Repositories
                 studyId = lastRecord.Id + 1;
             }
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             study.SdSid = studyId.ToString();
             study.CreatedOn = DateTime.Now;
@@ -773,7 +773,7 @@ namespace MdmService.Repositories
                 foreach (var stc in studyDto.StudyContributors)
                 {
                     stc.SdSid ??= studyId.ToString();
-                    await CreateStudyContributor(stc);
+                    await CreateStudyContributor(stc, accessToken);
                 }
             }
             
@@ -782,7 +782,7 @@ namespace MdmService.Repositories
                 foreach (var stf in studyDto.StudyFeatures)
                 {
                     stf.SdSid ??= studyId.ToString();
-                    await CreateStudyFeature(stf);
+                    await CreateStudyFeature(stf, accessToken);
                 }
             }
             
@@ -791,7 +791,7 @@ namespace MdmService.Repositories
                 foreach (var sti in studyDto.StudyIdentifiers)
                 {
                     sti.SdSid ??= studyId.ToString();
-                    await CreateStudyIdentifier(sti);
+                    await CreateStudyIdentifier(sti, accessToken);
                 }
             }
             
@@ -800,7 +800,7 @@ namespace MdmService.Repositories
                 foreach (var str in studyDto.StudyReferences)
                 {
                     str.SdSid ??= studyId.ToString();
-                    await CreateStudyReference(str);
+                    await CreateStudyReference(str, accessToken);
                 }
             }
             
@@ -809,7 +809,7 @@ namespace MdmService.Repositories
                 foreach (var str in studyDto.StudyRelationships)
                 {
                     str.SdSid ??= studyId.ToString();
-                    await CreateStudyRelationship(str);
+                    await CreateStudyRelationship(str, accessToken);
                 }
             }
             
@@ -818,7 +818,7 @@ namespace MdmService.Repositories
                 foreach (var stt in studyDto.StudyTitles)
                 {
                     stt.SdSid ??= studyId.ToString();
-                    await CreateStudyTitle(stt);
+                    await CreateStudyTitle(stt, accessToken);
                 }
             }
             
@@ -827,19 +827,19 @@ namespace MdmService.Repositories
                 foreach (var stt in studyDto.StudyTopics)
                 {
                     stt.SdSid ??= studyId.ToString();
-                    await CreateStudyTopic(stt);
+                    await CreateStudyTopic(stt, accessToken);
                 }
             }
             
             return await StudyBuilder(study);
         }
 
-        public async Task<StudyDto> UpdateStudy(StudyDto studyDto)
+        public async Task<StudyDto> UpdateStudy(StudyDto studyDto, string accessToken)
         {
             var dbStudy = await _dbConnection.Studies.FirstOrDefaultAsync(p => p.SdSid == studyDto.SdSid);
             if (dbStudy == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -875,11 +875,11 @@ namespace MdmService.Repositories
                     if (stf.Id is null or 0)
                     {
                         stf.SdSid ??= studyDto.SdSid;
-                        await CreateStudyFeature(stf);
+                        await CreateStudyFeature(stf, accessToken);
                     }
                     else
                     {
-                        await UpdateStudyFeature(stf);
+                        await UpdateStudyFeature(stf, accessToken);
                     }
                 }
             }
@@ -891,11 +891,11 @@ namespace MdmService.Repositories
                     if (sti.Id is null or 0)
                     {
                         sti.SdSid ??= studyDto.SdSid;
-                        await CreateStudyIdentifier(sti);
+                        await CreateStudyIdentifier(sti, accessToken);
                     }
                     else
                     {
-                        await UpdateStudyIdentifier(sti);
+                        await UpdateStudyIdentifier(sti, accessToken);
                     }
                 }
             }
@@ -907,11 +907,11 @@ namespace MdmService.Repositories
                     if (str.Id is null or 0)
                     {
                         str.SdSid ??= studyDto.SdSid;
-                        await CreateStudyReference(str);
+                        await CreateStudyReference(str, accessToken);
                     }
                     else
                     {
-                        await UpdateStudyReference(str);
+                        await UpdateStudyReference(str, accessToken);
                     }
                 }
             }
@@ -923,11 +923,11 @@ namespace MdmService.Repositories
                     if (str.Id is null or 0)
                     {
                         str.SdSid ??= studyDto.SdSid;
-                        await CreateStudyRelationship(str);
+                        await CreateStudyRelationship(str, accessToken);
                     }
                     else
                     {
-                        await UpdateStudyRelationship(str);
+                        await UpdateStudyRelationship(str, accessToken);
                     }
                 }
             }
@@ -939,11 +939,11 @@ namespace MdmService.Repositories
                     if (stt.Id is null or 0)
                     {
                         stt.SdSid ??= studyDto.SdSid;
-                        await CreateStudyTitle(stt);
+                        await CreateStudyTitle(stt, accessToken);
                     }
                     else
                     {
-                        await UpdateStudyTitle(stt);
+                        await UpdateStudyTitle(stt, accessToken);
                     }
                 }
             }
@@ -955,11 +955,11 @@ namespace MdmService.Repositories
                     if (stt.Id is null or 0)
                     {
                         stt.SdSid ??= studyDto.SdSid;
-                        await CreateStudyTopic(stt);
+                        await CreateStudyTopic(stt, accessToken);
                     }
                     else
                     {
-                        await UpdateStudyTopic(stt);
+                        await UpdateStudyTopic(stt, accessToken);
                     }
                 }
             }
@@ -1013,7 +1013,7 @@ namespace MdmService.Repositories
             return _dataMapper.StudyDataDtoBuilder(recentStudies);
         }
 
-        public async Task<StudyDataDto> CreateStudyData(StudyDataDto studyData)
+        public async Task<StudyDataDto> CreateStudyData(StudyDataDto studyData, string accessToken)
         {
             var study = new Study();
             var studyId = 10001;
@@ -1024,7 +1024,7 @@ namespace MdmService.Repositories
                 studyId = lastRecord.Id + 1;
             }
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             study.SdSid = studyId.ToString();
             study.CreatedOn = DateTime.Now;
@@ -1066,12 +1066,12 @@ namespace MdmService.Repositories
             return _dataMapper.StudyDataDtoMapper(study);
         }
         
-        public async Task<StudyDataDto> UpdateStudyData(StudyDataDto studyData)
+        public async Task<StudyDataDto> UpdateStudyData(StudyDataDto studyData, string accessToken)
         {
             var dbStudy = await _dbConnection.Studies.FirstOrDefaultAsync(p => p.SdSid == studyData.SdSid);
             if (dbStudy == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {

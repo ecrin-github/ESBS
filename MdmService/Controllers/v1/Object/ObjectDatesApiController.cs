@@ -6,6 +6,7 @@ using MdmService.Contracts.Responses;
 using MdmService.DTO.Object;
 using MdmService.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MdmService.Controllers.v1.Object
 {
@@ -95,9 +96,12 @@ namespace MdmService.Controllers.v1.Object
                 Messages = new List<string>() { "No data objects have been found." },
                 Data = null
             });
+
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
             
             objectDateDto.SdOid ??= sdOid;
-            var objDate = await _dataObjectRepository.CreateObjectDate(objectDateDto);
+            var objDate = await _dataObjectRepository.CreateObjectDate(objectDateDto, accessToken);
             if (objDate == null)
                 return Ok(new ApiResponse<ObjectDateDto>()
                 {
@@ -142,7 +146,10 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var updatedObjDate = await _dataObjectRepository.UpdateObjectDate(objectDateDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var updatedObjDate = await _dataObjectRepository.UpdateObjectDate(objectDateDto, accessToken);
             if (updatedObjDate == null)
                 return Ok(new ApiResponse<ObjectDateDto>()
                 {

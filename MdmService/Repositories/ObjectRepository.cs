@@ -46,9 +46,9 @@ namespace MdmService.Repositories
             return objectContributor != null ? _dataMapper.ObjectContributorDtoMapper(objectContributor) : null;
         }
 
-        public async Task<ObjectContributorDto> CreateObjectContributor(ObjectContributorDto objectContributorDto)
+        public async Task<ObjectContributorDto> CreateObjectContributor(ObjectContributorDto objectContributorDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("accessToken");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectContributor = new ObjectContributor
             {
@@ -84,13 +84,13 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectContributorDtoMapper(objectContributor);
         }
 
-        public async Task<ObjectContributorDto> UpdateObjectContributor(ObjectContributorDto objectContributorDto)
+        public async Task<ObjectContributorDto> UpdateObjectContributor(ObjectContributorDto objectContributorDto, string accessToken)
         {
             var dbObjectContributor =
                 await _dbConnection.ObjectContributors.FirstOrDefaultAsync(p => p.SdOid == objectContributorDto.SdOid);
             if (dbObjectContributor == null) return null;
 
-            var userData = _userIdentityService.GetUserData("accessToken");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -152,9 +152,9 @@ namespace MdmService.Repositories
             return objectDataset != null ? _dataMapper.ObjectDatasetDtoMapper(objectDataset) : null;
         }
 
-        public async Task<ObjectDatasetDto> CreateObjectDataset(ObjectDatasetDto objectDatasetDto)
+        public async Task<ObjectDatasetDto> CreateObjectDataset(ObjectDatasetDto objectDatasetDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("accessToken");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectDataset = new ObjectDataset
             {
@@ -196,13 +196,13 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectDatasetDtoMapper(objectDataset);
         }
 
-        public async Task<ObjectDatasetDto> UpdateObjectDataset(ObjectDatasetDto objectDatasetDto)
+        public async Task<ObjectDatasetDto> UpdateObjectDataset(ObjectDatasetDto objectDatasetDto, string accessToken)
         {
             var dbObjectDataset =
                 await _dbConnection.ObjectDatasets.FirstOrDefaultAsync(p => p.Id == objectDatasetDto.Id);
             if (dbObjectDataset == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -272,9 +272,9 @@ namespace MdmService.Repositories
             return objectDate != null ? _dataMapper.ObjectDateDtoMapper(objectDate) : null;
         }
 
-        public async Task<ObjectDateDto> CreateObjectDate(ObjectDateDto objectDateDto)
+        public async Task<ObjectDateDto> CreateObjectDate(ObjectDateDto objectDateDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectDate = new ObjectDate
             {
@@ -310,12 +310,12 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectDateDtoMapper(objectDate);
         }
 
-        public async Task<ObjectDateDto> UpdateObjectDate(ObjectDateDto objectDateDto)
+        public async Task<ObjectDateDto> UpdateObjectDate(ObjectDateDto objectDateDto, string accessToken)
         {
             var dbObjectDate = await _dbConnection.ObjectDates.FirstOrDefaultAsync(p => p.Id == objectDateDto.Id);
             if (dbObjectDate == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -377,9 +377,9 @@ namespace MdmService.Repositories
             return objectDescription != null ? _dataMapper.ObjectDescriptionDtoMapper(objectDescription) : null;
         }
 
-        public async Task<ObjectDescriptionDto> CreateObjectDescription(ObjectDescriptionDto objectDescriptionDto)
+        public async Task<ObjectDescriptionDto> CreateObjectDescription(ObjectDescriptionDto objectDescriptionDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectDescription = new ObjectDescription
             {
@@ -409,13 +409,13 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectDescriptionDtoMapper(objectDescription);
         }
 
-        public async Task<ObjectDescriptionDto> UpdateObjectDescription(ObjectDescriptionDto objectDescriptionDto)
+        public async Task<ObjectDescriptionDto> UpdateObjectDescription(ObjectDescriptionDto objectDescriptionDto, string accessToken)
         {
             var dbObjectDescription =
                 await _dbConnection.ObjectDescriptions.FirstOrDefaultAsync(p => p.Id == objectDescriptionDto.Id);
             if (dbObjectDescription == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -471,9 +471,9 @@ namespace MdmService.Repositories
             return objectIdentifier != null ? _dataMapper.ObjectIdentifierDtoMapper(objectIdentifier) : null;
         }
 
-        public async Task<ObjectIdentifierDto> CreateObjectIdentifier(ObjectIdentifierDto objectIdentifierDto)
+        public async Task<ObjectIdentifierDto> CreateObjectIdentifier(ObjectIdentifierDto objectIdentifierDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectIdentifier = new ObjectIdentifier
             {
@@ -505,13 +505,13 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectIdentifierDtoMapper(objectIdentifier);
         }
 
-        public async Task<ObjectIdentifierDto> UpdateObjectIdentifier(ObjectIdentifierDto objectIdentifierDto)
+        public async Task<ObjectIdentifierDto> UpdateObjectIdentifier(ObjectIdentifierDto objectIdentifierDto, string accessToken)
         {
             var dbObjectIdentifier =
                 await _dbConnection.ObjectIdentifiers.FirstOrDefaultAsync(p => p.Id == objectIdentifierDto.Id);
             if (dbObjectIdentifier == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -569,9 +569,9 @@ namespace MdmService.Repositories
             return objectInstance != null ? _dataMapper.ObjectInstanceDtoMapper(objectInstance) : null;
         }
 
-        public async Task<ObjectInstanceDto> CreateObjectInstance(ObjectInstanceDto objectInstanceDto)
+        public async Task<ObjectInstanceDto> CreateObjectInstance(ObjectInstanceDto objectInstanceDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectInstance = new ObjectInstance
             {
@@ -607,13 +607,13 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectInstanceDtoMapper(objectInstance);
         }
 
-        public async Task<ObjectInstanceDto> UpdateObjectInstance(ObjectInstanceDto objectInstanceDto)
+        public async Task<ObjectInstanceDto> UpdateObjectInstance(ObjectInstanceDto objectInstanceDto, string accessToken)
         {
             var dbObjectInstance =
                 await _dbConnection.ObjectInstances.FirstOrDefaultAsync(p => p.Id == objectInstanceDto.Id);
             if (dbObjectInstance == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -675,9 +675,9 @@ namespace MdmService.Repositories
             return objectRelation != null ? _dataMapper.ObjectRelationshipDtoMapper(objectRelation) : null;
         }
 
-        public async Task<ObjectRelationshipDto> CreateObjectRelationship(ObjectRelationshipDto objectRelationshipDto)
+        public async Task<ObjectRelationshipDto> CreateObjectRelationship(ObjectRelationshipDto objectRelationshipDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectRelationship = new ObjectRelationship
             {
@@ -705,13 +705,13 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectRelationshipDtoMapper(objectRelationship);
         }
 
-        public async Task<ObjectRelationshipDto> UpdateObjectRelationship(ObjectRelationshipDto objectRelationshipDto)
+        public async Task<ObjectRelationshipDto> UpdateObjectRelationship(ObjectRelationshipDto objectRelationshipDto, string accessToken)
         {
             var dbObjectRelation =
                 await _dbConnection.ObjectRelationships.FirstOrDefaultAsync(p => p.Id == objectRelationshipDto.Id);
             if (dbObjectRelation == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -765,9 +765,9 @@ namespace MdmService.Repositories
             return objectRight != null ? _dataMapper.ObjectRightDtoMapper(objectRight) : null;
         }
 
-        public async Task<ObjectRightDto> CreateObjectRight(ObjectRightDto objectRightDto)
+        public async Task<ObjectRightDto> CreateObjectRight(ObjectRightDto objectRightDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectRight = new ObjectRight
             {
@@ -796,12 +796,12 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectRightDtoMapper(objectRight);
         }
 
-        public async Task<ObjectRightDto> UpdateObjectRight(ObjectRightDto objectRightDto)
+        public async Task<ObjectRightDto> UpdateObjectRight(ObjectRightDto objectRightDto, string accessToken)
         {
             var dbObjectRight = await _dbConnection.ObjectRights.FirstOrDefaultAsync(p => p.Id == objectRightDto.Id);
             if (dbObjectRight == null) return null;
             
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -856,9 +856,9 @@ namespace MdmService.Repositories
             return objectTitle != null ? _dataMapper.ObjectTitleDtoMapper(objectTitle) : null;
         }
 
-        public async Task<ObjectTitleDto> CreateObjectTitle(ObjectTitleDto objectTitleDto)
+        public async Task<ObjectTitleDto> CreateObjectTitle(ObjectTitleDto objectTitleDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectTitle = new ObjectTitle
             {
@@ -890,12 +890,12 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectTitleDtoMapper(objectTitle);
         }
 
-        public async Task<ObjectTitleDto> UpdateObjectTitle(ObjectTitleDto objectTitleDto)
+        public async Task<ObjectTitleDto> UpdateObjectTitle(ObjectTitleDto objectTitleDto, string accessToken)
         {
             var dbObjectTitle = await _dbConnection.ObjectTitles.FirstOrDefaultAsync(p => p.Id == objectTitleDto.Id);
             if (dbObjectTitle == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -952,9 +952,9 @@ namespace MdmService.Repositories
             return objectTopic != null ? _dataMapper.ObjectTopicDtoMapper(objectTopic) : null;
         }
 
-        public async Task<ObjectTopicDto> CreateObjectTopic(ObjectTopicDto objectTopicDto)
+        public async Task<ObjectTopicDto> CreateObjectTopic(ObjectTopicDto objectTopicDto, string accessToken)
         {
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectTopic = new ObjectTopic
             {
@@ -990,12 +990,12 @@ namespace MdmService.Repositories
             return _dataMapper.ObjectTopicDtoMapper(objectTopic);
         }
 
-        public async Task<ObjectTopicDto> UpdateObjectTopic(ObjectTopicDto objectTopicDto)
+        public async Task<ObjectTopicDto> UpdateObjectTopic(ObjectTopicDto objectTopicDto, string accessToken)
         {
             var dbObjectTopic = await _dbConnection.ObjectTopics.FirstOrDefaultAsync(p => p.Id == objectTopicDto.Id);
             if (dbObjectTopic == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -1066,7 +1066,7 @@ namespace MdmService.Repositories
             return await DataObjectBuilder(dataObject);
         }
 
-        public async Task<DataObjectDto> CreateDataObject(DataObjectDto dataObjectDto)
+        public async Task<DataObjectDto> CreateDataObject(DataObjectDto dataObjectDto, string accessToken)
         {
             var objId = 300001;
             var lastRecord = await _dbConnection.DataObjects.OrderByDescending(p => p.Id).FirstOrDefaultAsync();
@@ -1075,7 +1075,7 @@ namespace MdmService.Repositories
                 objId = lastRecord.Id + 1;
             }
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var dataObject = new DataObject
             {
@@ -1121,14 +1121,14 @@ namespace MdmService.Repositories
                 foreach (var oc in dataObjectDto.ObjectContributors)
                 {
                     oc.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectContributor(oc);
+                    await CreateObjectContributor(oc, accessToken);
                 }
             }
             
             if (dataObjectDto.ObjectDatasets != null)
             {
                 dataObjectDto.ObjectDatasets.SdOid ??= dataObjectDto.SdOid;
-                await CreateObjectDataset(dataObjectDto.ObjectDatasets);
+                await CreateObjectDataset(dataObjectDto.ObjectDatasets, accessToken);
             }
             
             if (dataObjectDto.ObjectDates is { Count: > 0 })
@@ -1136,7 +1136,7 @@ namespace MdmService.Repositories
                 foreach (var od in dataObjectDto.ObjectDates)
                 {
                     od.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectDate(od);
+                    await CreateObjectDate(od, accessToken);
                 }
             }
             
@@ -1145,7 +1145,7 @@ namespace MdmService.Repositories
                 foreach (var od in dataObjectDto.ObjectDescriptions)
                 {
                     od.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectDescription(od);
+                    await CreateObjectDescription(od, accessToken);
                 }
             }
             
@@ -1154,7 +1154,7 @@ namespace MdmService.Repositories
                 foreach (var oi in dataObjectDto.ObjectIdentifiers)
                 {
                     oi.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectIdentifier(oi);
+                    await CreateObjectIdentifier(oi, accessToken);
                 }
             }
             
@@ -1163,7 +1163,7 @@ namespace MdmService.Repositories
                 foreach (var oi in dataObjectDto.ObjectInstances)
                 {
                     oi.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectInstance(oi);
+                    await CreateObjectInstance(oi, accessToken);
                 }
             }
             
@@ -1172,7 +1172,7 @@ namespace MdmService.Repositories
                 foreach (var or in dataObjectDto.ObjectRelationships)
                 {
                     or.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectRelationship(or);
+                    await CreateObjectRelationship(or, accessToken);
                 }
             }
             
@@ -1181,7 +1181,7 @@ namespace MdmService.Repositories
                 foreach (var or in dataObjectDto.ObjectRights)
                 {
                     or.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectRight(or);
+                    await CreateObjectRight(or, accessToken);
                 }
             }
             
@@ -1190,7 +1190,7 @@ namespace MdmService.Repositories
                 foreach (var ot in dataObjectDto.ObjectTitles)
                 {
                     ot.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectTitle(ot);
+                    await CreateObjectTitle(ot, accessToken);
                 }
             }
             
@@ -1199,19 +1199,19 @@ namespace MdmService.Repositories
                 foreach (var ot in dataObjectDto.ObjectTopics)
                 {
                     ot.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectTopic(ot);
+                    await CreateObjectTopic(ot, accessToken);
                 }
             }
             
             return await DataObjectBuilder(dataObject);
         }
 
-        public async Task<DataObjectDto> UpdateDataObject(DataObjectDto dataObjectDto)
+        public async Task<DataObjectDto> UpdateDataObject(DataObjectDto dataObjectDto, string accessToken)
         {
             var dbDataObject = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.SdOid == dataObjectDto.SdOid);
             if (dbDataObject == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -1250,11 +1250,11 @@ namespace MdmService.Repositories
                     if (oc.Id is null or 0)
                     {
                         oc.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectContributor(oc);
+                        await CreateObjectContributor(oc, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectContributor(oc);
+                        await UpdateObjectContributor(oc, accessToken);
                     }
                 }
             }
@@ -1264,11 +1264,11 @@ namespace MdmService.Repositories
                 if (dataObjectDto.ObjectDatasets.Id is null or 0)
                 {
                     dataObjectDto.ObjectDatasets.SdOid ??= dataObjectDto.SdOid;
-                    await CreateObjectDataset(dataObjectDto.ObjectDatasets);
+                    await CreateObjectDataset(dataObjectDto.ObjectDatasets, accessToken);
                 }
                 else
                 {
-                    await UpdateObjectDataset(dataObjectDto.ObjectDatasets);
+                    await UpdateObjectDataset(dataObjectDto.ObjectDatasets, accessToken);
                 }
             }
             
@@ -1279,11 +1279,11 @@ namespace MdmService.Repositories
                     if (od.Id is null or 0)
                     {
                         od.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectDate(od);
+                        await CreateObjectDate(od, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectDate(od);
+                        await UpdateObjectDate(od, accessToken);
                     }
                 }
             }
@@ -1295,11 +1295,11 @@ namespace MdmService.Repositories
                     if (od.Id is null or 0)
                     {
                         od.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectDescription(od);
+                        await CreateObjectDescription(od, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectDescription(od);
+                        await UpdateObjectDescription(od, accessToken);
                     }
                 }
             }
@@ -1311,11 +1311,11 @@ namespace MdmService.Repositories
                     if (oi.Id is null or 0)
                     {
                         oi.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectIdentifier(oi);
+                        await CreateObjectIdentifier(oi, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectIdentifier(oi);
+                        await UpdateObjectIdentifier(oi, accessToken);
                     }
                 }
             }
@@ -1327,11 +1327,11 @@ namespace MdmService.Repositories
                     if (oi.Id is null or 0)
                     {
                         oi.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectInstance(oi);
+                        await CreateObjectInstance(oi, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectInstance(oi);
+                        await UpdateObjectInstance(oi, accessToken);
                     }
                 }
             }
@@ -1343,11 +1343,11 @@ namespace MdmService.Repositories
                     if (or.Id is null or 0)
                     {
                         or.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectRelationship(or);
+                        await CreateObjectRelationship(or, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectRelationship(or);
+                        await UpdateObjectRelationship(or, accessToken);
                     }
                 }
             }
@@ -1359,11 +1359,11 @@ namespace MdmService.Repositories
                     if (or.Id is null or 0)
                     {
                         or.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectRight(or);
+                        await CreateObjectRight(or, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectRight(or);
+                        await UpdateObjectRight(or, accessToken);
                     }
                 }
             }
@@ -1375,11 +1375,11 @@ namespace MdmService.Repositories
                     if (ot.Id is null or 0)
                     {
                         ot.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectTitle(ot);
+                        await CreateObjectTitle(ot, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectTitle(ot);
+                        await UpdateObjectTitle(ot, accessToken);
                     }
                 }
             }
@@ -1391,11 +1391,11 @@ namespace MdmService.Repositories
                     if (ot.Id is null or 0)
                     {
                         ot.SdOid ??= dataObjectDto.SdOid;
-                        await CreateObjectTopic(ot);
+                        await CreateObjectTopic(ot, accessToken);
                     }
                     else
                     {
-                        await UpdateObjectTopic(ot);
+                        await UpdateObjectTopic(ot, accessToken);
                     }
                 }
             }
@@ -1435,7 +1435,7 @@ namespace MdmService.Repositories
             return _dataMapper.DataObjectDataDtoBuilder(recentObjects);
         }
 
-        public async Task<DataObjectDataDto> CreateDataObjectData(DataObjectDataDto dataObjectData)
+        public async Task<DataObjectDataDto> CreateDataObjectData(DataObjectDataDto dataObjectData, string accessToken)
         {
             var objId = 300001;
             var lastRecord = await _dbConnection.DataObjects.OrderByDescending(p => p.Id).FirstOrDefaultAsync();
@@ -1444,7 +1444,7 @@ namespace MdmService.Repositories
                 objId = lastRecord.Id + 1;
             }
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             var dataObject = new DataObject
             {
@@ -1488,12 +1488,12 @@ namespace MdmService.Repositories
             return _dataMapper.DataObjectDataDtoMapper(dataObject);
         }
         
-        public async Task<DataObjectDataDto> UpdateDataObjectData(DataObjectDataDto dataObjectData)
+        public async Task<DataObjectDataDto> UpdateDataObjectData(DataObjectDataDto dataObjectData, string accessToken)
         {
             var dbDataObject = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.SdOid == dataObjectData.SdOid);
             if (dbDataObject == null) return null;
 
-            var userData = _userIdentityService.GetUserData("access");
+            var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
             {

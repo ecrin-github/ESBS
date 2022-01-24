@@ -6,6 +6,7 @@ using MdmService.Contracts.Responses;
 using MdmService.DTO.Object;
 using MdmService.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MdmService.Controllers.v1.Object
 {
@@ -90,7 +91,10 @@ namespace MdmService.Controllers.v1.Object
         [SwaggerOperation(Tags = new []{"Object data endpoint"})]
         public async Task<IActionResult> CreateObjectData([FromBody] DataObjectDataDto dataObjectDataDto)
         {
-            var dataObj = await _dataObjectRepository.CreateDataObjectData(dataObjectDataDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var dataObj = await _dataObjectRepository.CreateDataObjectData(dataObjectDataDto, accessToken);
             if (dataObj == null)
                 return Ok(new ApiResponse<DataObjectDataDto>()
                 {
@@ -125,7 +129,10 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var updatedDataObject = await _dataObjectRepository.UpdateDataObjectData(dataObjectDataDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var updatedDataObject = await _dataObjectRepository.UpdateDataObjectData(dataObjectDataDto, accessToken);
             if (updatedDataObject == null)
                 return Ok(new ApiResponse<DataObjectDataDto>()
                 {

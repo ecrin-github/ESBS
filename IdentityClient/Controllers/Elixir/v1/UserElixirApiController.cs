@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using IdentityClient.Configs;
 using IdentityClient.Contracts.Responses;
 using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -12,10 +14,14 @@ namespace IdentityClient.Controllers.Elixir.v1
 {
     public class UserElixirApiController : BaseElixirApiController
     {
+        [Authorize]
         [HttpGet("user-info")]
         [SwaggerOperation(Tags = new []{"The Elixir AAI endpoints"})]
-        public async Task<IActionResult> UserInfo(string accessToken)
+        public async Task<IActionResult> UserInfo()
         {
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
             var client = new HttpClient();
             
             var response = await client.GetUserInfoAsync(new UserInfoRequest

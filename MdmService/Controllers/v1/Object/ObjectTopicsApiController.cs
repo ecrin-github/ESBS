@@ -6,6 +6,7 @@ using MdmService.Contracts.Responses;
 using MdmService.DTO.Object;
 using MdmService.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MdmService.Controllers.v1.Object
 {
@@ -99,7 +100,11 @@ namespace MdmService.Controllers.v1.Object
             });
 
             objectTopicDto.SdOid ??= sdOid;
-            var objTopic = await _dataObjectRepository.CreateObjectTopic(objectTopicDto);
+
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+            
+            var objTopic = await _dataObjectRepository.CreateObjectTopic(objectTopicDto, accessToken);
             if (objTopic == null) return Ok(new ApiResponse<ObjectTopicDto>()
             {
                 Total = 0,
@@ -143,7 +148,10 @@ namespace MdmService.Controllers.v1.Object
                 Data = null
             });
 
-            var updatedObjectTopic = await _dataObjectRepository.UpdateObjectTopic(objectTopicDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var updatedObjectTopic = await _dataObjectRepository.UpdateObjectTopic(objectTopicDto, accessToken);
             if (updatedObjectTopic == null)
                 return Ok(new ApiResponse<ObjectTopicDto>()
                 {

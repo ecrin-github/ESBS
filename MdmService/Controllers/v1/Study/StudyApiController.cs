@@ -6,6 +6,7 @@ using MdmService.Contracts.Responses;
 using MdmService.DTO.Study;
 using MdmService.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MdmService.Controllers.v1.Study
 {
@@ -67,7 +68,10 @@ namespace MdmService.Controllers.v1.Study
         [SwaggerOperation(Tags = new []{"Study endpoint"})]
         public async Task<IActionResult> CreateStudy([FromBody] StudyDto studyDto)
         {
-            var study = await _studyRepository.CreateStudy(studyDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var study = await _studyRepository.CreateStudy(studyDto, accessToken);
             if (study == null)
                 return Ok(new ApiResponse<StudyDto>()
                 {
@@ -103,7 +107,10 @@ namespace MdmService.Controllers.v1.Study
                     Data = null
                 });
 
-            var updatedStudy = await _studyRepository.UpdateStudy(studyDto);
+            var accessTokenRes = await HttpContext.GetTokenAsync("access_token");
+            var accessToken = accessTokenRes?.ToString();
+
+            var updatedStudy = await _studyRepository.UpdateStudy(studyDto, accessToken);
             if (updatedStudy == null)
                 return Ok(new ApiResponse<StudyDto>()
                 {

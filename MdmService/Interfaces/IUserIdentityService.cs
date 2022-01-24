@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace MdmService.Interfaces
 {
     public interface IUserIdentityService
     {
-        string GetUserData(string accessToken);
+        Task<string> GetUserData(string accessToken);
     }
 }
