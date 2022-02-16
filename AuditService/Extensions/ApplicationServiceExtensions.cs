@@ -1,9 +1,9 @@
-using AuditService.Configs;
 using AuditService.Helpers;
 using AuditService.Interfaces;
 using AuditService.Models.DbConnection;
 using AuditService.Repositories;
 using AuditService.Services;
+using AuditService.Configs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,7 +14,7 @@ namespace AuditService.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<DbConnection>(options =>
+            services.AddDbContext<AuditDbConnection>(options =>
             {
                 options.UseNpgsql(config.GetConnectionString("AuditDbConnectionString"));
             });
