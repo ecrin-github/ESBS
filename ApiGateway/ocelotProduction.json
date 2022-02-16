@@ -5,6 +5,22 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
+          "Host": "audit.ecrin-rms.org"
+        }
+      ],
+      "UpstreamPathTemplate": "/audit/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      },
+      "SwaggerKey": "audit"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
           "Host": "context.ecrin-rms.org"
         }
       ],
@@ -83,6 +99,19 @@
     }
   ],
   "SwaggerEndPoints": [
+    {
+      "Key": "audit",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS Audit API",
+          "Version": "v1",
+          "Url": "https://audit.ecrin-rms.org/swagger/v1/swagger.json"
+        }
+      ]
+    },
     {
       "Key": "context",
       "TransformByOcelotConfig": true,
