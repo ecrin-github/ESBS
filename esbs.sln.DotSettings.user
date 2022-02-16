@@ -4,4 +4,5 @@
   &lt;Assembly Path="/Users/iproger/.nuget/packages/fluentvalidation/9.3.0/lib/net5.0/FluentValidation.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
 	
+	
 	</wpf:ResourceDictionary>
