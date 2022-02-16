@@ -11,7 +11,7 @@ namespace MdmService.DTO.Object
         
         public int? DateTypeId { get; set; }
         
-        public bool? IsDateRange { get; set; }
+        public bool? DateIsRange { get; set; }
         
         public string? DateAsString { get; set; }
         

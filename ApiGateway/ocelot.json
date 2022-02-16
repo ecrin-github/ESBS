@@ -6,6 +6,23 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
+          "Port": 5270
+        }
+      ],
+      "UpstreamPathTemplate": "/audit/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "IdentityApiKey",
+        "AllowedScopes": []
+      },
+      "SwaggerKey": "audit"
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
           "Port": 5010
         }
       ],
@@ -89,6 +106,19 @@
     }
   ],
   "SwaggerEndPoints": [
+    {
+      "Key": "audit",
+      "TransformByOcelotConfig": true,
+      "TakeServersFromDownstreamService": false,
+      "TakeServersFromUpstreamService": true,
+      "Config": [
+        {
+          "Name": "The ESBS Audit API",
+          "Version": "v1",
+          "Url": "http://localhost:5270/swagger/v1/swagger.json"
+        }
+      ]
+    },
     {
       "Key": "context",
       "TransformByOcelotConfig": true,

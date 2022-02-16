@@ -55,6 +55,16 @@ namespace MdmService.Helpers
             {
                 Id = studyContributor.Id,
                 SdSid = studyContributor.SdSid,
+                ContribTypeId = studyContributor.ContribTypeId,
+                IsIndividual = studyContributor.IsIndividual,
+                PersonId = studyContributor.PersonId,
+                PersonGivenName = studyContributor.PersonGivenName,
+                PersonFamilyName = studyContributor.PersonFamilyName,
+                PersonFullName = studyContributor.PersonFullName,
+                PersonAffiliation = studyContributor.PersonAffiliation,
+                OrganisationId = studyContributor.OrganisationId,
+                OrganisationName = studyContributor.OrganisationName,
+                OrganisationRorId = studyContributor.OrganisationRorId,
                 CreatedOn = studyContributor.CreatedOn
             };
 
@@ -195,12 +205,9 @@ namespace MdmService.Helpers
                 MeshCoded = studyTopic.MeshCoded,
                 MeshCode = studyTopic.MeshCode,
                 MeshValue = studyTopic.MeshValue,
-                MeshQualcode = studyTopic.MeshQualcode,
-                MeshQualvalue = studyTopic.MeshQualvalue,
                 OriginalCtId = studyTopic.OriginalCtId,
                 OriginalCtCode = studyTopic.OriginalCtCode,
                 OriginalValue = studyTopic.OriginalValue,
-                Comments = studyTopic.Comments
             };
 
             return studyTopicDto;
@@ -320,7 +327,7 @@ namespace MdmService.Helpers
                 SdOid = objectDate.SdOid,
                 CreatedOn = objectDate.CreatedOn,
                 DateTypeId = objectDate.DateTypeId,
-                IsDateRange = objectDate.IsDateRange,
+                DateIsRange = objectDate.DateIsRange,
                 DateAsString = objectDate.DateAsString,
                 StartYear = objectDate.StartYear,
                 StartMonth = objectDate.StartMonth,

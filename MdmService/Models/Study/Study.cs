@@ -46,7 +46,7 @@ namespace MdmService.Models.Study
         public int? StudyStatusId { get; set; }
         
         [Column("study_enrolment")]
-        public int? StudyEnrolment { get; set; }
+        public string? StudyEnrolment { get; set; }
         
         [Column("study_gender_elig_id")]
         public int? StudyGenderEligId { get; set; }

@@ -12,6 +12,9 @@ namespace ContextService.Models.Lup
         [Column("name")]
         public string Name { get; set; }
         
+        [Column("applies_to")]
+        public string AppliesTo { get; set; }
+        
         [Column("description")]
         public string Description { get; set; }
         

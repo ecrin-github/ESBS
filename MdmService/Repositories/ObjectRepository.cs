@@ -281,7 +281,7 @@ namespace MdmService.Repositories
                 SdOid = objectDateDto.SdOid,
                 CreatedOn = DateTime.Now,
                 DateTypeId = objectDateDto.DateTypeId,
-                IsDateRange = objectDateDto.IsDateRange,
+                DateIsRange = objectDateDto.DateIsRange,
                 DateAsString = objectDateDto.DateAsString,
                 StartYear = objectDateDto.StartYear,
                 StartMonth = objectDateDto.StartMonth,
@@ -328,7 +328,7 @@ namespace MdmService.Repositories
             });
             
             dbObjectDate.DateTypeId = objectDateDto.DateTypeId;
-            dbObjectDate.IsDateRange = objectDateDto.IsDateRange;
+            dbObjectDate.DateIsRange = objectDateDto.DateIsRange;
             dbObjectDate.DateAsString = objectDateDto.DateAsString;
             dbObjectDate.StartYear = objectDateDto.StartYear;
             dbObjectDate.StartMonth = objectDateDto.StartMonth;

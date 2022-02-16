@@ -51,12 +51,22 @@ namespace MdmService.Repositories
             var studyContributor = new StudyContributor
             {
                 SdSid = studyContributorDto.SdSid,
+                ContribTypeId = studyContributorDto.ContribTypeId,
+                IsIndividual = studyContributorDto.IsIndividual,
+                PersonId = studyContributorDto.PersonId,
+                PersonGivenName = studyContributorDto.PersonGivenName,
+                PersonFamilyName = studyContributorDto.PersonFamilyName,
+                PersonFullName = studyContributorDto.PersonFullName,
+                PersonAffiliation = studyContributorDto.PersonAffiliation,
+                OrganisationId = studyContributorDto.OrganisationId,
+                OrganisationName = studyContributorDto.OrganisationName,
+                OrganisationRorId = studyContributorDto.OrganisationRorId,
                 CreatedOn = DateTime.Now,
                 LastEditedBy = userData
             };
             await _auditService.AddAuditRecord(new AuditDto
             {
-                TableName = "study_contributots",
+                TableName = "study_contributors",
                 TableId = null,
                 ChangeType = 1,
                 UserName = userData,
@@ -80,7 +90,7 @@ namespace MdmService.Repositories
 
             await _auditService.AddAuditRecord(new AuditDto
             {
-                TableName = "study_contributots",
+                TableName = "study_contributors",
                 TableId = null,
                 ChangeType = 2,
                 UserName = userData,
@@ -89,6 +99,16 @@ namespace MdmService.Repositories
             });
             
             dbStudyContributor.OrcidId = studyContributorDto.OrcidId;
+            dbStudyContributor.ContribTypeId = studyContributorDto.ContribTypeId;
+            dbStudyContributor.IsIndividual = studyContributorDto.IsIndividual;
+            dbStudyContributor.PersonId = studyContributorDto.PersonId;
+            dbStudyContributor.PersonGivenName = studyContributorDto.PersonGivenName;
+            dbStudyContributor.PersonFamilyName = studyContributorDto.PersonFamilyName;
+            dbStudyContributor.PersonFullName = studyContributorDto.PersonFullName;
+            dbStudyContributor.PersonAffiliation = studyContributorDto.PersonAffiliation;
+            dbStudyContributor.OrganisationId = studyContributorDto.OrganisationId;
+            dbStudyContributor.OrganisationName = studyContributorDto.OrganisationName;
+            dbStudyContributor.OrganisationRorId = studyContributorDto.OrganisationRorId;
 
             dbStudyContributor.LastEditedBy = userData;
 
@@ -612,12 +632,9 @@ namespace MdmService.Repositories
                 MeshCoded = studyTopicDto.MeshCoded,
                 MeshCode = studyTopicDto.MeshCode,
                 MeshValue = studyTopicDto.MeshValue,
-                MeshQualcode = studyTopicDto.MeshQualcode,
-                MeshQualvalue = studyTopicDto.MeshQualvalue,
                 OriginalCtId = studyTopicDto.OriginalCtId,
                 OriginalCtCode = studyTopicDto.OriginalCtCode,
                 OriginalValue = studyTopicDto.OriginalValue,
-                Comments = studyTopicDto.Comments,
                 LastEditedBy = userData
             };
 
@@ -660,12 +677,9 @@ namespace MdmService.Repositories
             dbStudyTopic.MeshCoded = studyTopicDto.MeshCoded;
             dbStudyTopic.MeshCode = studyTopicDto.MeshCode;
             dbStudyTopic.MeshValue = studyTopicDto.MeshValue;
-            dbStudyTopic.MeshQualcode = studyTopicDto.MeshQualcode;
-            dbStudyTopic.MeshQualvalue = studyTopicDto.MeshQualvalue;
             dbStudyTopic.OriginalCtId = studyTopicDto.OriginalCtId;
             dbStudyTopic.OriginalCtCode = studyTopicDto.OriginalCtCode;
             dbStudyTopic.OriginalValue = studyTopicDto.OriginalValue;
-            dbStudyTopic.Comments = studyTopicDto.Comments;
 
             dbStudyTopic.LastEditedBy = userData;
                 
@@ -867,6 +881,22 @@ namespace MdmService.Repositories
             dbStudy.MaxAgeUnitsId = studyDto.MaxAgeUnitsId;
 
             dbStudy.LastEditedBy = userData;
+            
+            if (studyDto.StudyContributors is { Count: > 0 })
+            {
+                foreach (var stc in studyDto.StudyContributors)
+                {
+                    if (stc.Id is null or 0)
+                    {
+                        stc.SdSid ??= studyDto.SdSid;
+                        await CreateStudyContributor(stc, accessToken);
+                    }
+                    else
+                    {
+                        await UpdateStudyContributor(stc, accessToken);
+                    }
+                }
+            }
             
             if (studyDto.StudyFeatures is { Count: > 0 })
             {

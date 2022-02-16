@@ -18,8 +18,8 @@ namespace MdmService.Models.Object
         [Column("date_type_id")]
         public int? DateTypeId { get; set; }
         
-        [Column("is_date_range")]
-        public bool? IsDateRange { get; set; }
+        [Column("date_is_range")]
+        public bool? DateIsRange { get; set; }
         
         [Column("date_as_string")]
         public string? DateAsString { get; set; }

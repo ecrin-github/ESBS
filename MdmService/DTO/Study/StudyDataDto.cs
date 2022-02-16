@@ -27,7 +27,7 @@ namespace MdmService.DTO.Study
         
         public int? StudyStatusId { get; set; }
         
-        public int? StudyEnrolment { get; set; }
+        public string? StudyEnrolment { get; set; }
         
         public int? StudyGenderEligId { get; set; }
         

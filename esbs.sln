@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityClient", "IdentityClient\IdentityClient.csproj", "{F2077647-8002-4B12-9FE0-1BD9A6E4330C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuditService", "AuditService\AuditService.csproj", "{2AD45780-7E40-406D-BA76-D0103CFEBDE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,5 +55,9 @@ Global
 		{F2077647-8002-4B12-9FE0-1BD9A6E4330C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2077647-8002-4B12-9FE0-1BD9A6E4330C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2077647-8002-4B12-9FE0-1BD9A6E4330C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AD45780-7E40-406D-BA76-D0103CFEBDE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AD45780-7E40-406D-BA76-D0103CFEBDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AD45780-7E40-406D-BA76-D0103CFEBDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AD45780-7E40-406D-BA76-D0103CFEBDE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

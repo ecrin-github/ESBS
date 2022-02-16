@@ -17,7 +17,8 @@ namespace ContextService
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls("http://localhost:5010");
-                    webBuilder.UseKestrel(options => {options.Listen(IPAddress.Any, 80);});
+                    // Docker setting
+                    // webBuilder.UseKestrel(options => {options.Listen(IPAddress.Any, 80);});
                 });
     }
 }
