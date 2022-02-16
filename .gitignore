@@ -10,6 +10,11 @@ ApiGateway/.vs
 ApiGateway/appsettings.json
 ApiGateway/Configs
 
+AuditService/.vs
+AuditService/Configs
+AuditService/Models/DbConnection
+AuditService/appsettings.json
+
 ContextService/.vs
 ContextService/appsettings.json
 ContextService/Configs
