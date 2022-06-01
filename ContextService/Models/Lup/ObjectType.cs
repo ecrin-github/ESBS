@@ -21,6 +21,9 @@ namespace ContextService.Models.Lup
         [Column("filter_as_id")]
         public int FilterAsId { get; set; }
         
+        [Column("use_in_data_entry")]
+        public bool? UseInDataEntry { get; set; }
+        
         [Column("list_order")]
         public int ListOrder { get; set; }
         

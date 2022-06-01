@@ -18,6 +18,9 @@ namespace ContextService.Models.Lup
         [Column("list_order")]
         public int ListOrder { get; set; }
         
+        [Column("use_in_data_entry")]
+        public bool? UseInDataEntry { get; set; }
+        
         [Column("source")]
         public string Source { get; set; }
         

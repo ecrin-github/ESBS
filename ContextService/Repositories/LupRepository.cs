@@ -24,7 +24,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ContributionTypes.ToArrayAsync();
+            return await _dbConnection.ContributionTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder).ToArrayAsync();
         }
 
         public async Task<ContributionType> GetContributionType(int id)
@@ -33,7 +36,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ContributionTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ContributionTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<DatasetConsentType>> GetDatasetConsentTypes()
@@ -42,7 +47,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DatasetConsentTypes.ToArrayAsync();
+            return await _dbConnection.DatasetConsentTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<DatasetConsentType> GetDatasetConsentType(int id)
@@ -52,7 +60,9 @@ namespace ContextService.Repositories
                 return null;
             }
 
-            return await _dbConnection.DatasetConsentTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.DatasetConsentTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<DatasetDeidentificationLevel>> GetDatasetDeidentLevels()
@@ -61,7 +71,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DatasetDeidentificationLevels.ToArrayAsync();
+            return await _dbConnection.DatasetDeidentificationLevels
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<DatasetDeidentificationLevel> GetDatasetDeidentLevel(int id)
@@ -70,7 +83,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DatasetDeidentificationLevels.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.DatasetDeidentificationLevels
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<DatasetRecordkeyType>> GetDatasetRecordkeyTypes()
@@ -79,7 +94,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DatasetRecordkeyTypes.ToArrayAsync();
+            return await _dbConnection.DatasetRecordkeyTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<DatasetRecordkeyType> GetDatasetRecordkeyType(int id)
@@ -88,7 +106,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DatasetRecordkeyTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.DatasetRecordkeyTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<DateType>> GetDateTypes()
@@ -97,7 +117,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DateTypes.ToArrayAsync();
+            return await _dbConnection.DateTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<DateType> GetDateType(int id)
@@ -106,7 +130,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DateTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.DateTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<DescriptionType>> GetDescriptionTypes()
@@ -115,7 +141,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DescriptionTypes.ToArrayAsync();
+            return await _dbConnection.DescriptionTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<DescriptionType> GetDescriptionType(int id)
@@ -124,7 +154,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DescriptionTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.DescriptionTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<DoiStatusType>> GetDoiStatusTypes()
@@ -133,7 +165,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DoiStatusTypes.ToArrayAsync();
+            return await _dbConnection.DoiStatusTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<DoiStatusType> GetDoiStatusType(int id)
@@ -142,7 +177,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.DoiStatusTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.DoiStatusTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<GenderEligibilityType>> GetGenderEligTypes()
@@ -151,7 +188,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.GenderEligibilityTypes.ToArrayAsync();
+            return await _dbConnection.GenderEligibilityTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<GenderEligibilityType> GetGenderEligType(int id)
@@ -160,7 +201,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.GenderEligibilityTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.GenderEligibilityTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<GeogEntityType>> GetGeogEntityTypes()
@@ -169,7 +212,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.GeogEntityTypes.ToArrayAsync();
+            return await _dbConnection.GeogEntityTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<GeogEntityType> GetGeogEntityType(int id)
@@ -178,7 +224,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.GeogEntityTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.GeogEntityTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<IdentifierType>> GetIdentifierTypes()
@@ -187,7 +235,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.IdentifierTypes.ToArrayAsync();
+            return await _dbConnection.IdentifierTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<IdentifierType> GetIdentifierType(int id)
@@ -196,7 +248,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.IdentifierTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.IdentifierTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<LanguageCode>> GetLanguageCodes()
@@ -205,7 +259,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.LanguageCodes.ToArrayAsync();
+            return await _dbConnection.LanguageCodes
+                .AsNoTracking()
+                .OrderBy(p => p.Code)
+                .ToArrayAsync();
         }
 
         public async Task<LanguageCode> GetLanguageCode(string code)
@@ -214,7 +271,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.LanguageCodes.FirstOrDefaultAsync(p => p.Code == code);
+            return await _dbConnection.LanguageCodes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Code == code);
         }
 
         public async Task<ICollection<LanguageUsageType>> GetLangUsageTypes()
@@ -223,7 +282,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.LanguageUsageTypes.ToArrayAsync();
+            return await _dbConnection.LanguageUsageTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<LanguageUsageType> GetLangUsageType(int id)
@@ -232,7 +294,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.LanguageUsageTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.LanguageUsageTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<LinkType>> GetLinkTypes()
@@ -241,7 +305,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.LinkTypes.ToArrayAsync();
+            return await _dbConnection.LinkTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<LinkType> GetLinkType(int id)
@@ -250,7 +317,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.LinkTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.LinkTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<ObjectAccessType>> GetObjectAccessTypes()
@@ -259,7 +328,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectAccessTypes.ToArrayAsync();
+            return await _dbConnection.ObjectAccessTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<ObjectAccessType> GetObjectAccessType(int id)
@@ -268,7 +341,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectAccessTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ObjectAccessTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<ObjectClass>> GetObjectClasses()
@@ -277,7 +352,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectClasses.ToArrayAsync();
+            return await _dbConnection.ObjectClasses
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<ObjectClass> GetObjectClass(int id)
@@ -286,7 +365,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectClasses.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ObjectClasses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<ObjectFilterType>> GetObjectFilterTypes()
@@ -295,7 +376,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectFilterTypes.ToArrayAsync();
+            return await _dbConnection.ObjectFilterTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<ObjectFilterType> GetObjectFilterType(int id)
@@ -304,7 +388,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectFilterTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ObjectFilterTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<ObjectInstanceType>> GetObjectInstanceTypes()
@@ -313,7 +399,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectInstanceTypes.ToArrayAsync();
+            return await _dbConnection.ObjectInstanceTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<ObjectInstanceType> GetObjectInstanceType(int id)
@@ -322,7 +411,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectInstanceTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ObjectInstanceTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<ObjectRelationshipType>> GetObjectRelationshipTypes()
@@ -331,7 +422,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectRelationshipTypes.ToArrayAsync();
+            return await _dbConnection.ObjectRelationshipTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<ObjectRelationshipType> GetObjectRelationshipType(int id)
@@ -340,7 +435,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectRelationshipTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ObjectRelationshipTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<ObjectType>> GetObjectTypes()
@@ -349,7 +446,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectTypes.ToArrayAsync();
+            return await _dbConnection.ObjectTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<ObjectType> GetObjectType(int id)
@@ -358,7 +459,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ObjectTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ObjectTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<ResourceType>> GetResourceTypes()
@@ -367,7 +470,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ResourceTypes.ToArrayAsync();
+            return await _dbConnection.ResourceTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<ResourceType> GetResourceType(int id)
@@ -376,7 +482,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.ResourceTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.ResourceTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<RmsUserType>> GetRmsUserTypes()
@@ -385,7 +493,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.RmsUserTypes.ToArrayAsync();
+            return await _dbConnection.RmsUserTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<RmsUserType> GetRmsUserType(int id)
@@ -394,7 +505,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.RmsUserTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.RmsUserTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<RoleClass>> GetRoleClasses()
@@ -403,7 +516,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.RoleClasses.ToArrayAsync();
+            return await _dbConnection.RoleClasses
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<RoleClass> GetRoleClass(int id)
@@ -412,7 +528,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.RoleClasses.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.RoleClasses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<RoleType>> GetRoleTypes()
@@ -421,7 +539,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.RoleTypes.ToArrayAsync();
+            return await _dbConnection.RoleTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<RoleType> GetRoleType(int id)
@@ -430,7 +551,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.RoleTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.RoleTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<SizeUnit>> GetSizeUnits()
@@ -439,7 +562,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.SizeUnits.ToArrayAsync();
+            return await _dbConnection.SizeUnits
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<SizeUnit> GetSizeUnit(int id)
@@ -448,7 +574,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.SizeUnits.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.SizeUnits
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<StudyFeatureCategory>> GetStudyFeatureCategories()
@@ -457,7 +585,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyFeatureCategories.ToArrayAsync();
+            return await _dbConnection.StudyFeatureCategories
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<StudyFeatureCategory> GetStudyFeatureCategory(int id)
@@ -466,7 +597,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyFeatureCategories.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.StudyFeatureCategories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<StudyFeatureType>> GetStudyFeatureTypes()
@@ -475,7 +608,10 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyFeatureTypes.ToArrayAsync();
+            return await _dbConnection.StudyFeatureTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<StudyFeatureType> GetStudyFeatureType(int id)
@@ -484,7 +620,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyFeatureTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.StudyFeatureTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<StudyRelationshipType>> GetStudyRelationshipTypes()
@@ -493,7 +631,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyRelationshipTypes.ToArrayAsync();
+            return await _dbConnection.StudyRelationshipTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<StudyRelationshipType> GetStudyRelationshipType(int id)
@@ -502,7 +644,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyRelationshipTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.StudyRelationshipTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<StudyStatus>> GetStudyStatuses()
@@ -511,7 +655,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyStatuses.ToArrayAsync();
+            return await _dbConnection.StudyStatuses
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<StudyStatus> GetStudyStatus(int id)
@@ -520,7 +668,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyStatuses.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.StudyStatuses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<StudyType>> GetStudyTypes()
@@ -529,7 +679,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyTypes.ToArrayAsync();
+            return await _dbConnection.StudyTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<StudyType> GetStudyType(int id)
@@ -538,7 +692,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.StudyTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.StudyTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<TimeUnit>> GetTimeUnits()
@@ -547,7 +703,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.TimeUnits.ToArrayAsync();
+            return await _dbConnection.TimeUnits
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<TimeUnit> GetTimeUnit(int id)
@@ -556,7 +716,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.TimeUnits.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.TimeUnits
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<TitleType>> GetTitlesTypes()
@@ -565,7 +727,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.TitleTypes.ToArrayAsync();
+            return await _dbConnection.TitleTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<TitleType> GetTitleType(int id)
@@ -574,7 +740,9 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.TitleTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.TitleTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<TopicType>> GetTopicTypes()
@@ -583,7 +751,11 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.TopicTypes.ToArrayAsync();
+            return await _dbConnection.TopicTypes
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<TopicType> GetTopicType(int id)
@@ -592,115 +764,157 @@ namespace ContextService.Repositories
             {
                 return null;
             }
-            return await _dbConnection.TopicTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.TopicTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<CompositeHashType>> GetCompositeHashTypes()
         {
             if (!_dbConnection.CompositeHashTypes.Any()) return null;
-            return await _dbConnection.CompositeHashTypes.ToArrayAsync();
+            return await _dbConnection.CompositeHashTypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<CompositeHashType> GetCompositeHashType(int id)
         {
             if (!_dbConnection.CompositeHashTypes.Any()) return null;
-            return await _dbConnection.CompositeHashTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.CompositeHashTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<OrgAttributeDatatype>> GetOrgAttributeDatatypes()
         {
             if (!_dbConnection.OrgAttributeDatatypes.Any()) return null;
-            return await _dbConnection.OrgAttributeDatatypes.ToArrayAsync();
+            return await _dbConnection.OrgAttributeDatatypes
+                .AsNoTracking()
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<OrgAttributeDatatype> GetOrgAttributeDatatype(int id)
         {
             if (!_dbConnection.OrgAttributeDatatypes.Any()) return null;
-            return await _dbConnection.OrgAttributeDatatypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.OrgAttributeDatatypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<OrgAttributeType>> GetOrgAttributeTypes()
         {
             if (!_dbConnection.OrgAttributeTypes.Any()) return null;
-            return await _dbConnection.OrgAttributeTypes.ToArrayAsync();
+            return await _dbConnection.OrgAttributeTypes
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
         public async Task<OrgAttributeType> GetOrgAttributeType(int id)
         {
             if (!_dbConnection.OrgAttributeTypes.Any()) return null;
-            return await _dbConnection.OrgAttributeTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.OrgAttributeTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<OrgClass>> GetOrgClasses()
         {
             if (!_dbConnection.OrgClasses.Any()) return null;
-            return await _dbConnection.OrgClasses.ToArrayAsync();
+            return await _dbConnection.OrgClasses
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
         public async Task<OrgClass> GetOrgClass(int id)
         {
             if (!_dbConnection.OrgClasses.Any()) return null;
-            return await _dbConnection.OrgClasses.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.OrgClasses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<OrgLinkType>> GetOrgLinkTypes()
         {
             if (!_dbConnection.OrgLinkTypes.Any()) return null;
-            return await _dbConnection.OrgLinkTypes.ToArrayAsync();
+            return await _dbConnection.OrgLinkTypes
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
         public async Task<OrgLinkType> GetOrgLinkType(int id)
         {
             if (!_dbConnection.OrgLinkTypes.Any()) return null;
-            return await _dbConnection.OrgLinkTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.OrgLinkTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<OrgNameQualifierType>> GetOrgNameQualifierTypes()
         {
             if (!_dbConnection.OrgNameQualifierTypes.Any()) return null;
-            return await _dbConnection.OrgNameQualifierTypes.ToArrayAsync();
+            return await _dbConnection.OrgNameQualifierTypes
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
         public async Task<OrgNameQualifierType> GetOrgNameQualifierType(int id)
         {
             if (!_dbConnection.OrgNameQualifierTypes.Any()) return null;
-            return await _dbConnection.OrgNameQualifierTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.OrgNameQualifierTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<OrgRelationshipType>> GetOrgRelationshipTypes()
         {
             if (!_dbConnection.OrgRelationshipTypes.Any()) return null;
-            return await _dbConnection.OrgRelationshipTypes.ToArrayAsync();
+            return await _dbConnection.OrgRelationshipTypes
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
         public async Task<OrgRelationshipType> GetOrgRelationshipType(int id)
         {
             if (!_dbConnection.OrgRelationshipTypes.Any()) return null;
-            return await _dbConnection.OrgRelationshipTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.OrgRelationshipTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<OrgType>> GetOrgTypes()
         {
             if (!_dbConnection.OrgTypes.Any()) return null;
-            return await _dbConnection.OrgTypes.ToArrayAsync();
+            return await _dbConnection.OrgTypes
+                .AsNoTracking()
+                .ToArrayAsync();
         }
 
         public async Task<OrgType> GetOrgType(int id)
         {
             if (!_dbConnection.OrgTypes.Any()) return null;
-            return await _dbConnection.OrgTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.OrgTypes
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<ICollection<TopicVocabulary>> GetTopicVocabularies()
         {
             if (!_dbConnection.TopicVocabularies.Any()) return null;
-            return await _dbConnection.TopicVocabularies.ToArrayAsync();
+            return await _dbConnection.TopicVocabularies
+                .AsNoTracking()
+                .Where(p => p.UseInDataEntry == true)
+                .OrderBy(p => p.ListOrder)
+                .ToArrayAsync();
         }
 
         public async Task<TopicVocabulary> GetTopicVocabulary(int id)
         {
             if (!_dbConnection.TopicVocabularies.Any()) return null;
-            return await _dbConnection.TopicVocabularies.FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbConnection.TopicVocabularies
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

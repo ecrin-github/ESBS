@@ -85,17 +85,6 @@
         "AllowedScopes": []
       },
       "SwaggerKey": "user"
-    },
-    {
-      "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "identity.ecrin-rms.org"
-        }
-      ],
-      "UpstreamPathTemplate": "/identity/{everything}",
-      "SwaggerKey": "identity-client"
     }
   ],
   "SwaggerEndPoints": [
@@ -174,19 +163,6 @@
           "Name": "The ESBS User API",
           "Version": "v1",
           "Url": "https://user.ecrin-rms.org/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "identity-client",
-      "TransformByOcelotConfig": true,
-      "TakeServersFromDownstreamService": false,
-      "TakeServersFromUpstreamService": true,
-      "Config": [
-        {
-          "Name": "The ESBS Identity API",
-          "Version": "v1",
-          "Url": "https://identity.ecrin-rms.org/swagger/v1/swagger.json"
         }
       ]
     }

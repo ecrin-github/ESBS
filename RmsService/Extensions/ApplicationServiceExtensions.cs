@@ -29,7 +29,7 @@ namespace RmsService.Extensions
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = ElixirIdentityConfigs.OidcUrl;
+                    options.Authority = IdentityConfigs.OidcUrl;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateAudience = false

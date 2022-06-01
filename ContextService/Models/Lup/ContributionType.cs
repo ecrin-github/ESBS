@@ -16,6 +16,12 @@ namespace ContextService.Models.Lup
         [Column("description")]
         public string? Description { get; set; }
         
+        [Column("applies_to")]
+        public string? AppliesTo { get; set; }
+        
+        [Column("use_in_data_entry")]
+        public bool? UseInDataEntry { get; set; }
+        
         [Column("list_order")]
         public int ListOrder { get; set; }
         

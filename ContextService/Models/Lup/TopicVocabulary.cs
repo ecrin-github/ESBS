@@ -15,6 +15,9 @@ namespace ContextService.Models.Lup
 
         [Column("description")]
         public string? Description {get; set;}
+        
+        [Column("use_in_data_entry")]
+        public bool? UseInDataEntry { get; set; }
 
         [Column("url")]
         public string? Url {get; set;}

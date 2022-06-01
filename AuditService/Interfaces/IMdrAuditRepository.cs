@@ -6,4 +6,6 @@ namespace AuditService.Interfaces;
 public interface IMdrAuditRepository
 {
     Task<AuditResponseDto> CreateMdrAuditRecordChange(AuditRequestDto auditRequestDto);
+    Task<AuditResponseDto[]?> GetMdrTableAuditHistory(string tableName);
+    Task<AuditResponseDto[]?> GetUserMdrAuditHistory(string accessToken);
 }

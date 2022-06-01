@@ -1,67 +1,59 @@
-using System.Linq;
 using System.Net;
-using IdentityServer.Configs.Seed;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
+using IdentityServer.Extensions;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-namespace IdentityServer
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
-    public class Program
-    {
-        public static int Main(string[] args)
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console(
-                    outputTemplate:
-                    "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}",
-                    theme: AnsiConsoleTheme.Code)
-                .CreateLogger();
+    options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
+});
 
-            var seed = args.Contains("/seed");
-            if (seed)
-            {
-                args = args.Except(new[] { "/seed" }).ToArray();
-            }
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            var host = CreateHostBuilder(args).Build();
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 
-            if (seed)
-            {
-                Log.Information("Seeding database...");
-                var config = host.Services.GetRequiredService<IConfiguration>();
-                
-                var identityConnectionString = config.GetConnectionString("IdentityDbConnectionString");
-                var userConnectionString = config.GetConnectionString("UserDbConnectionString");
-                
-                
-                SeedData.EnsureSeedData(identityConnectionString, userConnectionString);
-                Log.Information("Done seeding database");
-                return 0;
-            }
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+});
 
-            Log.Information("Starting host...");
-            host.Run();
-            return 0;
-        }
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.AllowSynchronousIO = true;
+});
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:7000");
-                    webBuilder.UseKestrel(options => {options.Listen(IPAddress.Any, 80);});
-                });
-    }
+builder.WebHost.UseUrls("https://localhost:5270");
+
+// Docker setting
+// builder.WebHost.UseKestrel(options => {options.Listen(IPAddress.Any, 80);});
+
+
+var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseRouting();
+app.UseIdentityServer();
+
+app.UseStaticFiles();
+
+app.UseHttpsRedirection();
+
+app.UseCors("Open");
+app.MapControllers();
+
+app.Run();

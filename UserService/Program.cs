@@ -22,8 +22,8 @@ namespace UserService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://localhost:5040");
-                    webBuilder.UseKestrel(options => {options.Listen(IPAddress.Any, 80);});
+                    webBuilder.UseUrls("https://localhost:5040");
+                    // webBuilder.UseKestrel(options => {options.Listen(IPAddress.Any, 80);});
                 });
     }
 }

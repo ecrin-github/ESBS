@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuditService.Models.Audit.RMS;
 
-#nullable enable
 [Table("record_changes", Schema = "rms")]
 public class RmsRecordChange
 {
@@ -10,23 +9,23 @@ public class RmsRecordChange
     public int Id {get; set;}
 
     [Column("table_name")]
-    public string? TableName {get; set;}
+    public string? TableName { get; set; } = string.Empty;
 
     [Column("table_id")]
-    public int? TableId {get; set;}
+    public int? TableId { get; set; } = 0;
 
     [Column("change_type")]
-    public int? ChangeType {get; set;}
+    public int? ChangeType { get; set; } = 0;
 
     [Column("change_time")]
-    public DateTime ChangeTime {get; set;}
+    public DateTime ChangeTime { get; set; } = DateTime.Now;
 
     [Column("user_name")]
-    public string? UserName {get; set;}
+    public string? UserName { get; set; } = string.Empty;
 
     [Column("prior", TypeName = "jsonb")]
-    public string? Prior {get; set;}
+    public string? Prior { get; set; } = string.Empty;
 
     [Column("post", TypeName = "jsonb")]
-    public string? Post {get; set;}
+    public string? Post { get; set; } = string.Empty;
 }

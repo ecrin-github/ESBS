@@ -48,7 +48,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectContributorDto> CreateObjectContributor(ObjectContributorDto objectContributorDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectContributor = new ObjectContributor
             {
@@ -64,11 +64,12 @@ namespace MdmService.Repositories
                 PersonFullName = objectContributorDto.PersonFullName,
                 PersonAffiliation = objectContributorDto.PersonAffiliation,
                 OrcidId = objectContributorDto.OrcidId,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectContributors.AddAsync(objectContributor);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_contributors",
@@ -78,6 +79,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectContributor>(objectContributor).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -90,8 +92,9 @@ namespace MdmService.Repositories
                 await _dbConnection.ObjectContributors.FirstOrDefaultAsync(p => p.SdOid == objectContributorDto.SdOid);
             if (dbObjectContributor == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_contributors",
@@ -101,6 +104,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectContributor>(dbObjectContributor).ToString(),
                 Post = JsonSerializer.Serialize<ObjectContributorDto>(objectContributorDto).ToString()
             });
+            */
             
             dbObjectContributor.ContribTypeId = objectContributorDto.ContribTypeId;
             dbObjectContributor.IsIndividual = objectContributorDto.IsIndividual;
@@ -113,7 +117,7 @@ namespace MdmService.Repositories
             dbObjectContributor.PersonAffiliation = objectContributorDto.PersonAffiliation;
             dbObjectContributor.OrcidId = objectContributorDto.OrcidId;
             
-            dbObjectContributor.LastEditedBy = userData;
+            dbObjectContributor.LastEditedBy = "userData";
                 
             await _dbConnection.SaveChangesAsync();
             
@@ -154,7 +158,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectDatasetDto> CreateObjectDataset(ObjectDatasetDto objectDatasetDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectDataset = new ObjectDataset
             {
@@ -176,11 +180,12 @@ namespace MdmService.Repositories
                 ConsentResearchType = objectDatasetDto.ConsentResearchType,
                 ConsentNoMethods = objectDatasetDto.ConsentNoMethods,
                 ConsentDetails = objectDatasetDto.ConsentDetails,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectDatasets.AddAsync(objectDataset);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_datasets",
@@ -190,6 +195,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectDataset>(objectDataset).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -202,8 +208,9 @@ namespace MdmService.Repositories
                 await _dbConnection.ObjectDatasets.FirstOrDefaultAsync(p => p.Id == objectDatasetDto.Id);
             if (dbObjectDataset == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_datasets",
@@ -213,6 +220,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectDataset>(dbObjectDataset).ToString(),
                 Post = JsonSerializer.Serialize<ObjectDatasetDto>(objectDatasetDto).ToString()
             });
+            */
             
             dbObjectDataset.RecordKeysTypeId = objectDatasetDto.RecordKeysTypeId;
             dbObjectDataset.RecordKeysDetails = objectDatasetDto.RecordKeysDetails;
@@ -233,7 +241,7 @@ namespace MdmService.Repositories
             dbObjectDataset.ConsentNoMethods = objectDatasetDto.ConsentNoMethods;
             dbObjectDataset.ConsentDetails = objectDatasetDto.ConsentDetails;
 
-            dbObjectDataset.LastEditedBy = userData;
+            dbObjectDataset.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -274,7 +282,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectDateDto> CreateObjectDate(ObjectDateDto objectDateDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectDate = new ObjectDate
             {
@@ -290,11 +298,12 @@ namespace MdmService.Repositories
                 EndMonth = objectDateDto.EndMonth,
                 EndDay = objectDateDto.EndDay,
                 Details = objectDateDto.Details,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectDates.AddAsync(objectDate);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_dates",
@@ -304,6 +313,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectDate>(objectDate).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -315,7 +325,9 @@ namespace MdmService.Repositories
             var dbObjectDate = await _dbConnection.ObjectDates.FirstOrDefaultAsync(p => p.Id == objectDateDto.Id);
             if (dbObjectDate == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
+            
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -326,6 +338,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectDate>(dbObjectDate).ToString(),
                 Post = JsonSerializer.Serialize<ObjectDateDto>(objectDateDto).ToString()
             });
+            */
             
             dbObjectDate.DateTypeId = objectDateDto.DateTypeId;
             dbObjectDate.DateIsRange = objectDateDto.DateIsRange;
@@ -338,7 +351,7 @@ namespace MdmService.Repositories
             dbObjectDate.EndDay = objectDateDto.EndDay;
             dbObjectDate.Details = objectDateDto.Details;
 
-            dbObjectDate.LastEditedBy = userData;
+            dbObjectDate.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -379,7 +392,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectDescriptionDto> CreateObjectDescription(ObjectDescriptionDto objectDescriptionDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectDescription = new ObjectDescription
             {
@@ -389,11 +402,12 @@ namespace MdmService.Repositories
                 DescriptionText = objectDescriptionDto.DescriptionText,
                 LangCode = objectDescriptionDto.LangCode,
                 Label = objectDescriptionDto.Label,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectDescriptions.AddAsync(objectDescription);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_descriptions",
@@ -403,6 +417,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectDescription>(objectDescription).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -415,8 +430,9 @@ namespace MdmService.Repositories
                 await _dbConnection.ObjectDescriptions.FirstOrDefaultAsync(p => p.Id == objectDescriptionDto.Id);
             if (dbObjectDescription == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_descriptions",
@@ -426,13 +442,14 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectDescription>(dbObjectDescription).ToString(),
                 Post = JsonSerializer.Serialize<ObjectDescriptionDto>(objectDescriptionDto).ToString()
             });
+            */
             
             dbObjectDescription.DescriptionTypeId = objectDescriptionDto.DescriptionTypeId;
             dbObjectDescription.DescriptionText = objectDescriptionDto.DescriptionText;
             dbObjectDescription.LangCode = objectDescriptionDto.LangCode;
             dbObjectDescription.Label = objectDescriptionDto.Label;
 
-            dbObjectDescription.LastEditedBy = userData;
+            dbObjectDescription.LastEditedBy = "userData";
                 
             await _dbConnection.SaveChangesAsync();
             
@@ -473,7 +490,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectIdentifierDto> CreateObjectIdentifier(ObjectIdentifierDto objectIdentifierDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectIdentifier = new ObjectIdentifier
             {
@@ -485,11 +502,12 @@ namespace MdmService.Repositories
                 IdentifierOrgId = objectIdentifierDto.IdentifierOrgId,
                 IdentifierDate = objectIdentifierDto.IdentifierDate,
                 IdentifierOrgRorId = objectIdentifierDto.IdentifierOrgRorId,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectIdentifiers.AddAsync(objectIdentifier);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_identifiers",
@@ -499,6 +517,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectIdentifier>(objectIdentifier).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -511,6 +530,7 @@ namespace MdmService.Repositories
                 await _dbConnection.ObjectIdentifiers.FirstOrDefaultAsync(p => p.Id == objectIdentifierDto.Id);
             if (dbObjectIdentifier == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -522,6 +542,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectIdentifier>(dbObjectIdentifier).ToString(),
                 Post = JsonSerializer.Serialize<ObjectIdentifierDto>(objectIdentifierDto).ToString()
             });
+            */
             
             dbObjectIdentifier.IdentifierValue = objectIdentifierDto.IdentifierValue;
             dbObjectIdentifier.IdentifierTypeId = objectIdentifierDto.IdentifierTypeId;
@@ -530,7 +551,7 @@ namespace MdmService.Repositories
             dbObjectIdentifier.IdentifierDate = objectIdentifierDto.IdentifierDate;
             dbObjectIdentifier.IdentifierOrgRorId = objectIdentifierDto.IdentifierOrgRorId;
 
-            dbObjectIdentifier.LastEditedBy = userData;
+            dbObjectIdentifier.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -571,7 +592,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectInstanceDto> CreateObjectInstance(ObjectInstanceDto objectInstanceDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectInstance = new ObjectInstance
             {
@@ -587,11 +608,12 @@ namespace MdmService.Repositories
                 ResourceSize = objectInstanceDto.ResourceSize,
                 ResourceSizeUnits = objectInstanceDto.ResourceSizeUnits,
                 ResourceComments = objectInstanceDto.ResourceComments,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectInstances.AddAsync(objectInstance);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_instances",
@@ -601,6 +623,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectInstanceDto>(objectInstanceDto).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -613,8 +636,9 @@ namespace MdmService.Repositories
                 await _dbConnection.ObjectInstances.FirstOrDefaultAsync(p => p.Id == objectInstanceDto.Id);
             if (dbObjectInstance == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_instances",
@@ -624,6 +648,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectInstance>(dbObjectInstance).ToString(),
                 Post = JsonSerializer.Serialize<ObjectInstanceDto>(objectInstanceDto).ToString()
             });
+            */
             
             dbObjectInstance.InstanceTypeId = objectInstanceDto.InstanceTypeId;
             dbObjectInstance.RepositoryOrgId = objectInstanceDto.RepositoryOrgId;
@@ -636,7 +661,7 @@ namespace MdmService.Repositories
             dbObjectInstance.ResourceSizeUnits = objectInstanceDto.ResourceSizeUnits;
             dbObjectInstance.ResourceComments = objectInstanceDto.ResourceComments;
             
-            dbObjectInstance.LastEditedBy = userData;
+            dbObjectInstance.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -677,7 +702,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectRelationshipDto> CreateObjectRelationship(ObjectRelationshipDto objectRelationshipDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectRelationship = new ObjectRelationship
             {
@@ -685,11 +710,12 @@ namespace MdmService.Repositories
                 CreatedOn = DateTime.Now,
                 RelationshipTypeId = objectRelationshipDto.RelationshipTypeId,
                 TargetSdOid = objectRelationshipDto.TargetSdOid,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectRelationships.AddAsync(objectRelationship);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_relationships",
@@ -699,6 +725,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectRelationship>(objectRelationship).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -711,8 +738,9 @@ namespace MdmService.Repositories
                 await _dbConnection.ObjectRelationships.FirstOrDefaultAsync(p => p.Id == objectRelationshipDto.Id);
             if (dbObjectRelation == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_relationships",
@@ -722,11 +750,12 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectRelationship>(dbObjectRelation).ToString(),
                 Post = JsonSerializer.Serialize<ObjectRelationshipDto>(objectRelationshipDto).ToString()
             });
+            */
             
             dbObjectRelation.RelationshipTypeId = objectRelationshipDto.RelationshipTypeId;
             dbObjectRelation.TargetSdOid = objectRelationshipDto.TargetSdOid;
 
-            dbObjectRelation.LastEditedBy = userData;
+            dbObjectRelation.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -767,7 +796,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectRightDto> CreateObjectRight(ObjectRightDto objectRightDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectRight = new ObjectRight
             {
@@ -776,11 +805,12 @@ namespace MdmService.Repositories
                 RightsName = objectRightDto.RightsName,
                 RightsUri = objectRightDto.RightsUri,
                 Comments = objectRightDto.Comments,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectRights.AddAsync(objectRight);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_rights",
@@ -789,7 +819,7 @@ namespace MdmService.Repositories
                 UserName = userData,
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectRight>(objectRight).ToString()
-            });
+            });*/
 
             await _dbConnection.SaveChangesAsync();
             
@@ -801,8 +831,9 @@ namespace MdmService.Repositories
             var dbObjectRight = await _dbConnection.ObjectRights.FirstOrDefaultAsync(p => p.Id == objectRightDto.Id);
             if (dbObjectRight == null) return null;
             
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_rights",
@@ -812,12 +843,13 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectRight>(dbObjectRight).ToString(),
                 Post = JsonSerializer.Serialize<ObjectRightDto>(objectRightDto).ToString()
             });
+            */
 
             dbObjectRight.RightsName = objectRightDto.RightsName;
             dbObjectRight.RightsUri = objectRightDto.RightsUri;
             dbObjectRight.Comments = objectRightDto.Comments;
 
-            dbObjectRight.LastEditedBy = userData;
+            dbObjectRight.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -858,7 +890,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectTitleDto> CreateObjectTitle(ObjectTitleDto objectTitleDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectTitle = new ObjectTitle
             {
@@ -870,11 +902,12 @@ namespace MdmService.Repositories
                 LangCode = objectTitleDto.LangCode,
                 LangUsageId = objectTitleDto.LangUsageId,
                 Comments = objectTitleDto.Comments,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectTitles.AddAsync(objectTitle);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_titles",
@@ -884,6 +917,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectTitle>(objectTitle).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -895,8 +929,8 @@ namespace MdmService.Repositories
             var dbObjectTitle = await _dbConnection.ObjectTitles.FirstOrDefaultAsync(p => p.Id == objectTitleDto.Id);
             if (dbObjectTitle == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
-
+            //var userData = await _userIdentityService.GetUserData(accessToken);
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_titles",
@@ -906,6 +940,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectTitle>(dbObjectTitle).ToString(),
                 Post = JsonSerializer.Serialize<ObjectTitleDto>(objectTitleDto).ToString()
             });
+            */
             
             dbObjectTitle.TitleTypeId = objectTitleDto.TitleTypeId;
             dbObjectTitle.IsDefault = objectTitleDto.IsDefault;
@@ -914,7 +949,7 @@ namespace MdmService.Repositories
             dbObjectTitle.LangUsageId = objectTitleDto.LangUsageId;
             dbObjectTitle.Comments = objectTitleDto.Comments;
 
-            dbObjectTitle.LastEditedBy = userData;
+            // dbObjectTitle.LastEditedBy = userData;
                 
             await _dbConnection.SaveChangesAsync();
             return _dataMapper.ObjectTitleDtoMapper(dbObjectTitle);
@@ -954,7 +989,7 @@ namespace MdmService.Repositories
 
         public async Task<ObjectTopicDto> CreateObjectTopic(ObjectTopicDto objectTopicDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var objectTopic = new ObjectTopic
             {
@@ -964,17 +999,15 @@ namespace MdmService.Repositories
                 MeshCoded = objectTopicDto.MeshCoded,
                 MeshCode = objectTopicDto.MeshCode,
                 MeshValue = objectTopicDto.MeshValue,
-                MeshQualcode = objectTopicDto.MeshQualcode,
-                MeshQualvalue = objectTopicDto.MeshQualvalue,
                 OriginalCtId = objectTopicDto.OriginalCtId,
                 OriginalCtCode = objectTopicDto.OriginalCtCode,
                 OriginalValue = objectTopicDto.OriginalValue,
-                Comments = objectTopicDto.Comments,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.ObjectTopics.AddAsync(objectTopic);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_topics",
@@ -984,7 +1017,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<ObjectTopic>(objectTopic).ToString()
             });
-
+*/
             await _dbConnection.SaveChangesAsync();
             
             return _dataMapper.ObjectTopicDtoMapper(objectTopic);
@@ -995,8 +1028,9 @@ namespace MdmService.Repositories
             var dbObjectTopic = await _dbConnection.ObjectTopics.FirstOrDefaultAsync(p => p.Id == objectTopicDto.Id);
             if (dbObjectTopic == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "object_topics",
@@ -1006,19 +1040,17 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<ObjectTopic>(dbObjectTopic).ToString(),
                 Post = JsonSerializer.Serialize<ObjectTopicDto>(objectTopicDto).ToString()
             });
+            */
             
             dbObjectTopic.TopicTypeId = objectTopicDto.TopicTypeId;
             dbObjectTopic.MeshCoded = objectTopicDto.MeshCoded;
             dbObjectTopic.MeshCode = objectTopicDto.MeshCode;
             dbObjectTopic.MeshValue = objectTopicDto.MeshValue;
-            dbObjectTopic.MeshQualcode = objectTopicDto.MeshQualcode;
-            dbObjectTopic.MeshQualvalue = objectTopicDto.MeshQualvalue;
             dbObjectTopic.OriginalCtId = objectTopicDto.OriginalCtId;
             dbObjectTopic.OriginalCtCode = objectTopicDto.OriginalCtCode;
             dbObjectTopic.OriginalValue = objectTopicDto.OriginalValue;
-            dbObjectTopic.Comments = objectTopicDto.Comments;
 
-            dbObjectTopic.LastEditedBy = userData;
+            dbObjectTopic.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             return _dataMapper.ObjectTopicDtoMapper(dbObjectTopic);
@@ -1075,11 +1107,11 @@ namespace MdmService.Repositories
                 objId = lastRecord.Id + 1;
             }
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var dataObject = new DataObject
             {
-                SdOid = objId.ToString(),
+                SdOid = "RMS-" + objId,
                 CreatedOn = DateTime.Now,
                 SdSid = dataObjectDto.SdSid,
                 DisplayTitle = dataObjectDto.DisplayTitle,
@@ -1099,11 +1131,12 @@ namespace MdmService.Repositories
                 UrlLastChecked = dataObjectDto.UrlLastChecked,
                 EoscCategory = dataObjectDto.EoscCategory,
                 AddStudyContribs = dataObjectDto.AddStudyContribs,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.DataObjects.AddAsync(dataObject);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "data_objects",
@@ -1113,6 +1146,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<DataObject>(dataObject).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
 
@@ -1120,14 +1154,20 @@ namespace MdmService.Repositories
             {
                 foreach (var oc in dataObjectDto.ObjectContributors)
                 {
-                    oc.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(oc.SdOid))
+                    {
+                        oc.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectContributor(oc, accessToken);
                 }
             }
             
             if (dataObjectDto.ObjectDatasets != null)
             {
-                dataObjectDto.ObjectDatasets.SdOid ??= dataObjectDto.SdOid;
+                if (string.IsNullOrEmpty(dataObjectDto.ObjectDatasets.SdOid))
+                {
+                    dataObjectDto.ObjectDatasets.SdOid = dataObject.SdOid;
+                }
                 await CreateObjectDataset(dataObjectDto.ObjectDatasets, accessToken);
             }
             
@@ -1135,7 +1175,10 @@ namespace MdmService.Repositories
             {
                 foreach (var od in dataObjectDto.ObjectDates)
                 {
-                    od.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(od.SdOid))
+                    {
+                        od.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectDate(od, accessToken);
                 }
             }
@@ -1144,7 +1187,10 @@ namespace MdmService.Repositories
             {
                 foreach (var od in dataObjectDto.ObjectDescriptions)
                 {
-                    od.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(od.SdOid))
+                    {
+                        od.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectDescription(od, accessToken);
                 }
             }
@@ -1153,7 +1199,10 @@ namespace MdmService.Repositories
             {
                 foreach (var oi in dataObjectDto.ObjectIdentifiers)
                 {
-                    oi.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(oi.SdOid))
+                    {
+                        oi.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectIdentifier(oi, accessToken);
                 }
             }
@@ -1162,7 +1211,10 @@ namespace MdmService.Repositories
             {
                 foreach (var oi in dataObjectDto.ObjectInstances)
                 {
-                    oi.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(oi.SdOid))
+                    {
+                        oi.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectInstance(oi, accessToken);
                 }
             }
@@ -1171,7 +1223,10 @@ namespace MdmService.Repositories
             {
                 foreach (var or in dataObjectDto.ObjectRelationships)
                 {
-                    or.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(or.SdOid))
+                    {
+                        or.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectRelationship(or, accessToken);
                 }
             }
@@ -1180,7 +1235,10 @@ namespace MdmService.Repositories
             {
                 foreach (var or in dataObjectDto.ObjectRights)
                 {
-                    or.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(or.SdOid))
+                    {
+                        or.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectRight(or, accessToken);
                 }
             }
@@ -1189,7 +1247,10 @@ namespace MdmService.Repositories
             {
                 foreach (var ot in dataObjectDto.ObjectTitles)
                 {
-                    ot.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(ot.SdOid))
+                    {
+                        ot.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectTitle(ot, accessToken);
                 }
             }
@@ -1198,7 +1259,10 @@ namespace MdmService.Repositories
             {
                 foreach (var ot in dataObjectDto.ObjectTopics)
                 {
-                    ot.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(ot.SdOid))
+                    {
+                        ot.SdOid = dataObject.SdOid;
+                    }
                     await CreateObjectTopic(ot, accessToken);
                 }
             }
@@ -1211,8 +1275,9 @@ namespace MdmService.Repositories
             var dbDataObject = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.SdOid == dataObjectDto.SdOid);
             if (dbDataObject == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "data_objects",
@@ -1222,6 +1287,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<DataObject>(dbDataObject).ToString(),
                 Post = JsonSerializer.Serialize<DataObjectDto>(dataObjectDto).ToString()
             });
+            */
             
             dbDataObject.DisplayTitle = dataObjectDto.DisplayTitle;
             dbDataObject.Doi = dataObjectDto.Doi;
@@ -1241,7 +1307,7 @@ namespace MdmService.Repositories
             dbDataObject.EoscCategory = dataObjectDto.EoscCategory;
             dbDataObject.AddStudyContribs = dataObjectDto.AddStudyContribs;
 
-            dbDataObject.LastEditedBy = userData;
+            dbDataObject.LastEditedBy = "userData";
             
             if (dataObjectDto.ObjectContributors is { Count: > 0 })
             {
@@ -1249,7 +1315,10 @@ namespace MdmService.Repositories
                 {
                     if (oc.Id is null or 0)
                     {
-                        oc.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(oc.SdOid))
+                        {
+                            oc.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectContributor(oc, accessToken);
                     }
                     else
@@ -1263,7 +1332,10 @@ namespace MdmService.Repositories
             {
                 if (dataObjectDto.ObjectDatasets.Id is null or 0)
                 {
-                    dataObjectDto.ObjectDatasets.SdOid ??= dataObjectDto.SdOid;
+                    if (string.IsNullOrEmpty(dataObjectDto.ObjectDatasets.SdOid))
+                    {
+                        dataObjectDto.ObjectDatasets.SdOid = dataObjectDto.SdOid;
+                    }
                     await CreateObjectDataset(dataObjectDto.ObjectDatasets, accessToken);
                 }
                 else
@@ -1278,7 +1350,10 @@ namespace MdmService.Repositories
                 {
                     if (od.Id is null or 0)
                     {
-                        od.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(od.SdOid))
+                        {
+                            od.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectDate(od, accessToken);
                     }
                     else
@@ -1294,7 +1369,10 @@ namespace MdmService.Repositories
                 {
                     if (od.Id is null or 0)
                     {
-                        od.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(od.SdOid))
+                        {
+                            od.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectDescription(od, accessToken);
                     }
                     else
@@ -1310,7 +1388,10 @@ namespace MdmService.Repositories
                 {
                     if (oi.Id is null or 0)
                     {
-                        oi.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(oi.SdOid))
+                        {
+                            oi.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectIdentifier(oi, accessToken);
                     }
                     else
@@ -1326,7 +1407,10 @@ namespace MdmService.Repositories
                 {
                     if (oi.Id is null or 0)
                     {
-                        oi.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(oi.SdOid))
+                        {
+                            oi.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectInstance(oi, accessToken);
                     }
                     else
@@ -1342,7 +1426,10 @@ namespace MdmService.Repositories
                 {
                     if (or.Id is null or 0)
                     {
-                        or.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(or.SdOid))
+                        {
+                            or.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectRelationship(or, accessToken);
                     }
                     else
@@ -1358,7 +1445,10 @@ namespace MdmService.Repositories
                 {
                     if (or.Id is null or 0)
                     {
-                        or.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(or.SdOid))
+                        {
+                            or.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectRight(or, accessToken);
                     }
                     else
@@ -1374,7 +1464,10 @@ namespace MdmService.Repositories
                 {
                     if (ot.Id is null or 0)
                     {
-                        ot.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(ot.SdOid))
+                        {
+                            ot.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectTitle(ot, accessToken);
                     }
                     else
@@ -1390,7 +1483,10 @@ namespace MdmService.Repositories
                 {
                     if (ot.Id is null or 0)
                     {
-                        ot.SdOid ??= dataObjectDto.SdOid;
+                        if (string.IsNullOrEmpty(ot.SdOid))
+                        {
+                            ot.SdOid = dataObjectDto.SdOid;
+                        }
                         await CreateObjectTopic(ot, accessToken);
                     }
                     else
@@ -1444,7 +1540,7 @@ namespace MdmService.Repositories
                 objId = lastRecord.Id + 1;
             }
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var dataObject = new DataObject
             {
@@ -1468,11 +1564,12 @@ namespace MdmService.Repositories
                 UrlLastChecked = dataObjectData.UrlLastChecked,
                 EoscCategory = dataObjectData.EoscCategory,
                 AddStudyContribs = dataObjectData.AddStudyContribs,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.DataObjects.AddAsync(dataObject);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "data_objects",
@@ -1482,6 +1579,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<DataObject>(dataObject).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -1493,8 +1591,9 @@ namespace MdmService.Repositories
             var dbDataObject = await _dbConnection.DataObjects.FirstOrDefaultAsync(p => p.SdOid == dataObjectData.SdOid);
             if (dbDataObject == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "data_objects",
@@ -1504,6 +1603,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<DataObject>(dbDataObject).ToString(),
                 Post = JsonSerializer.Serialize<DataObjectDataDto>(dataObjectData).ToString()
             });
+            */
             
             dbDataObject.DisplayTitle = dataObjectData.DisplayTitle;
             dbDataObject.Doi = dataObjectData.Doi;
@@ -1523,7 +1623,7 @@ namespace MdmService.Repositories
             dbDataObject.EoscCategory = dataObjectData.EoscCategory;
             dbDataObject.AddStudyContribs = dataObjectData.AddStudyContribs;
 
-            dbDataObject.LastEditedBy = userData;
+            dbDataObject.LastEditedBy = "userData";
                 
             await _dbConnection.SaveChangesAsync();
             

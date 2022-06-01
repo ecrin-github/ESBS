@@ -8,19 +8,20 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-/*
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
 });
-*/
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "The ESBS REST API - MDM Documentation", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "The ESBS REST API - Audit Documentation", Version = "v1" });
     c.EnableAnnotations();
     var securitySchema = new OpenApiSecurityScheme
     {
@@ -61,12 +62,10 @@ builder.WebHost.UseUrls("https://localhost:5270");
 
 var app = builder.Build();
 
-/*
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
-*/
 
 app.UseMiddleware<ExceptionMiddleware>();
 

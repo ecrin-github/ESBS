@@ -6,8 +6,8 @@ namespace AuditService.Interfaces;
 
 public interface IDataMapper
 {
-    ICollection<AuditResponseDto> MapRmsAuditRecords(ICollection<RmsRecordChange> rmsRecordChanges);
-    ICollection<AuditResponseDto> MapMdrAuditRecords(ICollection<MdrRecordChange> mdrRecordChanges);
+    AuditResponseDto[] MapRmsAuditRecords(ICollection<RmsRecordChange> rmsRecordChanges);
+    AuditResponseDto[] MapMdrAuditRecords(ICollection<MdrRecordChange> mdrRecordChanges);
     AuditResponseDto BuildRmsAuditResponse(RmsRecordChange rmsRecordChange);
     AuditResponseDto BuildMdrAuditResponse(MdrRecordChange mdrRecordChange);
 }

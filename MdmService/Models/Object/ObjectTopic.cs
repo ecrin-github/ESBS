@@ -26,13 +26,7 @@ namespace MdmService.Models.Object
         
         [Column("mesh_value")]
         public string? MeshValue { get; set; }
-        
-        [Column("mesh_qualcode")]
-        public string? MeshQualcode { get; set; }
-        
-        [Column("mesh_qualvalue")]
-        public string? MeshQualvalue { get; set; }
-        
+
         [Column("original_ct_id")]
         public int? OriginalCtId { get; set; }
         
@@ -41,10 +35,7 @@ namespace MdmService.Models.Object
         
         [Column("original_value")]
         public string? OriginalValue { get; set; }
-        
-        [Column("comments")]
-        public string? Comments { get; set; }
-        
+
         [Column("created_on")]
         public DateTime? CreatedOn { get; set; }
 

@@ -26,12 +26,14 @@ namespace RmsService
         public void ConfigureServices(IServiceCollection services)
         {
             // Setting for the release build for server
-            /*
+            
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
             });
-            */
+            
+            
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             
             services.AddApplicationServices(Configuration);
             
@@ -46,6 +48,7 @@ namespace RmsService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "The ESBS REST API - RMS Documentation", Version = "v1" });
                 c.EnableAnnotations();
+                /*
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -65,6 +68,7 @@ namespace RmsService
                     { securitySchema, new[] { "Bearer" } }
                 };
                 c.AddSecurityRequirement(securityRequirement);
+                */
             });
             
             services.AddCors(options =>
@@ -78,12 +82,12 @@ namespace RmsService
         {
             
             // Setting for the release build for server
-            /*
+            
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            */
+            
             
             app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())
@@ -106,8 +110,8 @@ namespace RmsService
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
 
             app.UseCors("Open");
 

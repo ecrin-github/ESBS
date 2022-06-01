@@ -91,18 +91,6 @@
         "AllowedScopes": []
       },
       "SwaggerKey": "user"
-    },
-    {
-      "DownstreamPathTemplate": "/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5050
-        }
-      ],
-      "UpstreamPathTemplate": "/identity/{everything}",
-      "SwaggerKey": "identity-client"
     }
   ],
   "SwaggerEndPoints": [
@@ -181,19 +169,6 @@
           "Name": "The ESBS User API",
           "Version": "v1",
           "Url": "http://localhost:5040/swagger/v1/swagger.json"
-        }
-      ]
-    },
-    {
-      "Key": "identity-client",
-      "TransformByOcelotConfig": true,
-      "TakeServersFromDownstreamService": false,
-      "TakeServersFromUpstreamService": true,
-      "Config": [
-        {
-          "Name": "The ESBS Identity API",
-          "Version": "v1",
-          "Url": "http://localhost:5050/swagger/v1/swagger.json"
         }
       ]
     }

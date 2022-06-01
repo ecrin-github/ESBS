@@ -47,7 +47,7 @@ namespace MdmService.Repositories
 
         public async Task<StudyContributorDto> CreateStudyContributor(StudyContributorDto studyContributorDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
             var studyContributor = new StudyContributor
             {
                 SdSid = studyContributorDto.SdSid,
@@ -62,8 +62,9 @@ namespace MdmService.Repositories
                 OrganisationName = studyContributorDto.OrganisationName,
                 OrganisationRorId = studyContributorDto.OrganisationRorId,
                 CreatedOn = DateTime.Now,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_contributors",
@@ -73,6 +74,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<StudyContributor>(studyContributor).ToString()
             });
+            */
             await _dbConnection.StudyContributors.AddAsync(studyContributor);
             await _dbConnection.SaveChangesAsync();
             
@@ -86,6 +88,7 @@ namespace MdmService.Repositories
 
             if (dbStudyContributor == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -97,6 +100,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<StudyContributor>(dbStudyContributor).ToString(),
                 Post = JsonSerializer.Serialize<StudyContributorDto>(studyContributorDto).ToString()
             });
+            */
             
             dbStudyContributor.OrcidId = studyContributorDto.OrcidId;
             dbStudyContributor.ContribTypeId = studyContributorDto.ContribTypeId;
@@ -110,7 +114,7 @@ namespace MdmService.Repositories
             dbStudyContributor.OrganisationName = studyContributorDto.OrganisationName;
             dbStudyContributor.OrganisationRorId = studyContributorDto.OrganisationRorId;
 
-            dbStudyContributor.LastEditedBy = userData;
+            dbStudyContributor.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -151,18 +155,19 @@ namespace MdmService.Repositories
 
         public async Task<StudyFeatureDto> CreateStudyFeature(StudyFeatureDto studyFeatureDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
             var studyFeature = new StudyFeature
             {
                 SdSid = studyFeatureDto.SdSid,
                 FeatureTypeId = studyFeatureDto.FeatureTypeId,
                 FeatureValueId = studyFeatureDto.FeatureValueId,
                 CreatedOn = DateTime.Now,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.StudyFeatures.AddAsync(studyFeature);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_features",
@@ -172,6 +177,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<StudyFeature>(studyFeature).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -185,6 +191,7 @@ namespace MdmService.Repositories
 
             if (dbStudyFeature == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -196,11 +203,12 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<StudyFeature>(dbStudyFeature).ToString(),
                 Post = JsonSerializer.Serialize<StudyFeatureDto>(studyFeatureDto).ToString()
             });
+            */
             
             dbStudyFeature.FeatureTypeId = studyFeatureDto.FeatureTypeId;
             dbStudyFeature.FeatureValueId = studyFeatureDto.FeatureValueId;
 
-            dbStudyFeature.LastEditedBy = userData;
+            dbStudyFeature.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -241,7 +249,7 @@ namespace MdmService.Repositories
 
         public async Task<StudyIdentifierDto> CreateStudyIdentifier(StudyIdentifierDto studyIdentifierDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyIdentifier = new StudyIdentifier
             {
@@ -254,11 +262,12 @@ namespace MdmService.Repositories
                 IdentifierLink = studyIdentifierDto.IdentifierLink,
                 IdentifierOrgRorId = studyIdentifierDto.IdentifierOrgRorId,
                 IdentifierDate = studyIdentifierDto.IdentifierDate,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.StudyIdentifiers.AddAsync(studyIdentifier);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_identifiers",
@@ -268,6 +277,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<StudyIdentifier>(studyIdentifier).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -281,6 +291,7 @@ namespace MdmService.Repositories
             
             if (dbStudyIdentifier == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -292,6 +303,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<StudyIdentifier>(dbStudyIdentifier).ToString(),
                 Post = JsonSerializer.Serialize<StudyIdentifierDto>(studyIdentifierDto).ToString()
             });
+            */
             
             dbStudyIdentifier.IdentifierTypeId = studyIdentifierDto.IdentifierTypeId;
             dbStudyIdentifier.IdentifierValue = studyIdentifierDto.IdentifierValue;
@@ -301,7 +313,7 @@ namespace MdmService.Repositories
             dbStudyIdentifier.IdentifierDate = studyIdentifierDto.IdentifierDate;
             dbStudyIdentifier.IdentifierLink = studyIdentifierDto.IdentifierLink;
 
-            dbStudyIdentifier.LastEditedBy = userData;
+            dbStudyIdentifier.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -342,7 +354,7 @@ namespace MdmService.Repositories
 
         public async Task<StudyReferenceDto> CreateStudyReference(StudyReferenceDto studyReferenceDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyReference = new StudyReference
             {
@@ -352,11 +364,12 @@ namespace MdmService.Repositories
                 Doi = studyReferenceDto.Doi,
                 Citation = studyReferenceDto.Citation,
                 Comments = studyReferenceDto.Comments,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.StudyReferences.AddAsync(studyReference);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_references",
@@ -366,6 +379,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<StudyReference>(studyReference).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -379,6 +393,7 @@ namespace MdmService.Repositories
 
             if (dbStudyReference == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -390,13 +405,14 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<StudyReference>(dbStudyReference).ToString(),
                 Post = JsonSerializer.Serialize<StudyReferenceDto>(studyReferenceDto).ToString()
             });
+            */
             
             dbStudyReference.Doi = studyReferenceDto.Doi;
             dbStudyReference.Pmid = studyReferenceDto.Pmid;
             dbStudyReference.Comments = studyReferenceDto.Comments;
             dbStudyReference.Citation = studyReferenceDto.Citation;
 
-            dbStudyReference.LastEditedBy = userData;
+            dbStudyReference.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             
@@ -437,7 +453,7 @@ namespace MdmService.Repositories
 
         public async Task<StudyRelationshipDto> CreateStudyRelationship(StudyRelationshipDto studyRelationshipDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyRelationship = new StudyRelationship
             {
@@ -445,11 +461,12 @@ namespace MdmService.Repositories
                 CreatedOn = DateTime.Now,
                 RelationshipTypeId = studyRelationshipDto.RelationshipTypeId,
                 TargetSdSid = studyRelationshipDto.TargetSdSid,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.StudyRelationships.AddAsync(studyRelationship);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_relationships",
@@ -459,6 +476,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<StudyRelationship>(studyRelationship).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -470,6 +488,7 @@ namespace MdmService.Repositories
             var dbStudyRelationship = await _dbConnection.StudyRelationships.FirstOrDefaultAsync(p => p.Id == studyRelationshipDto.Id);
             if (dbStudyRelationship == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -481,11 +500,12 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<StudyRelationship>(dbStudyRelationship).ToString(),
                 Post = JsonSerializer.Serialize<StudyRelationshipDto>(studyRelationshipDto).ToString()
             });
+            */
             
             dbStudyRelationship.RelationshipTypeId = studyRelationshipDto.RelationshipTypeId;
             dbStudyRelationship.TargetSdSid = studyRelationshipDto.TargetSdSid;
 
-            dbStudyRelationship.LastEditedBy = userData;
+            dbStudyRelationship.LastEditedBy = "userData";
             
             await _dbConnection.SaveChangesAsync();
             return _dataMapper.StudyRelationshipDtoMapper(dbStudyRelationship);
@@ -525,7 +545,7 @@ namespace MdmService.Repositories
 
         public async Task<StudyTitleDto> CreateStudyTitle(StudyTitleDto studyTitleDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyTitle = new StudyTitle
             {
@@ -537,11 +557,12 @@ namespace MdmService.Repositories
                 TitleTypeId = studyTitleDto.TitleTypeId,
                 LangUsageId = studyTitleDto.LangUsageId,
                 Comments = studyTitleDto.Comments,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.StudyTitles.AddAsync(studyTitle);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_titles",
@@ -551,6 +572,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<StudyTitle>(studyTitle).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -562,6 +584,7 @@ namespace MdmService.Repositories
             var dbStudyTitle = await _dbConnection.StudyTitles.FirstOrDefaultAsync(p => p.Id == studyTitleDto.Id);
             if (dbStudyTitle == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -573,6 +596,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<StudyTitle>(dbStudyTitle).ToString(),
                 Post = JsonSerializer.Serialize<StudyTitleDto>(studyTitleDto).ToString()
             });
+            */
             
             dbStudyTitle.IsDefault = studyTitleDto.IsDefault;
             dbStudyTitle.LangCode = studyTitleDto.LangCode;
@@ -581,7 +605,7 @@ namespace MdmService.Repositories
             dbStudyTitle.LangUsageId = studyTitleDto.LangUsageId;
             dbStudyTitle.Comments = studyTitleDto.Comments;
 
-            dbStudyTitle.LastEditedBy = userData;
+            dbStudyTitle.LastEditedBy = "userData";
                 
             await _dbConnection.SaveChangesAsync();
             
@@ -622,7 +646,7 @@ namespace MdmService.Repositories
 
         public async Task<StudyTopicDto> CreateStudyTopic(StudyTopicDto studyTopicDto, string accessToken)
         {
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             var studyTopic = new StudyTopic
             {
@@ -635,11 +659,12 @@ namespace MdmService.Repositories
                 OriginalCtId = studyTopicDto.OriginalCtId,
                 OriginalCtCode = studyTopicDto.OriginalCtCode,
                 OriginalValue = studyTopicDto.OriginalValue,
-                LastEditedBy = userData
+                LastEditedBy = "userData"
             };
 
             await _dbConnection.StudyTopics.AddAsync(studyTopic);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_topics",
@@ -649,6 +674,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<StudyTopic>(studyTopic).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -661,8 +687,9 @@ namespace MdmService.Repositories
                 await _dbConnection.StudyTopics.FirstOrDefaultAsync(p => p.Id == studyTopicDto.Id);
             if (dbStudyTopic == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "study_topics",
@@ -672,6 +699,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<StudyTopic>(dbStudyTopic).ToString(),
                 Post = JsonSerializer.Serialize<StudyTopicDto>(studyTopicDto).ToString()
             });
+            */
             
             dbStudyTopic.TopicTypeId = studyTopicDto.TopicTypeId;
             dbStudyTopic.MeshCoded = studyTopicDto.MeshCoded;
@@ -681,7 +709,7 @@ namespace MdmService.Repositories
             dbStudyTopic.OriginalCtCode = studyTopicDto.OriginalCtCode;
             dbStudyTopic.OriginalValue = studyTopicDto.OriginalValue;
 
-            dbStudyTopic.LastEditedBy = userData;
+            dbStudyTopic.LastEditedBy = "userData";
                 
             await _dbConnection.SaveChangesAsync();
             
@@ -743,9 +771,9 @@ namespace MdmService.Repositories
                 studyId = lastRecord.Id + 1;
             }
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
-            study.SdSid = studyId.ToString();
+            study.SdSid = "RMS-" + studyId;
             study.CreatedOn = DateTime.Now;
 
             study.MdrSdSid = null; 
@@ -766,10 +794,11 @@ namespace MdmService.Repositories
             study.MaxAge = studyDto.MaxAge;
             study.MaxAgeUnitsId = studyDto.MaxAgeUnitsId;
 
-            study.LastEditedBy = userData;
+            study.LastEditedBy = "userData";
 
             await _dbConnection.Studies.AddAsync(study);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "studies",
@@ -779,6 +808,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<Study>(study).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
 
@@ -786,7 +816,10 @@ namespace MdmService.Repositories
             {
                 foreach (var stc in studyDto.StudyContributors)
                 {
-                    stc.SdSid ??= studyId.ToString();
+                    if (string.IsNullOrEmpty(stc.SdSid))
+                    {
+                        stc.SdSid = study.SdSid;
+                    }
                     await CreateStudyContributor(stc, accessToken);
                 }
             }
@@ -795,7 +828,10 @@ namespace MdmService.Repositories
             {
                 foreach (var stf in studyDto.StudyFeatures)
                 {
-                    stf.SdSid ??= studyId.ToString();
+                    if (string.IsNullOrEmpty(stf.SdSid))
+                    {
+                        stf.SdSid = study.SdSid;
+                    }
                     await CreateStudyFeature(stf, accessToken);
                 }
             }
@@ -804,7 +840,10 @@ namespace MdmService.Repositories
             {
                 foreach (var sti in studyDto.StudyIdentifiers)
                 {
-                    sti.SdSid ??= studyId.ToString();
+                    if (string.IsNullOrEmpty(sti.SdSid))
+                    {
+                        sti.SdSid = study.SdSid;
+                    }
                     await CreateStudyIdentifier(sti, accessToken);
                 }
             }
@@ -813,7 +852,10 @@ namespace MdmService.Repositories
             {
                 foreach (var str in studyDto.StudyReferences)
                 {
-                    str.SdSid ??= studyId.ToString();
+                    if (string.IsNullOrEmpty(str.SdSid))
+                    {
+                        str.SdSid = study.SdSid;
+                    }
                     await CreateStudyReference(str, accessToken);
                 }
             }
@@ -822,7 +864,10 @@ namespace MdmService.Repositories
             {
                 foreach (var str in studyDto.StudyRelationships)
                 {
-                    str.SdSid ??= studyId.ToString();
+                    if (string.IsNullOrEmpty(str.SdSid))
+                    {
+                        str.SdSid = study.SdSid;
+                    }
                     await CreateStudyRelationship(str, accessToken);
                 }
             }
@@ -831,7 +876,10 @@ namespace MdmService.Repositories
             {
                 foreach (var stt in studyDto.StudyTitles)
                 {
-                    stt.SdSid ??= studyId.ToString();
+                    if (string.IsNullOrEmpty(stt.SdSid))
+                    {
+                        stt.SdSid = study.SdSid;
+                    }
                     await CreateStudyTitle(stt, accessToken);
                 }
             }
@@ -840,7 +888,10 @@ namespace MdmService.Repositories
             {
                 foreach (var stt in studyDto.StudyTopics)
                 {
-                    stt.SdSid ??= studyId.ToString();
+                    if (string.IsNullOrEmpty(stt.SdSid))
+                    {
+                        stt.SdSid = study.SdSid;
+                    }
                     await CreateStudyTopic(stt, accessToken);
                 }
             }
@@ -853,7 +904,8 @@ namespace MdmService.Repositories
             var dbStudy = await _dbConnection.Studies.FirstOrDefaultAsync(p => p.SdSid == studyDto.SdSid);
             if (dbStudy == null) return null;
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            /*
+            var userData = await _userIdentityService.GetUserData();
 
             await _auditService.AddAuditRecord(new AuditDto
             {
@@ -864,6 +916,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<Study>(dbStudy).ToString(),
                 Post = JsonSerializer.Serialize<StudyDto>(studyDto).ToString()
             });
+            */
             
             dbStudy.DisplayTitle = studyDto.DisplayTitle;
             dbStudy.TitleLangCode = studyDto.TitleLangCode; // ?
@@ -880,7 +933,7 @@ namespace MdmService.Repositories
             dbStudy.MaxAge = studyDto.MaxAge;
             dbStudy.MaxAgeUnitsId = studyDto.MaxAgeUnitsId;
 
-            dbStudy.LastEditedBy = userData;
+            dbStudy.LastEditedBy = "userData";
             
             if (studyDto.StudyContributors is { Count: > 0 })
             {
@@ -888,7 +941,10 @@ namespace MdmService.Repositories
                 {
                     if (stc.Id is null or 0)
                     {
-                        stc.SdSid ??= studyDto.SdSid;
+                        if (string.IsNullOrEmpty(stc.SdSid))
+                        {
+                            stc.SdSid = dbStudy.SdSid;
+                        }
                         await CreateStudyContributor(stc, accessToken);
                     }
                     else
@@ -904,7 +960,10 @@ namespace MdmService.Repositories
                 {
                     if (stf.Id is null or 0)
                     {
-                        stf.SdSid ??= studyDto.SdSid;
+                        if (string.IsNullOrEmpty(stf.SdSid))
+                        {
+                            stf.SdSid = dbStudy.SdSid;
+                        }
                         await CreateStudyFeature(stf, accessToken);
                     }
                     else
@@ -920,7 +979,10 @@ namespace MdmService.Repositories
                 {
                     if (sti.Id is null or 0)
                     {
-                        sti.SdSid ??= studyDto.SdSid;
+                        if (string.IsNullOrEmpty(sti.SdSid))
+                        {
+                            sti.SdSid = dbStudy.SdSid;
+                        }
                         await CreateStudyIdentifier(sti, accessToken);
                     }
                     else
@@ -936,7 +998,10 @@ namespace MdmService.Repositories
                 {
                     if (str.Id is null or 0)
                     {
-                        str.SdSid ??= studyDto.SdSid;
+                        if (string.IsNullOrEmpty(str.SdSid))
+                        {
+                            str.SdSid = dbStudy.SdSid;
+                        }
                         await CreateStudyReference(str, accessToken);
                     }
                     else
@@ -952,7 +1017,10 @@ namespace MdmService.Repositories
                 {
                     if (str.Id is null or 0)
                     {
-                        str.SdSid ??= studyDto.SdSid;
+                        if (string.IsNullOrEmpty(str.SdSid))
+                        {
+                            str.SdSid = dbStudy.SdSid;
+                        }
                         await CreateStudyRelationship(str, accessToken);
                     }
                     else
@@ -968,7 +1036,10 @@ namespace MdmService.Repositories
                 {
                     if (stt.Id is null or 0)
                     {
-                        stt.SdSid ??= studyDto.SdSid;
+                        if (string.IsNullOrEmpty(stt.SdSid))
+                        {
+                            stt.SdSid = dbStudy.SdSid;
+                        }
                         await CreateStudyTitle(stt, accessToken);
                     }
                     else
@@ -984,7 +1055,10 @@ namespace MdmService.Repositories
                 {
                     if (stt.Id is null or 0)
                     {
-                        stt.SdSid ??= studyDto.SdSid;
+                        if (string.IsNullOrEmpty(stt.SdSid))
+                        {
+                            stt.SdSid = dbStudy.SdSid;
+                        }
                         await CreateStudyTopic(stt, accessToken);
                     }
                     else
@@ -1054,7 +1128,7 @@ namespace MdmService.Repositories
                 studyId = lastRecord.Id + 1;
             }
 
-            var userData = await _userIdentityService.GetUserData(accessToken);
+            // var userData = await _userIdentityService.GetUserData(accessToken);
 
             study.SdSid = studyId.ToString();
             study.CreatedOn = DateTime.Now;
@@ -1077,10 +1151,11 @@ namespace MdmService.Repositories
             study.MaxAge = studyData.MaxAge;
             study.MaxAgeUnitsId = studyData.MaxAgeUnitsId;
 
-            study.LastEditedBy = userData;
+            study.LastEditedBy = "userData";
 
             await _dbConnection.Studies.AddAsync(study);
 
+            /*
             await _auditService.AddAuditRecord(new AuditDto
             {
                 TableName = "studies",
@@ -1090,6 +1165,7 @@ namespace MdmService.Repositories
                 Prior = null,
                 Post = JsonSerializer.Serialize<Study>(study).ToString()
             });
+            */
 
             await _dbConnection.SaveChangesAsync();
             
@@ -1101,6 +1177,7 @@ namespace MdmService.Repositories
             var dbStudy = await _dbConnection.Studies.FirstOrDefaultAsync(p => p.SdSid == studyData.SdSid);
             if (dbStudy == null) return null;
 
+            /*
             var userData = await _userIdentityService.GetUserData(accessToken);
 
             await _auditService.AddAuditRecord(new AuditDto
@@ -1112,6 +1189,7 @@ namespace MdmService.Repositories
                 Prior = JsonSerializer.Serialize<Study>(dbStudy).ToString(),
                 Post = JsonSerializer.Serialize<StudyDataDto>(studyData).ToString()
             });
+            */
             
             dbStudy.DisplayTitle = studyData.DisplayTitle;
             dbStudy.TitleLangCode = studyData.TitleLangCode;
@@ -1128,7 +1206,7 @@ namespace MdmService.Repositories
             dbStudy.MaxAge = studyData.MaxAge;
             dbStudy.MaxAgeUnitsId = studyData.MaxAgeUnitsId;
 
-            dbStudy.LastEditedBy = userData;
+            dbStudy.LastEditedBy = "userData";
 
             await _dbConnection.SaveChangesAsync();
             

@@ -7,12 +7,12 @@ namespace AuditService.Helpers;
 
 public class DataMapper : IDataMapper
 {
-    public ICollection<AuditResponseDto> MapRmsAuditRecords(ICollection<RmsRecordChange> rmsRecordChanges)
+    public AuditResponseDto[] MapRmsAuditRecords(ICollection<RmsRecordChange> rmsRecordChanges)
     {
         throw new NotImplementedException();
     }
 
-    public ICollection<AuditResponseDto> MapMdrAuditRecords(ICollection<MdrRecordChange> mdrRecordChanges)
+    public AuditResponseDto[] MapMdrAuditRecords(ICollection<MdrRecordChange> mdrRecordChanges)
     {
         throw new NotImplementedException();
     }

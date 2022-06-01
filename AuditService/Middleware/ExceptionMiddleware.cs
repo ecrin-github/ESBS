@@ -36,7 +36,9 @@ namespace AuditService.Middleware
 
                 var response = _env.IsDevelopment()
                     // if in development mode
-                    ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
+                    ? new ApiException(context.Response.StatusCode,
+                                       ex.Message,
+                                       ex.StackTrace!.ToString())
                     // if in production mode
                     : new ApiException(context.Response.StatusCode, "Internal Server error");
                 

@@ -26,12 +26,13 @@ namespace MdmService
         public void ConfigureServices(IServiceCollection services)
         {
             // Setting for the release build for server
-            /*
+            
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.KnownProxies.Add(IPAddress.Parse("51.210.99.16"));
             });
-            */
+            
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             
             services.AddApplicationServices(Configuration);
             
@@ -77,12 +78,10 @@ namespace MdmService
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Setting for the release build for server
-            /*
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            */
             
             app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())

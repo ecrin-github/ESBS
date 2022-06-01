@@ -16,18 +16,12 @@ namespace MdmService.DTO.Object
         public string? MeshCode { get; set; }
         
         public string? MeshValue { get; set; }
-        
-        public string? MeshQualcode { get; set; }
-        
-        public string? MeshQualvalue { get; set; }
-        
+
         public int? OriginalCtId { get; set; }
         
         public string? OriginalCtCode { get; set; }
         
         public string? OriginalValue { get; set; }
-        
-        public string? Comments { get; set; }
         
         public DateTime? CreatedOn { get; set; }
     }

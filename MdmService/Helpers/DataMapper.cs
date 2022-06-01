@@ -504,12 +504,9 @@ namespace MdmService.Helpers
                 MeshCoded = objectTopic.MeshCoded,
                 MeshCode = objectTopic.MeshCode,
                 MeshValue = objectTopic.MeshValue,
-                MeshQualcode = objectTopic.MeshQualcode,
-                MeshQualvalue = objectTopic.MeshQualvalue,
                 OriginalCtId = objectTopic.OriginalCtId,
                 OriginalCtCode = objectTopic.OriginalCtCode,
                 OriginalValue = objectTopic.OriginalValue,
-                Comments = objectTopic.Comments
             };
 
             return objectTopicDto;
